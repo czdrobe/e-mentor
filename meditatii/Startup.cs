@@ -9,6 +9,7 @@ namespace meditatii
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            int i = 0;
         }
     }
 }

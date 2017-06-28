@@ -1,0 +1,71 @@
+@font-face {
+  font-family: 'MarkPro';
+  font-weight:400;
+  src: url('../fonts/MarkPro.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/MarkPro.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/MarkPro.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/MarkPro.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../fonts/MarkPro.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/MarkPro.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+@font-face {
+  font-family: 'Boutros';
+  font-weight:400;
+  src: url('../fonts/BoutrosArlette-Medium.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/BoutrosArlette-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/BoutrosArlette-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/BoutrosArlette-Medium.woff') format('woff'), /* Pretty Modern Browsers */
+       url('../fonts/BoutrosArlette-Medium.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/BoutrosArlette-Medium.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+@import "../src/variables.less";
+@import "../src/mixins.less";
+@import "../src/mixins/clearfix.less";
+@default-font: "MarkPro", sans-serif;
+@brand-color:#7d7d7d;
+@brand-color-active:#008329;
+@brand-button-color:#6fda44;
+@brand-button-border-color:#54ce24;
+
+body{font-family:@default-font;padding-top: 50px;padding-bottom: 20px;}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {padding-left: 15px;padding-right: 15px;}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal & dt{white-space: normal;}
+
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,select,textarea {max-width: 280px;}
+
+.btn-primary {background-color:@brand-button-color;border-color:@brand-button-border-color;color:white !important;
+              &:hover {background-color:darken(@brand-button-color,25%);border-color:darken(@brand-button-border-color,25%);}
+}
+
+.brandcolored {color:@brand-color-active;font-weight:800;}
+
+.prag-numar {font-size: 50px;line-height: 110%;letter-spacing: 2px;}
+.preg-text {letter-spacing: 1px;line-height: 100%;position: relative;margin: 16px 0;padding: 16px 0;}
+
+.sectionimg {
+    background-image:url("../img/home-img.jpg");
+    background-repeat:no-repeat;
+    background-position: center center;
+    height:450px;
+    width:100%;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    & h1 {color:white;}
+}
+
+a{
+    color:@brand-color !important;
+    outline:none;
+}
+a &:hover, &:active, &:focus {
+    color:@brand-color-active !important;
+}
+

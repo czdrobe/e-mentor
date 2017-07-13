@@ -50,6 +50,23 @@ input,select,textarea {max-width: 280px;}
 .prag-numar {font-size: 50px;line-height: 110%;letter-spacing: 2px;}
 .preg-text {letter-spacing: 1px;line-height: 100%;position: relative;margin: 16px 0;padding: 16px 0;}
 
+.row {padding-top:20px;
+      & h1 {margin-bottom:20px;}
+}
+
+.prag {
+    & i {display: block;margin-bottom: 30px;
+         & img {height: 72px;}
+    }
+}
+
+.__list {text-align:center;
+    & li {float:left;width:25%;margin-bottom:10px;
+        & i {display: block;margin-bottom: 20px;
+            & img {height:72px;}
+        }
+    }
+}
 .sectionimg {
     background-image:url("../img/home-img.jpg");
     background-repeat:no-repeat;
@@ -59,6 +76,27 @@ input,select,textarea {max-width: 280px;}
     padding-top: 48px;
     padding-bottom: 48px;
     & h1 {color:white;}
+}
+
+.teachers {
+    & .logo {text-align:center;
+        & img {height: 72px;}
+    }
+    & .description {margin-top:5px;}
+}
+
+.avatar{width: 60px;height: 60px;object-fit: cover;border-radius:50%}
+.star-rating-small {margin: 2px 5px 0 0;width: 60px;height: 12px;}
+.star-rating-small-cover {
+    background: url(/img/sprite_meditatii.png) no-repeat scroll left -64px transparent;
+    display: block;
+    height: 11px;
+    width: 60px;
+}
+.star-rating-small-progress {
+    background: url(/img/sprite_meditatii.png) no-repeat scroll left -49px transparent;
+    display: block;
+    height: 12px;
 }
 
 a{

@@ -1,19 +1,19 @@
-namespace Meditatii.Data.Migrations
+namespace meditatii.web.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<MeditatiiDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<meditatii.Models.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Meditatii.Data.MeditatiiDbContext";
+            ContextKey = "meditatii.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(Meditatii.Data.MeditatiiDbContext context)
+        protected override void Seed(meditatii.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

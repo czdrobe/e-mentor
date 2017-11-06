@@ -1,16 +1,20 @@
 ﻿using Meditatii.Data.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Meditatii.Data
 {
-    
-        public class MeditatiiDbContext : DbContext, IMeditatiiDbContext
+
+
+    public class MeditatiiDbContext : DbContext
     {
         public MeditatiiDbContext()
             : base("DefaultConnection")
@@ -44,6 +48,7 @@ namespace Meditatii.Data
                    cs.MapRightKey("CycleId");
                    cs.ToTable("UserCycle");
                });
+
         }
     }
 }

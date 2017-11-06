@@ -235,6 +235,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707131222139_InitialCreate.cs" />
+    <Compile Include="Migrations\201707131222139_InitialCreate.Designer.cs">
+      <DependentUpon>201707131222139_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707251413489_identityupdate.cs" />
+    <Compile Include="Migrations\201707251413489_identityupdate.Designer.cs">
+      <DependentUpon>201707251413489_identityupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707251429441_identityupdate2.cs" />
+    <Compile Include="Migrations\201707251429441_identityupdate2.Designer.cs">
+      <DependentUpon>201707251429441_identityupdate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CycleModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\UsersResultModel.cs" />
@@ -359,6 +372,17 @@
       <Project>{E8B09DCF-043C-46CE-837A-E55C09AB1336}</Project>
       <Name>Meditatii.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707131222139_InitialCreate.resx">
+      <DependentUpon>201707131222139_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707251413489_identityupdate.resx">
+      <DependentUpon>201707251413489_identityupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707251429441_identityupdate2.resx">
+      <DependentUpon>201707251429441_identityupdate2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

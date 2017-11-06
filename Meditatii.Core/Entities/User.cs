@@ -39,7 +39,7 @@ namespace Meditatii.Core.Entities
         /// <summary>
         /// 
         /// </summary>
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// 

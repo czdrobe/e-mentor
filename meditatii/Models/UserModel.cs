@@ -30,7 +30,7 @@ namespace meditatii.Models
         /// <summary>
         /// 
         /// </summary>
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// 

@@ -38,6 +38,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,11 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMeditatiiDbContext.cs" />
     <Compile Include="MeditatiiDbContext.cs" />
     <Compile Include="Migrations\201707061430164_firstmigration.cs" />
     <Compile Include="Migrations\201707061430164_firstmigration.Designer.cs">
       <DependentUpon>201707061430164_firstmigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707131152531_newmigtation.cs" />
+    <Compile Include="Migrations\201707131152531_newmigtation.Designer.cs">
+      <DependentUpon>201707131152531_newmigtation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707140909292_change user table.cs" />
+    <Compile Include="Migrations\201707140909292_change user table.Designer.cs">
+      <DependentUpon>201707140909292_change user table.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cycle.cs" />
@@ -82,10 +97,20 @@
       <Project>{a5229b14-0589-4965-9709-5bd5ffa7bba1}</Project>
       <Name>Meditatii.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Meditatii.Services\Meditatii.Services.csproj">
+      <Project>{e8b09dcf-043c-46ce-837a-e55c09ab1336}</Project>
+      <Name>Meditatii.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201707061430164_firstmigration.resx">
       <DependentUpon>201707061430164_firstmigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707131152531_newmigtation.resx">
+      <DependentUpon>201707131152531_newmigtation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707140909292_change user table.resx">
+      <DependentUpon>201707140909292_change user table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

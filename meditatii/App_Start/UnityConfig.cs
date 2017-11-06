@@ -5,6 +5,7 @@ using Meditatii.Services;
 using Meditatii.Core;
 using Meditatii.Core.Data;
 using Meditatii.Data.Repositories;
+using meditatii.Controllers;
 
 namespace meditatii.web.App_Start
 {
@@ -56,7 +57,7 @@ namespace meditatii.web.App_Start
             container.RegisterType<ICycleService, CycleService>();
 
 
-            
+            container.RegisterType<AccountController>(new InjectionConstructor());
 
         }
     }

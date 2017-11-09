@@ -41,7 +41,7 @@ export class TeacherlistComponent {
         // load main categories
         this.categoryService.getMainCategories().subscribe(cats => {
             console.log(cats);
-            this.categories = cats
+			this.categories = cats;
 
             this.activateRoute.queryParams.subscribe(params => {
                 if (params.hasOwnProperty("maincategory"))

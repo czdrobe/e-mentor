@@ -259,7 +259,20 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\app.component.js" />
+    <Content Include="app\app.module.js" />
+    <Content Include="app\app.routing.js" />
     <Content Include="app\components\teacherlist.component.html" />
+    <Content Include="app\components\teacherlist.component.js" />
+    <Content Include="app\main.js" />
+    <Content Include="app\services\category.service.js" />
+    <Content Include="app\services\category.service.js.map" />
+    <Content Include="app\services\cycle.service.js" />
+    <Content Include="app\services\cycle.service.js.map" />
+    <Content Include="app\services\pager.service.js" />
+    <Content Include="app\services\pager.service.js.map" />
+    <Content Include="app\services\users.service.js" />
+    <Content Include="app\services\users.service.js.map" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\bootstrap.css" />
@@ -269,14 +282,21 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\style.css" />
+    <Content Include="gruntfile.js" />
     <Content Include="img\home-img.jpg" />
     <Content Include="img\logo.png" />
     <Content Include="img\svg\learning.svg" />
     <Content Include="img\svg\prof.svg" />
+    <Content Include="index.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="css\styles.css.map" />
     <Content Include="css\styles.less" />
+    <Content Include="app\app.component.js.map" />
+    <Content Include="app\app.module.js.map" />
+    <Content Include="app\app.routing.js.map" />
+    <Content Include="app\main.js.map" />
+    <Content Include="app\components\teacherlist.component.js.map" />
     <None Include="package.json" />
     <Content Include="package.less.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -292,6 +312,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="styles.css" />
+    <Content Include="systemjs.config.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -331,6 +352,7 @@
     <Content Include="Views\Shared\_SectionPartial.cshtml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\Teacher\Index.cshtml" />
+    <Content Include="typings.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -344,17 +366,6 @@
     </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.module.ts" />
-    <TypeScriptCompile Include="app\app.routing.ts" />
-    <TypeScriptCompile Include="app\components\teacherlist..component.ts" />
-    <TypeScriptCompile Include="app\main.ts" />
-    <TypeScriptCompile Include="app\services\category.service.ts" />
-    <TypeScriptCompile Include="app\services\cycle.service.ts" />
-    <TypeScriptCompile Include="app\services\pager.service.ts" />
-    <TypeScriptCompile Include="app\services\users.service.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -383,6 +394,17 @@
     <EmbeddedResource Include="Migrations\201707251429441_identityupdate2.resx">
       <DependentUpon>201707251429441_identityupdate2.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app\app.component.ts" />
+    <TypeScriptCompile Include="app\app.module.ts" />
+    <TypeScriptCompile Include="app\app.routing.ts" />
+    <TypeScriptCompile Include="app\components\teacherlist.component.ts" />
+    <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="app\services\category.service.ts" />
+    <TypeScriptCompile Include="app\services\cycle.service.ts" />
+    <TypeScriptCompile Include="app\services\pager.service.ts" />
+    <TypeScriptCompile Include="app\services\users.service.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

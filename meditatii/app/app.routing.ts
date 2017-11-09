@@ -2,7 +2,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { TeacherlistComponent } from './components/teacherlist..component';
+import { TeacherlistComponent } from './components/teacherlist.component';
 
 const appRoutes: Routes = [
     {

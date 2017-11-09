@@ -111,4 +111,4 @@ TeacherlistComponent = __decorate([
         pager_service_1.PagerService])
 ], TeacherlistComponent);
 exports.TeacherlistComponent = TeacherlistComponent;
-//# sourceMappingURL=teacherlist..component.js.map
+//# sourceMappingURL=teacherlist.component.js.map

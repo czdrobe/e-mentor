@@ -229,6 +229,7 @@
     <Compile Include="Controllers\Api\CycleApiController.cs" />
     <Compile Include="Controllers\Api\CategoryApiController.cs" />
     <Compile Include="Controllers\Api\UserApiController.cs" />
+    <Compile Include="Controllers\UController .cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -262,6 +263,10 @@
     <Content Include="app\app.component.js" />
     <Content Include="app\app.module.js" />
     <Content Include="app\app.routing.js" />
+    <Content Include="app\components\backend\appoitments.component.html" />
+    <Content Include="app\components\backend\messages.component.html" />
+    <Content Include="app\components\backend\menu.component.html" />
+    <Content Include="app\components\backend\backend.component.html" />
     <Content Include="app\components\teacherlist.component.html" />
     <Content Include="app\components\teacherlist.component.js" />
     <Content Include="app\main.js" />
@@ -353,6 +358,7 @@
     <Content Include="tsconfig.json" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="typings.json" />
+    <Content Include="Views\U\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -399,6 +405,10 @@
     <TypeScriptCompile Include="app\app.component.ts" />
     <TypeScriptCompile Include="app\app.module.ts" />
     <TypeScriptCompile Include="app\app.routing.ts" />
+    <TypeScriptCompile Include="app\components\backend\appoitments.component.ts" />
+    <TypeScriptCompile Include="app\components\backend\messages.component.ts" />
+    <TypeScriptCompile Include="app\components\backend\menu.component.ts" />
+    <TypeScriptCompile Include="app\components\backend\backend.component.ts" />
     <TypeScriptCompile Include="app\components\teacherlist.component.ts" />
     <TypeScriptCompile Include="app\main.ts" />
     <TypeScriptCompile Include="app\services\category.service.ts" />

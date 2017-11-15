@@ -37,6 +37,7 @@ namespace meditatii
             mapper.CreateMap<Meditatii.Data.Models.Cycle, Cycle>();
 
             mapper.CreateMap<SearchResult<User>, SearchResult<UserModel>>();
+            
         }
     }
 }

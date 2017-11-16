@@ -25,8 +25,11 @@ namespace Meditatii.Data
 
         public virtual DbSet<Category> Category { get; set; }
 
+        public virtual DbSet<Message> Message { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Entity<User>()
@@ -48,6 +51,7 @@ namespace Meditatii.Data
                    cs.MapRightKey("CycleId");
                    cs.ToTable("UserCycle");
                });
+
 
         }
     }

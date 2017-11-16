@@ -47,6 +47,9 @@ namespace meditatii.web.App_Start
 
         private static void RegisterServices(IUnityContainer container)
         {
+            container.RegisterType<IMessageData, MessageRepository>();
+            container.RegisterType<IMessageService, MessageService>();
+
             container.RegisterType<IUserData, UserRepository>();
             container.RegisterType<IUsersService, UsersService>();
 

@@ -27,6 +27,9 @@ namespace meditatii
 
         private void RegisterType(IMapperConfigurationExpression mapper)
         {
+            mapper.CreateMap<Message, MessageModel>();
+            mapper.CreateMap<Meditatii.Data.Models.Message, Message>();
+
             mapper.CreateMap<User, UserModel>();
             mapper.CreateMap <Meditatii.Data.Models.User, User>();
 
@@ -37,7 +40,8 @@ namespace meditatii
             mapper.CreateMap<Meditatii.Data.Models.Cycle, Cycle>();
 
             mapper.CreateMap<SearchResult<User>, SearchResult<UserModel>>();
-            
+            mapper.CreateMap<SearchResult<Message>, SearchResult<MessageModel>>();
+
         }
     }
 }

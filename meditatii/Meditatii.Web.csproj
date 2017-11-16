@@ -228,6 +228,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CycleApiController.cs" />
     <Compile Include="Controllers\Api\CategoryApiController.cs" />
+    <Compile Include="Controllers\Api\MessageApiController.cs" />
     <Compile Include="Controllers\Api\UserApiController.cs" />
     <Compile Include="Controllers\UController .cs" />
     <Compile Include="Controllers\TeacherController.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CycleModel.cs" />
     <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\UsersResultModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -274,6 +276,7 @@
     <Content Include="app\services\category.service.js.map" />
     <Content Include="app\services\cycle.service.js" />
     <Content Include="app\services\cycle.service.js.map" />
+    <Content Include="app\services\messages.service.js" />
     <Content Include="app\services\pager.service.js" />
     <Content Include="app\services\pager.service.js.map" />
     <Content Include="app\services\users.service.js" />
@@ -302,6 +305,7 @@
     <Content Include="app\app.routing.js.map" />
     <Content Include="app\main.js.map" />
     <Content Include="app\components\teacherlist.component.js.map" />
+    <Content Include="app\services\messages.service.js.map" />
     <None Include="package.json" />
     <Content Include="package.less.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -414,6 +418,7 @@
     <TypeScriptCompile Include="app\services\category.service.ts" />
     <TypeScriptCompile Include="app\services\cycle.service.ts" />
     <TypeScriptCompile Include="app\services\pager.service.ts" />
+    <TypeScriptCompile Include="app\services\messages.service.ts" />
     <TypeScriptCompile Include="app\services\users.service.ts" />
   </ItemGroup>
   <PropertyGroup>

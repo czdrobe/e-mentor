@@ -11,24 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var BackendComponent = (function () {
+var BackendComponent = /** @class */ (function () {
     function BackendComponent(router, activateRoute) {
         this.router = router;
         this.activateRoute = activateRoute;
     }
     BackendComponent.prototype.ngOnInit = function () {
     };
+    BackendComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'backend',
+            templateUrl: 'backend.component.html',
+            providers: []
+        }),
+        __metadata("design:paramtypes", [router_1.Router,
+            router_1.ActivatedRoute])
+    ], BackendComponent);
     return BackendComponent;
 }());
-BackendComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'backend',
-        templateUrl: 'backend.component.html',
-        providers: []
-    }),
-    __metadata("design:paramtypes", [router_1.Router,
-        router_1.ActivatedRoute])
-], BackendComponent);
 exports.BackendComponent = BackendComponent;
 //# sourceMappingURL=backend.component.js.map

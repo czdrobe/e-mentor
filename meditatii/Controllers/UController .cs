@@ -1,4 +1,5 @@
-﻿using System;
+﻿using meditatii.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +11,8 @@ namespace meditatii.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            ViewBag.CssExtra = "weapper-helper";
+            return View( new HomeViewModel() { CssExtra  = "weapper-helper" });
         }
     }
 }

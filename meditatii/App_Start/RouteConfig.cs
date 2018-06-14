@@ -21,6 +21,11 @@ namespace meditatii
                 defaults: new { controller = "U", action = "Index" }
             );
             routes.MapRoute(
+                name: "TeacherProfile",
+                url: "teacherprofile/{id}",
+                defaults: new { controller = "TeacherProfile", action = "Index", id = UrlParameter.Optional }
+            );
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

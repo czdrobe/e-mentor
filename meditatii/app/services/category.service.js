@@ -11,26 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
-var CategoryService = (function () {
+var operators_1 = require("rxjs/operators");
+var CategoryService = /** @class */ (function () {
     function CategoryService(http) {
         this.http = http;
         console.log('CategoryService initialized...');
     }
     CategoryService.prototype.getCategories = function () {
-        return this.http.get('/api/categories/getall').map(function (res) { return res.json(); });
+        return this.http.get('/api/categories/getall').pipe(operators_1.map(function (res) { return res.json(); }));
     };
     CategoryService.prototype.getMainCategories = function () {
-        return this.http.get('/api/categories/getmains').map(function (res) { return res.json(); });
+        return this.http.get('/api/categories/getmains').pipe(operators_1.map(function (res) { return res.json(); }));
     };
     CategoryService.prototype.getSubCategories = function (id) {
-        return this.http.get('/api/categories/getsubcategories?id=' + id).map(function (res) { return res.json(); });
+        return this.http.get('/api/categories/getsubcategories?id=' + id).pipe(operators_1.map(function (res) { return res.json(); }));
     };
+    CategoryService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], CategoryService);
     return CategoryService;
 }());
-CategoryService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], CategoryService);
 exports.CategoryService = CategoryService;
 //# sourceMappingURL=category.service.js.map

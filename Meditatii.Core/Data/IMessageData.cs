@@ -10,5 +10,7 @@ namespace Meditatii.Core.Data
     public interface IMessageData: ILazyLoadable
     {
         SearchResult<Message> GetMessages(string useremail, int skip, int take);
+        List<MentorMessage> GetListOfMentors(string useremail);
+        void SaveNewMessage(string useremail, int toId, string bodyMessage);
     }
 }

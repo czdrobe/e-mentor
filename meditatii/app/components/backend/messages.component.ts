@@ -5,6 +5,8 @@ import * as _ from 'underscore';
 
 import { PagerService } from '../../services/pager.service';
 
+import {MessageModel} from '../../models/messageModel'
+
 @Component({
 	moduleId: module.id,
 	templateUrl: 'messages.component.html',
@@ -12,8 +14,13 @@ import { PagerService } from '../../services/pager.service';
 })
 export class MessagesComponent {
 	messages: Message[];
+	mentors: MentorMessage[];
 	pager: any = {};
+	currentMentorId:number;
 	currentpage: number;
+
+	model = new MessageModel("");
+
 	constructor(
 		private messagesService: MessagesService,
         private router: Router,
@@ -22,19 +29,43 @@ export class MessagesComponent {
     )
     {
         
-    }
+	}
+
+	get diagnostic() { return JSON.stringify(this.model); }
+
+	sendMessage()
+	{
+		this.messagesService.saveMessage(this.currentMentorId, this.model.newMessage).subscribe(result => 
+			{
+				this.model.newMessage = "";
+				this.currentpage = 1;
+				this.setPage(this.currentpage);		
+			});
+		console.log('newmessage value:' + this.model.newMessage);
+	}
 
 	ngOnInit() {
 
 		this.activateRoute.queryParams.subscribe(params => {
-			this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
-			this.setPage(this.currentpage);
+			//this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
+			//this.setPage(this.currentpage);
+			this.messagesService.getMentors().subscribe((results:any) => {
+				console.log(results);
+				this.mentors = results;
+				console.log(this.mentors);
+			});
 		});
 
 	}
 
 	updateUrl() {
 		//this.router.navigate(['/Teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
+	}
+
+	LoadMessages(mentorMessage:MentorMessage) {
+			this.currentpage = 1;
+			this.currentMentorId =mentorMessage.Id;
+			this.setPage(this.currentpage);
 	}
 
 	setCurrentPage(page: number) {
@@ -47,7 +78,7 @@ export class MessagesComponent {
 			return;
 		}
 		this.currentpage = page;
-		this.messagesService.getMessages(page).subscribe(messagesResult => {
+		this.messagesService.getMessages(this.currentMentorId, page).subscribe((messagesResult:any) => {
 			console.log(messagesResult);
 
 			// get pager object from service
@@ -62,6 +93,16 @@ interface Message
 {
 	from: string,
 	subject: string,
-	date: string,
-	isRead: boolean
+	body: string,
+	Added: string,
+	isRead: boolean,
+	SenderName: string
+}
+
+interface MentorMessage
+{
+	Id: number,
+	name: string,
+	nrofmessage: number,
+	isread: boolean
 }

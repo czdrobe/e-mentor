@@ -19,14 +19,23 @@ namespace meditatii
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/calendar").Include(
+            "~/Scripts/jquery-{version}.js",
+            "~/Scripts/moment.min.js",
+            "~/Scripts/fullcalendar.js"
+            ));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js"
+                ));
 
             bundles.Add(new StyleBundle("~/css/css").Include(
+          "~/css/fullcalendar.css",
           "~/css/bootstrap.css",
-          "~/css/styles.css"));
+          "~/css/styles.css"
+          ));
 
         }
     }

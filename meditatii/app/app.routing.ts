@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { TeacherlistComponent } from './components/teacherlist.component';
+import { TeacherProfileComponent } from './components/teacherprofile.component';
 import { BackendComponent } from './components/backend/backend.component';
 import { MessagesComponent } from './components/backend/messages.component';
+import { ProfileComponent } from './components/backend/profile.component';
 import { AppoitmentsComponent } from './components/backend/appoitments.component';
 
 const appRoutes: Routes = [
@@ -13,8 +15,12 @@ const appRoutes: Routes = [
         component: AppComponent
     },
     {
-        path: 'Teacher',
+        path: 'teacher',
         component: TeacherlistComponent
+	},
+	{
+        path: 'teacherprofile/:id',
+        component: TeacherProfileComponent
 	},
 	{
 		path: 'u',
@@ -24,6 +30,11 @@ const appRoutes: Routes = [
 		path: 'u/messages',
 		component: BackendComponent,
 		children: [{ path: '', outlet: 'maincontent', component:MessagesComponent }]
+	},
+	{
+		path: 'u/profile',
+		component: BackendComponent,
+		children: [{ path: '', outlet: 'maincontent', component:ProfileComponent }]
 	},
 	{
 		path: 'u/appoitments',

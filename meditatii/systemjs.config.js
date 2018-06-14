@@ -7,7 +7,8 @@
     paths: {
       // paths serve as alias
         'npm:': 'node_modules/',
-        underscore: './node_modules/underscore/underscore.js'
+        underscore: './node_modules/underscore/underscore.js',
+        moment: './node_modules/moment/moment.js'
     },
     // map tells the System loader where to look for things
     map: {
@@ -29,7 +30,12 @@
 
       // other libraries
       'rxjs':                      'npm:rxjs',
-      'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+      "rxjs/operators":            'npm:rxjs/operators',
+      "rxjs-compat": 'npm:rxjs-compat',
+      'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+      'ng2-img-cropper':           'npm:ng2-img-cropper',
+      'traceur':'npm:traceur/js',
+      '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -37,9 +43,23 @@
         main: './main.js',
         defaultExtension: 'js'
       },
-      rxjs: {
+      'ng2-img-cropper' : { main: 'index.js', defaultExtension: 'js' },
+      traceur:{
+        main: 'traceur.js', defaultExtension: 'js'
+      },
+      'rxjs': {
+        main: '/bundles/rxjs.umd.js',
         defaultExtension: 'js'
-      }
+    },
+    'rxjs-compat': {
+      
+      defaultExtension: 'js'
+  },
+    "rxjs/operators":  
+    {
+      main: 'index.js',
+      defaultExtension: 'js'
+    }
     }
   });
 })(this);

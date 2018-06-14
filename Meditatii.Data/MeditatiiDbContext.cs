@@ -27,6 +27,8 @@ namespace Meditatii.Data
 
         public virtual DbSet<Message> Message { get; set; }
 
+        public virtual DbSet<Appoitment> Appoitment { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 

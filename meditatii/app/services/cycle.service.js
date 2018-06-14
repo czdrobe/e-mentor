@@ -11,20 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
-var CycleService = (function () {
+var operators_1 = require("rxjs/operators");
+var CycleService = /** @class */ (function () {
     function CycleService(http) {
         this.http = http;
         console.log('CycleService initialized...');
     }
     CycleService.prototype.getCycles = function () {
-        return this.http.get('/api/cycle/getall').map(function (res) { return res.json(); });
+        return this.http.get('/api/cycle/getall').pipe(operators_1.map(function (res) { return res.json(); }));
     };
+    CycleService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], CycleService);
     return CycleService;
 }());
-CycleService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], CycleService);
 exports.CycleService = CycleService;
 //# sourceMappingURL=cycle.service.js.map

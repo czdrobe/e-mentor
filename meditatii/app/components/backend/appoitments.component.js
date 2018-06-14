@@ -11,23 +11,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var AppoitmentsComponent = (function () {
-    function AppoitmentsComponent(router, activateRoute) {
+var appoitments_service_1 = require("../../services/appoitments.service");
+var AppoitmentsComponent = /** @class */ (function () {
+    function AppoitmentsComponent(router, activateRoute, appoitmentsService) {
         this.router = router;
         this.activateRoute = activateRoute;
+        this.appoitmentsService = appoitmentsService;
     }
     AppoitmentsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.currentDate = new Date();
+        this.appoitmentsService.getAppoitments(1).subscribe(function (results) {
+            console.log(results);
+            _this.appoitments = results.Entities;
+            console.log(_this.appoitments);
+        });
     };
+    AppoitmentsComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            templateUrl: 'appoitments.component.html',
+            providers: [appoitments_service_1.AppoitmentsService]
+        }),
+        __metadata("design:paramtypes", [router_1.Router,
+            router_1.ActivatedRoute,
+            appoitments_service_1.AppoitmentsService])
+    ], AppoitmentsComponent);
     return AppoitmentsComponent;
 }());
-AppoitmentsComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        templateUrl: 'appoitments.component.html',
-        providers: []
-    }),
-    __metadata("design:paramtypes", [router_1.Router,
-        router_1.ActivatedRoute])
-], AppoitmentsComponent);
 exports.AppoitmentsComponent = AppoitmentsComponent;
 //# sourceMappingURL=appoitments.component.js.map

@@ -11,6 +11,7 @@
     <AssemblyName>Meditatii.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,12 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -76,14 +75,38 @@
     <Compile Include="Migrations\201711161009291_messsages.Designer.cs">
       <DependentUpon>201711161009291_messsages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804250932411_appoitments.cs" />
+    <Compile Include="Migrations\201804250932411_appoitments.Designer.cs">
+      <DependentUpon>201804250932411_appoitments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804300952521_addcategorytoappoitment.cs" />
+    <Compile Include="Migrations\201804300952521_addcategorytoappoitment.Designer.cs">
+      <DependentUpon>201804300952521_addcategorytoappoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805141400001_teacheravailability.cs" />
+    <Compile Include="Migrations\201805141400001_teacheravailability.Designer.cs">
+      <DependentUpon>201805141400001_teacheravailability.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805141401511_teacheravailability2.cs" />
+    <Compile Include="Migrations\201805141401511_teacheravailability2.Designer.cs">
+      <DependentUpon>201805141401511_teacheravailability2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805141403118_teacheravailability3.cs" />
+    <Compile Include="Migrations\201805141403118_teacheravailability3.Designer.cs">
+      <DependentUpon>201805141403118_teacheravailability3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\TeacherAvailability.cs" />
     <Compile Include="Models\Cycle.cs" />
     <Compile Include="Models\Categpry.cs" />
+    <Compile Include="Models\Appoitment.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\TeacherAvailabilityRepository.cs" />
     <Compile Include="Repositories\CycleRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\AppointmentRepository.cs" />
     <Compile Include="Repositories\MessageRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
@@ -100,7 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Meditatii.Core\Meditatii.Core.csproj">
-      <Project>{a5229b14-0589-4965-9709-5bd5ffa7bba1}</Project>
+      <Project>{711cc29e-9f7d-453f-af12-3e8d7a4da5f0}</Project>
       <Name>Meditatii.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Meditatii.Services\Meditatii.Services.csproj">
@@ -120,6 +143,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711161009291_messsages.resx">
       <DependentUpon>201711161009291_messsages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804250932411_appoitments.resx">
+      <DependentUpon>201804250932411_appoitments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804300952521_addcategorytoappoitment.resx">
+      <DependentUpon>201804300952521_addcategorytoappoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141400001_teacheravailability.resx">
+      <DependentUpon>201805141400001_teacheravailability.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141401511_teacheravailability2.resx">
+      <DependentUpon>201805141401511_teacheravailability2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805141403118_teacheravailability3.resx">
+      <DependentUpon>201805141403118_teacheravailability3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

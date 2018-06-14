@@ -1,48 +1,50 @@
-﻿<h1>Messages</h1>
-<div>
-	<div *ngFor="let message of messages">
-		<article class="row">
-			
-			<div class="col-md-9">
-				<div id="subject" class="m-0-top-bottom display-inline-block"><a href="#" data-toggle="modal" data-target="#myModal"> {{message.Subject}} </a></div>
-			</div>
-			<div class="col-md-2">
-				<div class="row">
+﻿
+	<div class="row message-container paddingtop20">
+	<aside class="col-md-2 col-sm-4" style="height:100%;">
+		<div class="logo">
+			<img src="/img/svg/prof.svg" />
+		</div>
+		<br>
+		<div class="left-navigation mentorlist">
+
+			<ul *ngFor="let mentor of mentors" class="list-group">
+				<li class="list-group-item"><a (click)="LoadMessages(mentor)">{{mentor.Name}}</a></li>
+			</ul>
+		</div>
+	</aside>
+
+	<div class="col-md-10 col-sm-8 conversation-section">
+		<!--Main content code to be written here -->
+		<h1>Messages</h1>
+		<div class="conversation-viewport custom-scroll scroll-down">
+			<div *ngFor="let message of messages">
+				<article class="row">
 					<div class="col-md-12">
-						<div class="m-sm-bottom m-0-top">
-							<div>
-								<button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom">
-									<span>Trimite mesaj</span>
-								</button>
-							</div>
-						</div>
+						<a href="/teacherprofile/{{message.FromUserId}}" target="_blank"><img src="/img/users/cristi.jpg" class="avatar-verysmall" /></a>
+						{{message.SenderName}}
+						- {{message.Added | date: 'yyyy-MM-dd hh:mm'}}
 					</div>
-				</div>
+				</article>
+				<article class="row">
+					<div class="col-md-12">
+						<div id="subject" class="m-0-top-bottom display-inline-block"> {{message.Body}} </div>
+					</div>
+				</article>
 			</div>
-		</article>
+
+		</div>
+		
+		<div class="col-md-2 col-sm-2 main-content">
+			<!--Main content code to be written here -->
+			<div *ngIf="currentMentorId>0">
+				<button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" data-toggle="modal" data-target="#myModal">
+					<span>Trimite mesaj nou</span>
+				</button>
+			</div>
+			
+		</div>
 	</div>
-
-	<!-- pager -->
-	<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-		<li [ngClass]="{hidden:pager.currentPage === 1}">
-			<a (click)="setCurrentPage(1)">First</a>
-		</li>
-		<li [ngClass]="{hidden:pager.currentPage === 1}">
-			<a (click)="setCurrentPage(pager.currentPage - 1)">Previous</a>
-		</li>
-		<li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-			<a (click)="setCurrentPage(page)">{{page}}</a>
-		</li>
-		<li [ngClass]="{hidden:pager.currentPage === pager.totalPages}">
-			<a (click)="setCurrentPage(pager.currentPage + 1)">Next</a>
-		</li>
-		<li [ngClass]="{hidden:pager.currentPage === pager.totalPages}">
-			<a (click)="setCurrentPage(pager.totalPages)">Last</a>
-		</li>
-	</ul>
-
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
 	<div class="modal-dialog">
@@ -54,10 +56,11 @@
 				<h4 class="modal-title">Modal Header</h4>
 			</div>
 			<div class="modal-body">
-				<p>Some text in the modal.</p>
+							<textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="model.newMessage" required style="width:100%;"></textarea>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendMessage()">Trimite</button>
 			</div>
 		</div>
 

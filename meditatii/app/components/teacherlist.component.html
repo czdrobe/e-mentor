@@ -1,4 +1,4 @@
-﻿<div class="row teachers">
+﻿<div class="row teachers paddingtop20">
     <div class="col-md-2 col-sm-4 sidebar1">
         <div class="logo">
             <img src="/img/svg/prof.svg" />
@@ -34,7 +34,7 @@
                 <article class="row">
                     <div class="col-md-1"><a href="/teacher/cristian"><img src="/img/users/cristi.jpg" class="avatar" /></a></div>
                     <div class="col-md-9">
-                        <div id="name" class="m-0-top-bottom display-inline-block"><a href="#"> {{teacher.FirstName}}  {{teacher.LastName}} </a></div>
+                        <div id="name" class="m-0-top-bottom display-inline-block"><a href="/teacherprofile/{{teacher.Id}}"> {{teacher.FirstName}}  {{teacher.LastName}} </a></div>
                         <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories"> {{category.Name}} </div> </div>
 
                         <div class="star-rating-small">

@@ -15,7 +15,7 @@ var category_service_1 = require("../services/category.service");
 var cycle_service_1 = require("../services/cycle.service");
 var router_1 = require("@angular/router");
 var pager_service_1 = require("../services/pager.service");
-var TeacherlistComponent = (function () {
+var TeacherlistComponent = /** @class */ (function () {
     function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService) {
         this.userService = userService;
         this.categoryService = categoryService;
@@ -54,7 +54,7 @@ var TeacherlistComponent = (function () {
         });
     };
     TeacherlistComponent.prototype.updateUrl = function () {
-        this.router.navigate(['/Teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
+        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
     };
     TeacherlistComponent.prototype.selectMainCategory = function (id) {
         var _this = this;
@@ -94,21 +94,21 @@ var TeacherlistComponent = (function () {
             _this.teachers = usersResult.Entities;
         });
     };
+    TeacherlistComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'teacherlist',
+            templateUrl: 'teacherlist.component.html',
+            providers: [users_service_1.UsersService, category_service_1.CategoryService, cycle_service_1.CycleService, pager_service_1.PagerService]
+        }),
+        __metadata("design:paramtypes", [users_service_1.UsersService,
+            category_service_1.CategoryService,
+            cycle_service_1.CycleService,
+            router_1.Router,
+            router_1.ActivatedRoute,
+            pager_service_1.PagerService])
+    ], TeacherlistComponent);
     return TeacherlistComponent;
 }());
-TeacherlistComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'teacherlist',
-        templateUrl: 'teacherlist.component.html',
-        providers: [users_service_1.UsersService, category_service_1.CategoryService, cycle_service_1.CycleService, pager_service_1.PagerService]
-    }),
-    __metadata("design:paramtypes", [users_service_1.UsersService,
-        category_service_1.CategoryService,
-        cycle_service_1.CycleService,
-        router_1.Router,
-        router_1.ActivatedRoute,
-        pager_service_1.PagerService])
-], TeacherlistComponent);
 exports.TeacherlistComponent = TeacherlistComponent;
 //# sourceMappingURL=teacherlist.component.js.map

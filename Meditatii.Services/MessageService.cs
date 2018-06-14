@@ -17,9 +17,19 @@ namespace Meditatii.Services
             this.messageData = messageData;
         }
         
-        public SearchResult<Message> GetMessages(string useremail, int skip, int take)
+        public SearchResult<Message> GetMessages(int mentorId, string useremail, int skip, int take)
         {
             return messageData.GetMessages(useremail, skip, take);
+        }
+
+        public List<MentorMessage> GetListOfMenters(string useremail)
+        {
+            return messageData.GetListOfMentors(useremail);
+        }
+
+        public void SaveNewMessage(string useremail, int toId, string bodyMessage)
+        {
+            messageData.SaveNewMessage(useremail, toId, bodyMessage);
         }
     }
 }

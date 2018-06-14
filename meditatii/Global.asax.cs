@@ -27,8 +27,20 @@ namespace meditatii
 
         private void RegisterType(IMapperConfigurationExpression mapper)
         {
+            mapper.CreateMap<TeacherAvailability, TeacherAvailabilityModel>();
+            mapper.CreateMap<Meditatii.Data.Models.TeacherAvailability, TeacherAvailability>();
+
+            mapper.CreateMap<Appoitment, AppoitmentModel>()
+                .ForMember(x => x.CanJoin, y => y.ResolveUsing(z =>
+                {
+                    return z.EndDate > DateTime.Now;
+                }));
+
+            mapper.CreateMap<Meditatii.Data.Models.Appoitment, Appoitment>();
+
             mapper.CreateMap<Message, MessageModel>();
-            mapper.CreateMap<Meditatii.Data.Models.Message, Message>();
+            mapper.CreateMap<Meditatii.Data.Models.Message, Message>()
+                .ForMember(x => x.SenderName, y => y.MapFrom(z => z.FromUser.LastName + " " + z.FromUser.FirstName));
 
             mapper.CreateMap<User, UserModel>();
             mapper.CreateMap <Meditatii.Data.Models.User, User>();
@@ -41,6 +53,8 @@ namespace meditatii
 
             mapper.CreateMap<SearchResult<User>, SearchResult<UserModel>>();
             mapper.CreateMap<SearchResult<Message>, SearchResult<MessageModel>>();
+
+            mapper.CreateMap<MentorMessage, MentorMessageModel>();
 
         }
     }

@@ -1,17 +1,101 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+	ViewBag.Title = "Contact";
 }
+<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+
+<style>
+
+	body, html {
+		background-color: gray;
+		height: 100%;
+	}
+
+	#videos {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	#subscriber {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 10;
+	}
+
+	#publisher {
+		position: absolute;
+		width: 360px;
+		height: 240px;
+		bottom: 10px;
+		left: 10px;
+		z-index: 100;
+		border: 3px solid white;
+		border-radius: 3px;
+	}
+</style>
+<script>
+	/// replace these values with those generated in your TokBox Account
+	var apiKey = "46085862";
+	var sessionId = "1_MX40NjA4NTg2Mn5-MTUyMTgwNTUwMjUwNn5XT21qTHNvNUw3UUlFOVROTnhJQnkxRTR-fg";
+	var token = "T1==cGFydG5lcl9pZD00NjA4NTg2MiZzaWc9OTY0MmZiZDMyYjNiZGQxNjE0Yjk3MGFmNjgyMzgzODhhMGVhYzI3NjpzZXNzaW9uX2lkPTFfTVg0ME5qQTROVGcyTW41LU1UVXlNVGd3TlRVd01qVXdObjVYVDIxcVRITnZOVXczVVVsRk9WUk9UbmhKUW5reFJUUi1mZyZjcmVhdGVfdGltZT0xNTIxODA1OTkyJm5vbmNlPTAuMDg5NjU4NjQ1NjA1MDk2OTUmcm9sZT1zdWJzY3JpYmVyJmV4cGlyZV90aW1lPTE1MjE4MDk1ODgmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=";
+
+	// Handling all of our errors here by alerting them
+	function handleError(error) {
+		if (error) {
+			alert(error.message);
+		}
+	}
+
+	// (optional) add server code here
+	initializeSession();
+
+	function initializeSession() {
+		var session = OT.initSession(apiKey, sessionId);
+
+		// Subscribe to a newly created stream
+		session.on('streamCreated', function (event) {
+			session.subscribe(event.stream, 'subscriber', {
+				insertMode: 'append',
+				width: '100%',
+				height: '100%'
+			}, handleError);
+		});
+
+		// Create a publisher
+		var publisher = OT.initPublisher('publisher', {
+			insertMode: 'append',
+			width: '100%',
+			height: '100%'
+		}, handleError);
+
+		// Connect to the session
+		session.connect(token, function (error) {
+			// If the connection is successful, initialize a publisher and publish to the session
+			if (error) {
+				handleError(error);
+			} else {
+				session.publish(publisher, handleError);
+			}
+		});
+	}
+</script>
+
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
 <address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
+	One Microsoft Way<br />
+	Redmond, WA 98052-6399<br />
+	<abbr title="Phone">P:</abbr>
+	425.555.0100
 </address>
 
 <address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+	<strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+	<strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>

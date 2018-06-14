@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class CategoryService {
@@ -9,21 +9,21 @@ export class CategoryService {
     }
 
     getCategories() {
-        return this.http.get('/api/categories/getall').map(
-            res => res.json()
-        )
+        return this.http.get('/api/categories/getall').pipe(map(
+            (res:any) => res.json()
+        ))
     }
 
     getMainCategories() {
-        return this.http.get('/api/categories/getmains').map(
-            res => res.json()
-        )
+        return this.http.get('/api/categories/getmains').pipe(map(
+            (res:any) => res.json()
+        ))
     }
 
     getSubCategories(id: number) {
-        return this.http.get('/api/categories/getsubcategories?id=' + id).map(
-            res => res.json()
-        )
+        return this.http.get('/api/categories/getsubcategories?id=' + id).pipe(map(
+            (res:any) => res.json()
+        ))
     }
 
 }

@@ -17,13 +17,27 @@ namespace meditatii.Controllers.Api
         }
 
         [HttpGet]
-        [Route("api/messages/getmessages")]
-        public SearchResult<MessageModel> GetMessages(int page)
+        [Route("api/messages/getmessages/{mentorId}/{page}")]
+        public SearchResult<MessageModel> GetMessages(int mentorId, int page)
         {
             int itemsPerPage = 10;
             int skip = (page - 1) * itemsPerPage;
             int take = itemsPerPage;
-            return MappingHelper.Map<SearchResult<MessageModel>>(this.messagesService.GetMessages(System.Web.HttpContext.Current.User.Identity.Name, skip, take));
+            return MappingHelper.Map<SearchResult<MessageModel>>(this.messagesService.GetMessages(mentorId, System.Web.HttpContext.Current.User.Identity.Name, skip, take));
+        }
+
+        [HttpGet]
+        [Route("api/messages/listofmentors")]
+        public List<MentorMessageModel> GetListOfMentors()
+        {
+            return MappingHelper.Map<List<MentorMessageModel>>(this.messagesService.GetListOfMenters(System.Web.HttpContext.Current.User.Identity.Name));
+        }
+
+        [HttpPost]
+        [Route("api/messages/savenewmessage")]
+        public void SaveNewMessage(MessageModel newMessage)
+        {
+            this.messagesService.SaveNewMessage(System.Web.HttpContext.Current.User.Identity.Name, newMessage.ToUserId, newMessage.Body);
         }
     }
 }

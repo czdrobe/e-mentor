@@ -39,7 +39,7 @@ export class TeacherlistComponent {
 
     ngOnInit() {
         // load main categories
-        this.categoryService.getMainCategories().subscribe(cats => {
+        this.categoryService.getMainCategories().subscribe((cats:any) => {
             console.log(cats);
 			this.categories = cats;
 
@@ -63,7 +63,7 @@ export class TeacherlistComponent {
         })
 
         // load cycles
-        this.cycleService.getCycles().subscribe(cycles => {
+        this.cycleService.getCycles().subscribe((cycles:any) => {
             console.log(cycles);
             this.cycles = cycles;
         })
@@ -71,14 +71,14 @@ export class TeacherlistComponent {
 
     updateUrl()
     {
-        this.router.navigate(['/Teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
+        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
     }
 
     selectMainCategory(id: number)
     {
         console.log('main');
         this.selectedMainCategory = id;
-        this.categoryService.getSubCategories(id).subscribe(cats => {
+        this.categoryService.getSubCategories(id).subscribe((cats:any) => {
             //console.log('subCategories:' + cats);
             this.subCategories = cats
 
@@ -111,7 +111,7 @@ export class TeacherlistComponent {
             return;
         }
         this.currentpage = page;
-        this.userService.getUsers(this.selectedCategory, this.selectedCycle, page).subscribe(usersResult => {
+        this.userService.getUsers(this.selectedCategory, this.selectedCycle, page).subscribe((usersResult:any) => {
             console.log(usersResult);
 
             // get pager object from service
@@ -123,6 +123,7 @@ export class TeacherlistComponent {
 }
 
 interface Teacher {
+    Id: number,
     firstName: string,
     lastName: string,
     email: string,

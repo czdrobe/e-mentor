@@ -11,20 +11,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
-var MessagesService = (function () {
+var operators_1 = require("rxjs/operators");
+var httpOptions = {
+    headers: new http_1.Headers({ 'Content-Type': 'application/json' })
+};
+var MessagesService = /** @class */ (function () {
     function MessagesService(http) {
         this.http = http;
         console.log('MessagesService initialized...');
     }
-    MessagesService.prototype.getMessages = function (page) {
-        return this.http.get('/api/messages/getmessages?page=' + page).map(function (res) { return res.json(); });
+    MessagesService.prototype.getMessages = function (mentorId, page) {
+        return this.http.get('/api/messages/getmessages/' + mentorId + '/' + page).pipe(operators_1.map(function (res) { return res.json(); }));
     };
+    MessagesService.prototype.getMentors = function () {
+        return this.http.get('api/messages/listofmentors').pipe(operators_1.map(function (res) { return res.json(); }));
+    };
+    MessagesService.prototype.saveMessage = function (toId, body) {
+        var formData = new FormData();
+        formData.append('ToUserId', toId.toString());
+        formData.append('Body', body);
+        return this.http.post('api/messages/SaveNewMessage', { ToId: toId.toString(), Body: body }, httpOptions);
+    };
+    MessagesService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], MessagesService);
     return MessagesService;
 }());
-MessagesService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
-], MessagesService);
 exports.MessagesService = MessagesService;
 //# sourceMappingURL=messages.service.js.map

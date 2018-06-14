@@ -18,12 +18,12 @@ namespace Meditatii.Core.Entities
         /// <summary>
         /// 
         /// </summary>
-        public int FromId { get; set; }
+        public int FromUserId { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public int ToId { get; set; }
+        public int ToUserId { get; set; }
 
         /// <summary>
         /// 
@@ -44,6 +44,11 @@ namespace Meditatii.Core.Entities
         /// 
         /// </summary>
         public DateTime Added { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public String SenderName { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("underscore");
-var PagerService = (function () {
+var PagerService = /** @class */ (function () {
     function PagerService() {
     }
     PagerService.prototype.getPager = function (totalItems, currentPage, pageSize) {

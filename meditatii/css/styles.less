@@ -27,10 +27,10 @@
 @brand-button-color:#6fda44;
 @brand-button-border-color:#54ce24;
 
-body{font-family:@default-font;padding-top: 50px;padding-bottom: 20px;}
+body{font-family:@default-font;padding-bottom: 20px;}
 
 /* Set padding to keep content from hitting the edges */
-.body-content {padding-left: 15px;padding-right: 15px;}
+.body-content {padding-left: 15px;padding-right: 15px; height:100%;}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -50,8 +50,13 @@ input,select,textarea {max-width: 280px;}
 .prag-numar {font-size: 50px;line-height: 110%;letter-spacing: 2px;}
 .preg-text {letter-spacing: 1px;line-height: 100%;position: relative;margin: 16px 0;padding: 16px 0;}
 
-.row {padding-top:20px;
+.row {
       & h1 {margin-bottom:20px;}
+}
+
+.paddingtop20
+{
+  padding-top:20px;
 }
 
 .prag {
@@ -85,7 +90,10 @@ input,select,textarea {max-width: 280px;}
     & .description {margin-top:5px;}
 }
 
+.avatar-big{width: 160px;height: 160px;object-fit: cover;border-radius:50%}
 .avatar{width: 60px;height: 60px;object-fit: cover;border-radius:50%}
+.avatar-small{width: 48px;height: 48px;object-fit: cover;border-radius:50%}
+.avatar-verysmall{width: 24px;height: 24px;object-fit: cover;border-radius:50%}
 .star-rating-small {margin: 2px 5px 0 0;width: 60px;height: 12px;}
 .star-rating-small-cover {
     background: url(/img/sprite_meditatii.png) no-repeat scroll left -64px transparent;
@@ -106,4 +114,189 @@ a{
 a &:hover, &:active, &:focus {
     color:@brand-color-active !important;
 }
+.panel-footer{
+    position:absolute;
+    width:100%;
+    bottom:0;
+    left:0;
+}
 
+.sidebar1 {
+border-right: 1px solid #eeeeee;
+}
+
+.weapper-helper
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 63px;
+    height: auto;
+    overflow: hidden;
+}
+.mentorlist
+{
+    float: right;
+    background-color: #fff;
+    border-radius: 0;
+    margin-top: 5px;
+    overflow: auto;
+    position: absolute;
+    top: 190px;
+    bottom: 143px;
+    width: 172px;
+}
+.message-container
+{
+    height:100%;
+}
+.appoitments-container
+{
+  padding-top: 20px;
+}
+
+.conversation-section
+{
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
+    position: static;
+    height: 100%;
+    bottom: auto;
+
+}
+
+.conversation-viewport
+{
+    width: 100%;
+    position: static;
+    bottom: auto;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.navbar{
+  background-color: white !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+@dayBase: 60px;
+@cloud: #fff;
+@base: 10px;
+@concrete: #6fda44;
+@seafoam: #6fda44;
+@white: #434343;
+@teal:#004444;
+@light-blue-grey: #343;
+
+.calendar {
+  display: block;
+  width: @dayBase * 7;
+  margin: 0 auto;
+  float:left;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .calendar-navs {
+    background-color: @cloud;
+  }
+
+  .month-nav {
+    padding: @base;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .year-nav {
+    padding: @base;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: 'Montserrat';
+  }
+
+  .month-grid {
+    .day-names {
+      display: flex;
+      flex-direction: row;
+      background: @concrete;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+    .weeks {
+      display: flex;
+      flex-direction: column;
+    }
+    .week {
+      display: flex;
+      flex-direction: row;
+    }
+    .week-date,
+    .day-name {
+      text-align: center;
+      padding: @base;
+      display: block;
+      width: @dayBase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .week-date {
+      height: @dayBase;
+      position: relative;
+
+      .date-text {
+        z-index: 10;
+        font-size: 14px;
+      }
+
+      &::after {
+        content: '';
+        height: @dayBase * 0.9;
+        width: @dayBase * 0.9;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        transition: background-color 150ms linear, color 150ms linear;
+        z-index: 1;
+      }
+
+      &.enabled {
+        cursor: pointer;
+        &:hover {
+          &:after {
+            background-color: @seafoam;
+          }
+        }
+      }
+      &.selected {
+        color: @white;
+        &:after {
+          background-color: @teal;
+        }
+        &:hover {
+          &:after {
+            background-color: @teal;
+          }
+        }
+      }
+
+      &.disabled {
+        color: @light-blue-grey;
+      }
+    }
+
+    .today {
+      font-weight: bold;
+    }
+  }
+} 

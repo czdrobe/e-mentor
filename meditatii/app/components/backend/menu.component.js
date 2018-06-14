@@ -11,24 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var BackEndMenuComponent = (function () {
+var BackEndMenuComponent = /** @class */ (function () {
     function BackEndMenuComponent(router, activateRoute) {
         this.router = router;
         this.activateRoute = activateRoute;
     }
     BackEndMenuComponent.prototype.ngOnInit = function () {
     };
+    BackEndMenuComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'backend-menu',
+            templateUrl: 'menu.component.html',
+            providers: []
+        }),
+        __metadata("design:paramtypes", [router_1.Router,
+            router_1.ActivatedRoute])
+    ], BackEndMenuComponent);
     return BackEndMenuComponent;
 }());
-BackEndMenuComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'backend-menu',
-        templateUrl: 'menu.component.html',
-        providers: []
-    }),
-    __metadata("design:paramtypes", [router_1.Router,
-        router_1.ActivatedRoute])
-], BackEndMenuComponent);
 exports.BackEndMenuComponent = BackEndMenuComponent;
 //# sourceMappingURL=menu.component.js.map

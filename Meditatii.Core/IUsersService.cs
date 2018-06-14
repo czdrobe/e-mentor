@@ -10,5 +10,6 @@ namespace Meditatii.Core
     public interface IUsersService:ILazyLoadable
     {
         SearchResult<User> GetUsers(int? categoryId, int? cycleId, int skip, int take);
+        User GetUser(int userId);
     }
 }

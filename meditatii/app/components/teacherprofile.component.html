@@ -1,0 +1,42 @@
+﻿<div class="profile-container" *ngIf="teacher">
+	<section class="intro section-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                   <h2> <a href="/teacher/cristian"><img src="/img/users/cristi.jpg"  class="avatar"/></a>
+                    {{teacher.FirstName}} {{teacher.LastName}} </h2>
+                </div>
+            </div>
+            
+            <div class="star-rating-small">
+                    <div class="star-rating-small-cover">
+                        <div class="star-rating-small-progress" style="width:{{ teacher.rating }}%"></div>
+                    </div>
+            </div>
+            <div class="row">
+                <div>{{teacher.cycles}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    <div *ngFor="let category of teacher.Categories"> {{category.Name}} </div> 
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-12">
+                            {{teacher.Description}}
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul *ngFor="let startTime of availableTime">
+                        <li>{{startTime}}:00 - {{startTime + 1}}:00 - <input tyoe="button" id="rezerva" value="Rezerva"> </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <yoshimi-calendar (onSelectDate)="onSelectDate($event)"></yoshimi-calendar>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</div>

@@ -21,5 +21,10 @@ namespace Meditatii.Services
         {
             return userData.GetUsers(categoryId, cycleId, skip, take);
         }
+
+        public User GetUser(int userId)
+        {
+            return userData.GetUser(userId);
+        }
     }
 }

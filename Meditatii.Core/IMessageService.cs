@@ -9,6 +9,8 @@ namespace Meditatii.Core
 {
     public interface IMessageService:ILazyLoadable
     {
-        SearchResult<Message> GetMessages(string useremail, int skip, int take);
+        SearchResult<Message> GetMessages(int mentorId, string useremail, int skip, int take);
+        List<MentorMessage> GetListOfMenters(string useremail);
+        void SaveNewMessage(string useremail, int toId, string bodyMessage);
     }
 }

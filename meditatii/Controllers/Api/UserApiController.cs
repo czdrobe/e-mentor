@@ -25,5 +25,12 @@ namespace meditatii.Controllers.Api
             int take = itemsPerPage;
             return MappingHelper.Map<SearchResult<UserModel>>(this.usersService.GetUsers(categoryid, cycleid, skip, take));
         }
+
+        [HttpGet]
+        [Route("api/users/getuser")]
+        public UserModel GetUser(int userid)
+        {
+            return MappingHelper.Map<UserModel>(this.usersService.GetUser(userid));
+        }
     }
 }

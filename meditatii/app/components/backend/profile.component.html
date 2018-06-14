@@ -1,0 +1,205 @@
+﻿
+<div class="row message-container paddingtop20">
+	<aside class="col-md-2 col-sm-4" style="height:100%;">
+		<div class="left-navigation">
+				<div class="logo" (click)="open(content)">
+						<img src="/img/users/cristi.jpg"  class="avatar-big"  />
+					</div>
+					<br>
+			<ul class="list-group">
+				<li class="list-group-item" data-toggle="modal" data-target="#myModal"><a>Profilul meu</a></li>
+			</ul>
+		</div>
+	</aside>
+
+	<div class="col-md-10 col-sm-8 conversation-section">
+		<!--Main content code to be written here -->
+		<h1>Profilul meu</h1>
+		
+			<div class="card">
+				<div class="card-header">Date generale
+						<div class="btn-group float-right" style="margin-top:-7px;">
+							<a href="javascript:void();" (click)="editProfile()" class="btn btn-primary">Modifica</a>
+						</div>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label">Nume:</label>
+								<div class="col-md-6">
+									<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Zdrobe" >
+								</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-2 col-form-label">Prenume:</label>
+								<div class="col-md-6">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Cristian">
+								</div>
+						</div>
+						<div class="form-group row">
+								<label class="col-md-2 col-form-label">Email:</label>
+								<div class="col-md-6">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="profesor@gmail.com">
+								</div>
+						</div>
+						<div class="form-group row">
+								<label class="col-md-2 col-form-label">Data nasterii:</label>
+								<div class="col-md-6">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="27 Februarie 1978">
+								</div>
+						</div>
+						<div class="form-group row">
+								<label class="col-md-2 col-form-label">Sex:</label>
+								<div class="col-md-6">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Barbat">
+								</div>
+						</div>
+					</form>
+
+				    <div class="form-group" style="display: none;">
+						<label for="nume">Nume:</label>
+						<input type="email" class="form-control" id="nume">
+					  </div>
+				</div>
+			  </div>
+				<br/>
+			  <div class="card">
+					<div class="card-header">Adresa
+							<div class="btn-group float-right" style="margin-top:-7px;">
+								<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+							</div>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="form-group row">
+									<label class="col-md-2 col-form-label">Adresa:</label>
+									<div class="col-md-6">
+											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Str:Strada, Nr:1, Ap:38">
+										</div>
+							</div>							
+							<div class="form-group row">
+									<label class="col-md-2 col-form-label">Localitate:</label>
+									<div class="col-md-6">
+											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Cluj Napoca">
+										</div>
+							</div>
+							<div class="form-group row">
+									<label class="col-md-2 col-form-label">Judetul:</label>
+									<div class="col-md-6">
+											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Cluj">
+										</div>
+							</div>
+							<div class="form-group row">
+									<label class="col-md-2 col-form-label">Email:</label>
+									<div class="col-md-6">
+											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="profesor@gmail.com">
+										</div>
+							</div>
+						</form>
+	
+						<div class="form-group" style="display: none;">
+							<label for="nume">Nume:</label>
+							<input type="email" class="form-control" id="nume">
+						  </div>
+					</div>
+				  </div>
+					
+					<br/>
+
+				  <div class="card ">
+						<div class="card-header">Descriere
+								<div class="btn-group float-right" style="margin-top:-7px;">
+									<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+								</div>
+						</div>
+						<div class="card-body">
+							<form>
+								<div class="row">
+										<div class="col-md-9"><input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Descriere"></div>
+								</div>							
+							</form>
+		
+						</div>
+						</div>	
+						
+						<br/>
+
+					  <div class="card">
+							<div class="card-header">Disponibilitate
+									<div class="btn-group float-right" style="margin-top:-7px;">
+										<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+									</div>
+							</div>
+							<div class="card-body">
+								<form>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Luni:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+														</div>
+										</div>							
+										<div class="row">
+												<label class="col-md-2 col-form-label">Marti:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Miercuri:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Joi:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Vineri:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Sambata:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>
+										<div class="row">
+												<label class="col-md-2 col-form-label">Duminica:</label>
+												<div class="col-md-6">
+														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													</div>
+										</div>										
+									</form>
+			
+								<div class="form-group" style="display: none;">
+									<label for="nume">Nume:</label>
+									<input type="email" class="form-control" id="nume">
+								  </div>
+							</div>
+						</div>					  			  
+	</div>
+</div>
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Profile update</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		<img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+		<br>
+		<span class="result rounded" *ngIf="data.image" >
+			<img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" class="avatar-big">
+		</span>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+	</div>
+  </ng-template>

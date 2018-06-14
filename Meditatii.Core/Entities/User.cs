@@ -15,7 +15,6 @@ namespace Meditatii.Core.Entities
         {
         }
 
-
         /// <summary>
         /// 
         /// </summary>

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using meditatii.Models;
+using Meditatii.Core.Enums;
 
 namespace meditatii.Controllers
 {
@@ -153,6 +154,8 @@ namespace meditatii.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                var roleresult = UserManager.AddToRole(user.Id, model.Role == 1 ? UserType.Teacher.ToString() : UserType.Student.ToString());
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

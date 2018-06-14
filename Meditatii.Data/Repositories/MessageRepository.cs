@@ -39,6 +39,65 @@ namespace Meditatii.Data.Repositories
                 }
             }
         }
-        
+
+        public List<MentorMessage> GetListOfMentors(string useremail)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    List<MentorMessage> lstMentorsMessage = new List<MentorMessage>();
+
+                    var mentorsQuery = context.Set<Models.Message>().AsNoTracking().Where(x => x.ToUser.Email == useremail);
+                    var lstmentors = mentorsQuery.OrderBy(x => x.Added).Select(x => x.FromUser).Distinct().ToList();
+
+                    foreach (var mentor in lstmentors)
+                    {
+                        var count = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id).Count();
+                        var isRead = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id && x.IsRead == true).Count() > 0;
+                        lstMentorsMessage.Add(new MentorMessage() {
+                            Id = mentor.Id,
+                            Name = mentor.LastName + " " + mentor.FirstName,
+                            NrOfMessage = count,
+                            isRead = isRead
+                        });
+                    }
+
+                    return lstMentorsMessage;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void SaveNewMessage(string useremail, int toId, string bodyMessage)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                var user = context.Set<Models.User>().AsNoTracking().Where(x => x.Email == useremail).FirstOrDefault();
+                if (user != null)
+                {
+                    try
+                    {
+                        Models.Message newMessage = new Models.Message()
+                        {
+                            Body = bodyMessage,
+                            Added = DateTime.Now,
+                            FromUserId = user.Id,
+                            ToUserId = toId
+                        };
+
+                        context.Message.Add(newMessage);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

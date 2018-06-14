@@ -11,6 +11,7 @@
     <AssemblyName>Meditatii.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationUserManager.cs" />
+    <Compile Include="TeacherAvailabilitService.cs" />
     <Compile Include="CycleService.cs" />
+    <Compile Include="AppoitmentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="MessageService.cs" />
@@ -49,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Meditatii.Core\Meditatii.Core.csproj">
-      <Project>{a5229b14-0589-4965-9709-5bd5ffa7bba1}</Project>
+      <Project>{711cc29e-9f7d-453f-af12-3e8d7a4da5f0}</Project>
       <Name>Meditatii.Core</Name>
     </ProjectReference>
   </ItemGroup>

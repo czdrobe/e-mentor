@@ -44,7 +44,7 @@ namespace Meditatii.Data.Repositories
         public SearchResult<User> GetUsers(int? categoryId, int? cycleId, int skip, int take)
         {
             if ((categoryId != null && categoryId > 0) ||
-                (cycleId != null && cycleId >0))
+                (cycleId != null && cycleId > 0))
             {
                 using (var context = new MeditatiiDbContext())
                 {
@@ -83,6 +83,23 @@ namespace Meditatii.Data.Repositories
             else
             {
                 return GetAll(skip, take);
+            }
+        }
+
+        public User GetUser(int userId)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    var users = context.Set<Models.User>()
+                        .AsNoTracking().AsQueryable();
+                    return MappingHelper.Map<User>(users.Where(x => x.Id == userId).FirstOrDefault());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
     }

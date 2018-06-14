@@ -1,1 +1,45 @@
-﻿<h1>Programari</h1>
+﻿<div class="appoitments-container">
+    <h1>Programari</h1>
+    <div *ngFor="let appoitment of appoitments">
+        <article class="row paddingtop20">
+            <div class="col-md-1">
+                <a href="/teacher/cristian">
+                    <img src="/img/users/cristi.jpg" class="avatar" />
+                </a>
+            </div>
+            <div class="col-md-2">
+                <div id="name" class="m-0-top-bottom display-inline-block">
+                    <a href="/teacherprofile/{{appoitment.Teacher.Id}}"> {{appoitment.Teacher.FirstName}} {{appoitment.Teacher.LastName}} </a>
+                </div>
+
+                <div class="star-rating-small">
+                    <div class="star-rating-small-cover">
+                        <div class="star-rating-small-progress" style="width:{{ appoitment.Teacher.rating }}%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                {{appoitment.Category.Name}}
+            </div>
+            <div class="col-md-2">
+                {{appoitment.StartDate | date:'yyyy-MM-dd'}}
+            </div>
+            <div class="col-md-2">
+                {{appoitment.StartDate | date:'HH:mm'}} - {{appoitment.EndDate | date:'HH:mm'}}
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="m-sm-bottom m-0-top">
+                            <div *ngIf="appoitment.CanJoin">
+                                <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom">
+                                    <span>Incepe</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

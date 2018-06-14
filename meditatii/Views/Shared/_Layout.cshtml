@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>InMeditatii - @ViewBag.Title</title>
-    
+
     @Styles.Render("~/css/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/calendar")
 
     <!-- Angular2 Code -->
     <base href="/">
-    
+
     <!-- Polyfill(s) for older browsers -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
     <script src="node_modules/core-js/client/shim.min.js"></script>
@@ -19,50 +20,47 @@
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="systemjs.config.js"></script>
     <script>
-      System.import('app/main.js').catch(function(err){ console.error(err); });
+        System.import('app/main.js').catch(function (err) { console.error(err); });
     </script>
     <!-- Angular2 Code -->
-
 </head>
 <body>
- 
-        <div class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href='/' title="Cea mai mare platforma de meditatii" class="fluid-logo">
-                        <img src="~/img/logo.png" style="width:178px;" />
-                    </a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Profesori", "", "Teacher")</li>
-                        <li>@Html.ActionLink("Cum functioneaza", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
+    <div class="container">
+        <nav class="navbar navbar-expand-md navbar-light bg-light rounded">
+            <a href='/' title="Cea mai mare platforma de meditatii" class="navbar-brand">
+                <img src="~/img/logo.png" style="width:178px;" />
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-md-cente" id="navbarsExample04">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Profesori", "", "teacher", new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Cum functioneaza", "About", "Home", new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
                     @Html.Partial("_LoginPartial")
-                </div>
+                </ul>
             </div>
-        </div>
+        </nav>
+    </div>
+    
+    @Html.Partial("_SectionPartial")
 
-        @Html.Partial("_SectionPartial")
 
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - <span class="brandcolored">e</span>Meditatii</p>
-            </footer>
-        </div>
+    <div class="container body-content @ViewBag.CssExtra">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - <span class="brandcolored">e</span>Meditatii</p>
+        </footer>
+    </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
 
- 
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
 </body>
 </html>

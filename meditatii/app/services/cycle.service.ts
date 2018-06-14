@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 @Injectable()
 export class CycleService {
@@ -9,8 +9,8 @@ export class CycleService {
     }
 
     getCycles() {
-        return this.http.get('/api/cycle/getall').map(
-            res => res.json()
-        )
+        return this.http.get('/api/cycle/getall').pipe(map(
+            (res:any) => res.json()
+        ))
     }
 }

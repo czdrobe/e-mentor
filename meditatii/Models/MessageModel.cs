@@ -42,5 +42,11 @@ namespace meditatii.Models
         /// </summary>
         public String SenderName { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool isMy { get; set; }
+
+        public string FromProfileImageUrl { get; set; }
     }
 }

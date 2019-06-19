@@ -1,101 +1,88 @@
-﻿@{
-	ViewBag.Title = "Contact";
+﻿@model meditatii.Models.ContactViewModel
+@{
+    ViewBag.Title = "Contact";
 }
-<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script>
+<script type="text/javascript">
+    var isCaptchaOk = false;
+    var verifyCallback = function (response) {
+        isCaptchaOk = true;
+    };
 
-<style>
+    var onloadCallback = function () {
+        isCaptchaOk = false;
+        grecaptcha.render('recaptcha', {
+            'sitekey': '6LcghYIUAAAAAGTapKL9kPFy2r9KrEzqdrWov4zT',
+            'callback': verifyCallback
+        });
+    };
 
-	body, html {
-		background-color: gray;
-		height: 100%;
-	}
+    function validate() {
+        //return true;
+        //check captcha
+        if (!isCaptchaOk) {
+            alert("Please enter captcha!");
+            return false;
+        }
+    }
 
-	#videos {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	#subscriber {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 10;
-	}
-
-	#publisher {
-		position: absolute;
-		width: 360px;
-		height: 240px;
-		bottom: 10px;
-		left: 10px;
-		z-index: 100;
-		border: 3px solid white;
-		border-radius: 3px;
-	}
-</style>
-<script>
-	/// replace these values with those generated in your TokBox Account
-	var apiKey = "46085862";
-	var sessionId = "1_MX40NjA4NTg2Mn5-MTUyMTgwNTUwMjUwNn5XT21qTHNvNUw3UUlFOVROTnhJQnkxRTR-fg";
-	var token = "T1==cGFydG5lcl9pZD00NjA4NTg2MiZzaWc9OTY0MmZiZDMyYjNiZGQxNjE0Yjk3MGFmNjgyMzgzODhhMGVhYzI3NjpzZXNzaW9uX2lkPTFfTVg0ME5qQTROVGcyTW41LU1UVXlNVGd3TlRVd01qVXdObjVYVDIxcVRITnZOVXczVVVsRk9WUk9UbmhKUW5reFJUUi1mZyZjcmVhdGVfdGltZT0xNTIxODA1OTkyJm5vbmNlPTAuMDg5NjU4NjQ1NjA1MDk2OTUmcm9sZT1zdWJzY3JpYmVyJmV4cGlyZV90aW1lPTE1MjE4MDk1ODgmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=";
-
-	// Handling all of our errors here by alerting them
-	function handleError(error) {
-		if (error) {
-			alert(error.message);
-		}
-	}
-
-	// (optional) add server code here
-	initializeSession();
-
-	function initializeSession() {
-		var session = OT.initSession(apiKey, sessionId);
-
-		// Subscribe to a newly created stream
-		session.on('streamCreated', function (event) {
-			session.subscribe(event.stream, 'subscriber', {
-				insertMode: 'append',
-				width: '100%',
-				height: '100%'
-			}, handleError);
-		});
-
-		// Create a publisher
-		var publisher = OT.initPublisher('publisher', {
-			insertMode: 'append',
-			width: '100%',
-			height: '100%'
-		}, handleError);
-
-		// Connect to the session
-		session.connect(token, function (error) {
-			// If the connection is successful, initialize a publisher and publish to the session
-			if (error) {
-				handleError(error);
-			} else {
-				session.publish(publisher, handleError);
-			}
-		});
-	}
 </script>
 
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
+<meditatii-app>
+
+</meditatii-app>
 
 <address>
-	One Microsoft Way<br />
-	Redmond, WA 98052-6399<br />
-	<abbr title="Phone">P:</abbr>
-	425.555.0100
+    Orice problemă ai întâmpina legat de platforma <a href="/">eMeditatii.ro</a>, nu ezita să ne scrii la adresa de e-mail <b><a href="mailto:hello@emeditatii.ro">hello@emeditatii.ro</a></b>, şi-ţi vom răspunde în cel mai scurt timp posibil.
 </address>
 
-<address>
-	<strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-	<strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+@if (ViewBag.MessageSuccess != null && ViewBag.MessageSuccess)
+{
+    <div style="color:red;font-size:24px;">Mesajul a fost trimis cu succes.</div>
+}
+
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", onsubmit = "return validate()" }))
+{
+    @Html.AntiForgeryToken()
+    <h3>Completează câmpurile de mai jos pentru a trimite un mesaj..</h3>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Message, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(m => m.Message, new { @class = "form-control" })
+        </div>
+    </div>
+    <p>
+        <div class="g-recaptcha" id="recaptcha"></div>
+    </p>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Trimite mesajul" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

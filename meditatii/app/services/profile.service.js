@@ -10,19 +10,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
-require("rxjs/add/operator/map");
+var operators_1 = require("rxjs/operators");
+var http_1 = require("@angular/common/http");
+var rxjs_1 = require("rxjs");
 var httpOptions = {
-    headers: new http_1.Headers({ 'Content-Type': 'application/json' })
+    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
+};
+var httpOptionsMulti = {
+    headers: new http_1.HttpHeaders({ 'Content-Type': 'multipart/form-data' })
 };
 var ProfileService = /** @class */ (function () {
     function ProfileService(http) {
         this.http = http;
-        console.log('MessagesService initialized...');
+        console.log('ProfileService initialized...');
     }
+    ProfileService.prototype.getCurrentProfile = function () {
+        return this.http.get('/api/users/GetCurrentProfile').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getAvailability = function () {
+        return this.http.get('/api/users/getavailability').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.saveCurrentProfie = function (profile) {
+        //return this.http.post('api/users/SaveCurrentProfile', profile, httpOptions);
+        return this.http.post('api/users/SaveCurrentProfile', profile, httpOptions);
+    };
+    ProfileService.prototype.saveAvaiability = function (lstAvaibility) {
+        return this.http.post('/api/users/saveavailability', lstAvaibility, httpOptions);
+    };
+    ProfileService.prototype.saveCategories = function (lstCategories) {
+        return this.http.post('/api/users/savecategories', lstCategories, httpOptions);
+    };
+    ProfileService.prototype.saveCycles = function (lstCycles) {
+        return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
+    };
+    ProfileService.prototype.saveProfileImage = function (image) {
+        var formData = new FormData();
+        formData.append('profileimage', image.image);
+        return this.http.post('/api/users/saveprofileimage', formData);
+    };
+    ProfileService.prototype.handleError = function (error) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        }
+        else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error("Backend returned code " + error.status + ", " +
+                ("body was: " + error.error));
+        }
+        // return an observable with a user-facing error message
+        return rxjs_1.throwError('Something bad happened; please try again later.');
+    };
+    ;
     ProfileService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], ProfileService);
     return ProfileService;
 }());

@@ -40,5 +40,73 @@ namespace Meditatii.Data.Repositories
             }
         }
 
+        public SearchResult<TeacherAvailability> GetTeacherAvailabilityForDay(int userId, int day)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    int totalRows = 0;
+
+                    var availabilities = context.Set<Models.TeacherAvailability>().AsNoTracking().Where(x => x.Teacher.Id == userId && x.Day == day);
+
+                    totalRows = availabilities.Count();
+
+                    return
+                        new SearchResult<TeacherAvailability>
+                        {
+                            Entities = MappingHelper.Map<List<TeacherAvailability>>(
+                                                                    availabilities.OrderBy(x => x.Id)
+                                                                        .ToList()),
+                            TotalRows = totalRows
+                        };
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void RemoveAllAvailabilityForTeacher(string useremail)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("delete from TeacherAvailability where TeacherId in (select id from [user] where UserName = '" + useremail + "')");
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void SaveNewAvailability(string useremail, int day, int Time)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    var users = context.Set<Models.User>()
+                        .AsNoTracking().AsQueryable();
+                    var user = MappingHelper.Map<User>(users.Where(x => x.Email == useremail).FirstOrDefault());
+
+                    context.TeacherAvailabilities.Add(new Models.TeacherAvailability()
+                    {
+                        Day = day,
+                        TeacherId = user.Id,
+                        Time = Time
+                    });
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }

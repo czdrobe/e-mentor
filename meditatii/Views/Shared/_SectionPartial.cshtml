@@ -1,11 +1,32 @@
 ﻿@if (Request.Url.PathAndQuery == "/")
 {
-    <div class="sectionimg text-center">
+    <div class="sectionimg">
         <div class="container">
-            <h1>Cea mai mare platforma de meditatii</h1>
+            <h1>Platforma online de meditații</h1>
+            <h1>Gaseste profesorul potrivit pentru tine.</h1>
             <div class="row">
-                <div class="col-md-6 text-center"><a href="/" class="btn btn-primary btn-lg">Cauta profesor</a></div>
-                <div class="col-md-6 text-center"><a href="/" class="btn btn-primary btn-lg">Esti profesor ? Inscriere-te acum.</a></div>
+                <div class="col-md-12"><a href="/teacher" class="btn btn-primary btn-lg">Caută profesor</a></div>
+            </div>
+            <div class="row" style="padding-top:20px;">
+                <div class="col-md-12"><a href="/Account/Register" class="btn btn-primary btn-lg">Ești profesor ? Înscriere-te acum.</a></div>
+            </div>
+        </div>
+    </div>
+}
+else if (Request.Url.PathAndQuery.Contains("CumFunctioneaza"))
+{
+    <div class="cumfuncsectionimg">
+        <div class="container justify-content-center font-weight-bold">
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <h2>Cum funcționează</h2>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"><a href="/CumFunctioneaza#student" class="btn btn-primary btn-lg">Pentru elev</a></div>
+                <div class="col-md-3"><a href="/CumFunctioneaza#teacher" class="btn btn-primary btn-lg">Pentru profesori</a></div>
+                <div class="col-md-3"></div>
             </div>
         </div>
     </div>

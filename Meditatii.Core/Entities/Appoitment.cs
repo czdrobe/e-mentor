@@ -37,13 +37,20 @@ namespace Meditatii.Core.Entities
         /// </summary>
         public DateTime EndDate { get; set; }
 
+        public decimal? Price { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public DateTime Added { get; set; }
 
         public User Teacher { get; set; }
-        public Category Category { get; set; }
 
+        public User Learner { get; set; }
+
+        public string SessionId { get; set; }
+        public string TokenId { get; set; }
+        public virtual ICollection<TeacherRating> Ratings { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

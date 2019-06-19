@@ -12,15 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var messages_service_1 = require("../../services/messages.service");
 var router_1 = require("@angular/router");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
+var rxjs_1 = require("rxjs");
+var operators_1 = require("rxjs/operators");
 var pager_service_1 = require("../../services/pager.service");
 var messageModel_1 = require("../../models/messageModel");
 var MessagesComponent = /** @class */ (function () {
-    function MessagesComponent(messagesService, router, activateRoute, pagerService) {
+    function MessagesComponent(messagesService, router, activateRoute, pagerService, modalService) {
         this.messagesService = messagesService;
         this.router = router;
         this.activateRoute = activateRoute;
         this.pagerService = pagerService;
+        this.modalService = modalService;
         this.pager = {};
+        this._success = new rxjs_1.Subject();
         this.model = new messageModel_1.MessageModel("");
     }
     Object.defineProperty(MessagesComponent.prototype, "diagnostic", {
@@ -34,15 +39,18 @@ var MessagesComponent = /** @class */ (function () {
             _this.model.newMessage = "";
             _this.currentpage = 1;
             _this.setPage(_this.currentpage);
+            _this._success.next("Mesajul a fost trimis");
         });
         console.log('newmessage value:' + this.model.newMessage);
     };
     MessagesComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._success.subscribe(function (message) { return _this.successMessage = message; });
+        this._success.pipe(operators_1.debounceTime(5000)).subscribe(function () { return _this.successMessage = null; });
         this.activateRoute.queryParams.subscribe(function (params) {
             //this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
             //this.setPage(this.currentpage);
-            _this.messagesService.getMentors().subscribe(function (results) {
+            _this.messagesService.getUsers().subscribe(function (results) {
                 console.log(results);
                 _this.mentors = results;
                 console.log(_this.mentors);
@@ -74,6 +82,25 @@ var MessagesComponent = /** @class */ (function () {
             _this.messages = messagesResult.Entities;
         });
     };
+    MessagesComponent.prototype.open = function (content, options) {
+        var _this = this;
+        this.modalService.open(content, options).result.then(function (result) {
+            _this.closeResult = "Closed with: " + result;
+        }, function (reason) {
+            _this.closeResult = "Dismissed " + _this.getDismissReason(reason);
+        });
+    };
+    MessagesComponent.prototype.getDismissReason = function (reason) {
+        if (reason === ng_bootstrap_1.ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        }
+        else if (reason === ng_bootstrap_1.ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        }
+        else {
+            return "with: " + reason;
+        }
+    };
     MessagesComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
@@ -83,7 +110,8 @@ var MessagesComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [messages_service_1.MessagesService,
             router_1.Router,
             router_1.ActivatedRoute,
-            pager_service_1.PagerService])
+            pager_service_1.PagerService,
+            ng_bootstrap_1.NgbModal])
     ], MessagesComponent);
     return MessagesComponent;
 }());

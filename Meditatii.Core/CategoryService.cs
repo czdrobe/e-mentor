@@ -15,5 +15,8 @@ namespace Meditatii.Core
 
         IEnumerable<Category> GetSubcategories(int id);
 
+        IEnumerable<Category> GetAllWithSubcategories();
+
+        void SaveCategoriesForUser(string username, List<Category> lstCategories);
     }
 }

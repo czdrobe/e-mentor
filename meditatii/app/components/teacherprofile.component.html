@@ -1,42 +1,115 @@
-﻿<div class="profile-container" *ngIf="teacher">
+﻿<div class="profile-container paddingtop20" *ngIf="teacher">
 	<section class="intro section-wrapper">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                   <h2> <a href="/teacher/cristian"><img src="/img/users/cristi.jpg"  class="avatar"/></a>
+            <div class="row align-items-end">
+                <div class="col-md-10">
+                   <h2> <a href="/teacher/cristian"><img src="{{teacher.ProfileImageUrl}}"  class="avatar"/></a>
                     {{teacher.FirstName}} {{teacher.LastName}} </h2>
+                </div>
+                <div class="col-md-2">
+                    <div class="m-sm-bottom m-0-top">
+                        <div>
+                            <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" (click)="open(content);" *ngIf="isCurrentUserIsLoggedIn">
+                                <span>Trimite mesaj</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="star-rating-small">
                     <div class="star-rating-small-cover">
-                        <div class="star-rating-small-progress" style="width:{{ teacher.rating }}%"></div>
+                        <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
                     </div>
             </div>
             <div class="row">
-                <div>{{teacher.cycles}}</div>
+                    <div class="col-md-12"> 
+                        <div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div>
+                    </div>
             </div>
             <div class="row">
-                <div class="col-md-12"> 
-                    <div *ngFor="let category of teacher.Categories"> {{category.Name}} </div> 
+                <div class="col-md-12" id="cycles"> 
+                    <div *ngFor="let cycle of teacher.Cycles;let last = last" class="category-item">{{cycle.Name}}{{last? "" : ","}}</div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row bottomline">
+                <div class="col-md-12" id="cycles"> 
+                    <div class="price" style="font-weight: 600;">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>
+                </div>
+            </div>
+            <div class="row bottomline">
                     <div class="col-md-12">
+                        <h4>Descriere</h4>
                             {{teacher.Description}}
                     </div>
             </div>
+
+            <div class="row bottomline">
+                <div class="col-md-12"> 
+                    <br/>
+                    <h4>Pentru programare alegeti o data si rezervati una sau mai multe ore</h4>    
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-6">
-                    <ul *ngFor="let startTime of availableTime">
-                        <li>{{startTime}}:00 - {{startTime + 1}}:00 - <input tyoe="button" id="rezerva" value="Rezerva"> </li>
-                    </ul>
-                </div>
+                    <yoshimi-calendar (onSelectDate)="onSelectDate($event)" ></yoshimi-calendar>
+                </div>                
                 <div class="col-md-6">
-                    <yoshimi-calendar (onSelectDate)="onSelectDate($event)"></yoshimi-calendar>
+                    <h4>Programare pentru data {{selectedDateToDisplay}}</h4>
+                    <ul class="list-group">
+                        <li *ngFor="let avaiable of availableTime" class="list-group-item">
+                            {{avaiable.Time}}:00 - {{avaiable.Time + 1}}:00 - <input tyoe="button" id="rezerva" value="Rezerva" class="btn btn-primary" (click)="setTime(avaiable.Time);open(confirmreservation)"> 
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
     
 </div>
+
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Trimite mesaj</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="newMessage" required style="width:100%;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="sendMessage();c('Save click');">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmreservation let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title">Confirma programarea</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <div class="row align-items-end">
+                    <div class="col-md-4">Nume profesor:</div>
+                    <div class="col-md-8">{{teacher.FirstName}} {{teacher.LastName}}</div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col-md-4">Data:</div>
+                    <div class="col-md-8">{{selectedDateToDisplay}} </div>
+                </div>
+                <div class="row align-items-end pb-3">
+                    <div class="col-md-4">Ora:</div>
+                    <div class="col-md-8">{{selectedTime}}:00</div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col-md-12"><input type="checkbox" name="chkAgree" id="chkAgree" [(ngModel)]="agreeCheckBox"><span class="pl-3">Sunt de acord cu <a hef="#">termenii si conditiile</a></span></div>
+                </div>    
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="saveAppoitment();">Confirm programarea</button>
+        </div>
+      </ng-template>

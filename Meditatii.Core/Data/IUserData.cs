@@ -14,5 +14,9 @@ namespace Meditatii.Core.Data
         SearchResult<User> GetUsers(int? categoryId, int? cycleId, int skip, int take);
 
         User GetUser(int userId);
+
+        User GetUser(string useremail);
+
+        void SaveUser(User user);
     }
 }

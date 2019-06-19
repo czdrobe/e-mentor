@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using meditatii.Models;
 using Meditatii.Core.Enums;
+using System.Net.Mail;
+using System.Configuration;
 
 namespace meditatii.Controllers
 {
@@ -87,7 +89,7 @@ namespace meditatii.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Email sau parola sunt gresite.");
                     return View(model);
             }
         }
@@ -130,7 +132,7 @@ namespace meditatii.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Cod invalid.");
                     return View(model);
             }
         }
@@ -162,10 +164,10 @@ namespace meditatii.Controllers
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.EmailService.SendAsync(new IdentityMessage { Body = model.Email, Destination = ConfigurationManager.AppSettings["SendEmail.Admin"], Subject = "New user registration" });
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -205,7 +207,7 @@ namespace meditatii.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var user = await UserManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -214,10 +216,46 @@ namespace meditatii.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //var callbackUrl = "";
+
+                //ViewBag.Error = "nu eroare";
+                //
+                try
+                {
+                    IdentityMessage message = new IdentityMessage
+                    {
+                        Body = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>",
+                        Subject = "Reset Password",
+                        Destination = model.Email
+                    };
+                    await UserManager.EmailService.SendAsync(message);
+                    //UserManager.SendEmail(17, "test", "body");
+                    /*
+                    SmtpClient smtpClient = new SmtpClient("mail.emeditatii.ro", 26);
+
+                    smtpClient.Credentials = new System.Net.NetworkCredential("noreply@emeditatii.ro", "6w0pyL6$");
+                    //smtpClient.UseDefaultCredentials = true;
+                    smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtpClient.EnableSsl = false;
+                    MailMessage mail = new MailMessage();
+                    mail.Subject = "test";
+                    mail.Body = "body";
+
+                    //Setting From , To and CC
+                    mail.From = new MailAddress("noreply@emeditatii.ro", "eMeditatii.ro");
+                    //mail.To.Add(new MailAddress("rainmandev@gmail.com"));
+                    mail.To.Add(new MailAddress(model.Email));
+
+                    smtpClient.Send(mail);
+                    */
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Error:" + ex.Message;
+                }
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -229,6 +267,7 @@ namespace meditatii.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            ViewBag.Error = "nu eroare";
             return View();
         }
 

@@ -10,5 +10,9 @@ namespace Meditatii.Core.Data
     public interface ICycleData: ILazyLoadable
     {
         IEnumerable<Cycle> GetAll();
+
+        void SaveCycleForUser(string username, Cycle cycle);
+
+        void RemoveAllCyclesForUser(string useremail);
     }
 }

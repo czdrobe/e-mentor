@@ -21,5 +21,14 @@ namespace Meditatii.Services
         {
             return cycleData.GetAll();
         }
+
+        public void SaveCyclesForUser(string useremail, List<Cycle> lstCycles)
+        {
+            cycleData.RemoveAllCyclesForUser(useremail);
+            foreach (var cycle in lstCycles)
+            {
+                cycleData.SaveCycleForUser(useremail, cycle);
+            }
+        }
     }
 }

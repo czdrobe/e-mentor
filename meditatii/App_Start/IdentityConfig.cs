@@ -12,6 +12,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using meditatii.Models;
 using Meditatii.Data;
+using System.Net.Mail;
+using System.Configuration;
 
 namespace meditatii
 {
@@ -19,8 +21,21 @@ namespace meditatii
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            // convert IdentityMessage to a MailMessage
+            var email =
+               new MailMessage(new MailAddress(ConfigurationManager.AppSettings["SendEmail.Address"], ConfigurationManager.AppSettings["SendEmail.Alias"]),
+               new MailAddress(message.Destination))
+               {
+                   Subject = message.Subject,
+                   Body = message.Body,
+                   IsBodyHtml = true
+               };
+
+            var client = new SmtpClient();
+            client.SendCompleted += (s, e) => {
+                client.Dispose();
+            };
+            return client.SendMailAsync(email);
         }
     }
 

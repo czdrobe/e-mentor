@@ -24,7 +24,7 @@ namespace Meditatii.Core.Entities
         /// <summary>
         /// 
         /// </summary>
-        public string ParentId { get; set; }
+        public int ParentId { get; set; }
 
     }
 }

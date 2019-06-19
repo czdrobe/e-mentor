@@ -1,5 +1,4 @@
-﻿
-	<div class="row message-container paddingtop20">
+﻿<div class="row message-container paddingtop20">
 	<aside class="col-md-2 col-sm-4" style="height:100%;">
 		<div class="logo">
 			<img src="/img/svg/prof.svg" />
@@ -8,24 +7,42 @@
 		<div class="left-navigation mentorlist">
 
 			<ul *ngFor="let mentor of mentors" class="list-group">
-				<li class="list-group-item"><a (click)="LoadMessages(mentor)">{{mentor.Name}}</a></li>
+				<li class="list-group-item" (click)="LoadMessages(mentor)"><a (click)="LoadMessages(mentor)">{{mentor.Name}}</a></li>
 			</ul>
 		</div>
 	</aside>
 
 	<div class="col-md-10 col-sm-8 conversation-section">
 		<!--Main content code to be written here -->
-		<h1>Messages</h1>
+		<h1>Mesaje</h1>
+
+		<div class="card" *ngIf="currentMentorId <= 0 || currentMentorId == null">
+			<div class="card-body">
+			  Selectați o conversație.
+			</div>
+		  </div>
+		  
+		  <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+
+			<div class="col-md-2 col-sm-2 main-content pt-3">
+				<!--Main content code to be written here -->
+				<div *ngIf="currentMentorId>0">
+					<button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" data-toggle="modal" data-target="#myModal" (click)="open(newmessage)">
+						<span>Trimite mesaj</span>
+					</button>
+				</div>
+				
+			</div>
+
 		<div class="conversation-viewport custom-scroll scroll-down">
-			<div *ngFor="let message of messages">
-				<article class="row">
-					<div class="col-md-12">
-						<a href="/teacherprofile/{{message.FromUserId}}" target="_blank"><img src="/img/users/cristi.jpg" class="avatar-verysmall" /></a>
-						{{message.SenderName}}
-						- {{message.Added | date: 'yyyy-MM-dd hh:mm'}}
-					</div>
+			<div *ngFor="let message of messages" class="message" [class.my]="message.isMy">
+				<article class="messagestatus">
+						<a href="/teacherprofile/{{message.FromUserId}}" target="_blank"><img src="{{message.FromProfileImageUrl}}" class="avatar-verysmall" /></a>
+						&nbsp;
+						<a href="/teacherprofile/{{message.FromUserId}}" target="_blank">{{message.SenderName}}</a>
+						 <span class="messagetime">{{message.Added | date: 'yyyy-MM-dd hh:mm'}}</span>
 				</article>
-				<article class="row">
+				<article class="messagebody" >
 					<div class="col-md-12">
 						<div id="subject" class="m-0-top-bottom display-inline-block"> {{message.Body}} </div>
 					</div>
@@ -34,35 +51,22 @@
 
 		</div>
 		
-		<div class="col-md-2 col-sm-2 main-content">
-			<!--Main content code to be written here -->
-			<div *ngIf="currentMentorId>0">
-				<button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" data-toggle="modal" data-target="#myModal">
-					<span>Trimite mesaj nou</span>
-				</button>
-			</div>
-			
-		</div>
 	</div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-	<div class="modal-dialog">
 
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Modal Header</h4>
-			</div>
-			<div class="modal-body">
-							<textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="model.newMessage" required style="width:100%;"></textarea>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendMessage()">Trimite</button>
-			</div>
-		</div>
 
+<ng-template #newmessage let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Mesaj nou</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
 	</div>
-</div>
+	<div class="modal-body">
+		<textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="model.newMessage" required style="width:100%;max-width: 100%;"></textarea>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="sendMessage();d('Cross click');">Trimite mesajul</button>
+	</div>
+  </ng-template>

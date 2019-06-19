@@ -32,5 +32,34 @@ namespace Meditatii.Services
             return categoryData.GetSubcategories(id);
         }
 
+        public IEnumerable<Category> GetAllWithSubcategories()
+        {
+            var mainCategories = categoryData.GetMains();
+            List<Category> allCategoriesWithParentName = new List<Category>();
+
+            foreach (var mainCategory in mainCategories)
+            {
+                var subCategories = categoryData.GetSubcategories(mainCategory.Id);
+                foreach (var category in subCategories)
+                {
+                    allCategoriesWithParentName.Add(new Category()
+                    {
+                        Name = mainCategory.Name + " - " + category.Name,
+                        Id = category.Id
+                    });
+                }
+            }
+
+            return allCategoriesWithParentName;
+        }
+
+        public void SaveCategoriesForUser(string useremail, List<Category> lstCategories)
+        {
+            categoryData.RemoveAllCategoriesForUser(useremail);
+            foreach (var category in lstCategories)
+            {
+                categoryData.SaveCategoryForUser(useremail, category);
+            }
+        }
     }
 }

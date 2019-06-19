@@ -52,7 +52,7 @@ namespace Meditatii.Data.Models
         /// <summary>
         /// 
         /// </summary>
-        public DateTime Dob { get; set; }
+        public DateTime? Dob { get; set; }
 
         /// <summary>
         /// 
@@ -65,8 +65,16 @@ namespace Meditatii.Data.Models
 
         public string Description { get; set; }
 
+        public string ProfileImageUrl { get; set; }
+
+        public int? Rating { get; set; }
+
+        public decimal? Price { get; set; }
+
         public virtual ICollection<Category> Categories { get; set; }
 
         public virtual ICollection<Cycle> Cycles { get; set; }
+
+        public virtual ICollection<Roles> Roles { get; set; }
     }
 }

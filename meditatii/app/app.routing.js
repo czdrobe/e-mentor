@@ -8,9 +8,22 @@ var backend_component_1 = require("./components/backend/backend.component");
 var messages_component_1 = require("./components/backend/messages.component");
 var profile_component_1 = require("./components/backend/profile.component");
 var appoitments_component_1 = require("./components/backend/appoitments.component");
+var room_component_1 = require("./components/room.component");
 var appRoutes = [
     {
         path: '',
+        component: app_component_1.AppComponent
+    },
+    {
+        path: 'Contact',
+        component: app_component_1.AppComponent
+    },
+    {
+        path: 'CumFunctioneaza',
+        component: app_component_1.AppComponent
+    },
+    {
+        path: 'Account/Login',
         component: app_component_1.AppComponent
     },
     {
@@ -39,7 +52,14 @@ var appRoutes = [
         path: 'u/appoitments',
         component: backend_component_1.BackendComponent,
         children: [{ path: '', outlet: 'maincontent', component: appoitments_component_1.AppoitmentsComponent }]
+    },
+    {
+        path: 'room/:id',
+        component: room_component_1.RoomComponent,
     }
 ];
+var routerOptions = {
+    useHash: true,
+};
 exports.routing = router_1.RouterModule.forRoot(appRoutes);
 //# sourceMappingURL=app.routing.js.map

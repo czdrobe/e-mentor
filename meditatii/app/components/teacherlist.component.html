@@ -1,56 +1,84 @@
-﻿<div class="row teachers paddingtop20">
-    <div class="col-md-2 col-sm-4 sidebar1">
-        <div class="logo">
-            <img src="/img/svg/prof.svg" />
-        </div>
-        <br>
-        <div class="left-navigation">
-            <strong>Materii</strong>
-            <ul class="list">
-                <li *ngFor="let category of categories; let i = index">
-                    <a (click)="selectMainCategory(category.Id)">{{category.Name}}</a> 
-                    <ul *ngIf="category.Id == selectedMainCategory">
-                        <li *ngFor="let subCategory of subCategories; let i = index">
-                            <a (click)="selectCategory(subCategory.Id)">{{subCategory.Name}}</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <br>
-            <h5><strong>Ciclul scolar</strong></h5>
-            <ul class="list">
-                <li *ngFor="let cycle of cycles; let i = index">
-                    <a (click)="selectCycle(cycle.Id)">{{cycle.Name}}</a>
-                </li>
-            </ul>
-        </div>
+﻿<!--<div class="row teachersfilter paddingtop20">
+    <div>
+        <ul class="list">
+            <li *ngFor="let category of categories; let i = index">
+                <a (click)="selectMainCategory(category.Id)">{{category.Name}}</a> 
+                <ul *ngIf="category.Id == selectedMainCategory" class="list">
+                    <li *ngFor="let subCategory of subCategories; let i = index">
+                        <a (click)="selectCategory(subCategory.Id)">{{subCategory.Name}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
+</div>-->
 
-    <div class="col-md-10 col-sm-8 main-content">
+<div class="row teachers paddingtop20">
+    
+    <div class="col-md-12 col-sm-10 main-content">
+        <div class="row">
+                    <div class="d-inline-block" ngbDropdown autoClose="outside" #myDrop="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_materia"  ngbDropdownAnchor (click)="myDrop.toggle()">
+                        {{selectedCategoryName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_materia">
+                        <div class="px-4 py-2">
+                            <input type="search" class="form-control"  [(ngModel)]="searchMaterii" name="searchMaterii" placeholder="Cauta materia">
+                        </div>
+                        <ng-container *ngIf="categories | filterByMateria:searchMaterii as result ">
+                            <div id="menuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subCategory of result; let i = index" (click)="selectCategory(subCategory.Id, subCategory.Name); myDrop.close();">{{subCategory.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="d-inline-block" ngbDropdown autoClose="outside" #myCycle="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_cycle"  ngbDropdownAnchor (click)="myCycle.toggle()">
+                        {{selectedCycleName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_cycle">
+                        <div class="px-4 py-2">
+                            <input type="search" class="form-control"  [(ngModel)]="searchCycle" name="searchCycle" placeholder="Cauta">
+                        </div>
+                        <ng-container *ngIf="cycles | filterByMateria:searchMaterii as result ">
+                            <div id="cyckesMenuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subCycles of result; let i = index" (click)="selectCycle(subCycles.Id, subCycles.Name); myCycle.close();">{{subCycles.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+        </div>
+
+        <div class="row">
+            
+        </div>
         <!--Main content code to be written here -->
-        <h1>Lista profesorilor</h1>
+        <h2>Lista profesorilor</h2>
         <div>
             <div *ngFor="let teacher of teachers">
-                <article class="row">
-                    <div class="col-md-1"><a href="/teacher/cristian"><img src="/img/users/cristi.jpg" class="avatar" /></a></div>
+                <article class="row teacherlist-item">
+                    <div class="col-md-1"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/' + teacher.Id : '/Account/login'"><img src="{{teacher.ProfileImageUrl}}" class="avatar" /></a></div>
                     <div class="col-md-9">
-                        <div id="name" class="m-0-top-bottom display-inline-block"><a href="/teacherprofile/{{teacher.Id}}"> {{teacher.FirstName}}  {{teacher.LastName}} </a></div>
-                        <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories"> {{category.Name}} </div> </div>
-
+                        <div id="name" class="m-0-top-bottom display-inline-block"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/'+teacher.Id : '/Account/login'"> {{teacher.FirstName}}  {{isCurrentUserIsLoggedIn ? teacher.LastName : ''}} </a></div>
                         <div class="star-rating-small">
                             <div class="star-rating-small-cover">
-                                <div class="star-rating-small-progress" style="width:{{ teacher.rating }}%"></div>
+                                <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
                             </div>
                         </div>
-                        <div>{{teacher.cycles}}</div>
-                        <div class="description">{{teacher.Description}}</div>
+                        <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div> </div>
+                        <div id="cycles" class="m-0-top-bottom"><div *ngFor="let cycle of teacher.Cycles;let last = last" class="category-item">{{cycle.Name}}{{last? "" : ","}}</div> </div>
+                        <div class="price">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>
+                        <div class="description">{{ (teacher.Description != null && teacher.Description.length>100)? (teacher.Description | slice:0:100)+'..':(teacher.Description) }}</div> 
                     </div>
                     <div class="col-md-2">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="m-sm-bottom m-0-top">
                                     <div>
-                                        <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom">
+                                        <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" (click)="selectUser(teacher.Id);open(content);" *ngIf="isCurrentUserIsLoggedIn">
                                             <span>Trimite mesaj</span>
                                         </button>
                                     </div>
@@ -62,24 +90,41 @@
             </div>
 
             <!-- pager -->
-            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-                <li [ngClass]="{hidden:pager.currentPage === 1}">
-                    <a (click)="setCurrentPage(1)">First</a>
+            <ul *ngIf="pager.pages && pager.pages.length > 1" class="pagination">
+                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link" (click)="setCurrentPage(1)">Prima Pagina</a>
+                </li>-->
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link" (click)="setCurrentPage(pager.currentPage - 1)">Pagina anterioara</a>
                 </li>
-                <li [ngClass]="{hidden:pager.currentPage === 1}">
-                    <a (click)="setCurrentPage(pager.currentPage - 1)">Previous</a>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link" (click)="setCurrentPage(page)">{{page}}</a>
                 </li>
-                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a (click)="setCurrentPage(page)">{{page}}</a>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link" (click)="setCurrentPage(pager.currentPage + 1)">Pagina urmatoare</a>
                 </li>
-                <li [ngClass]="{hidden:pager.currentPage === pager.totalPages}">
-                    <a (click)="setCurrentPage(pager.currentPage + 1)">Next</a>
-                </li>
-                <li [ngClass]="{hidden:pager.currentPage === pager.totalPages}">
-                    <a (click)="setCurrentPage(pager.totalPages)">Last</a>
-                </li>
+                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link" (click)="setCurrentPage(pager.totalPages)">Ultima pagina</a>
+                </li>-->
             </ul>
 
         </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Trimite mesaj</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="newMessage" required rows="5" style="width:100% !important; max-width: 100% !important;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="sendMessage();c('Save click');">Save</button>
+    </div>
+  </ng-template>

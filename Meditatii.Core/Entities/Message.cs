@@ -50,5 +50,9 @@ namespace Meditatii.Core.Entities
         /// </summary>
         public String SenderName { get; set; }
 
+        public bool isMy { get; set; }
+
+        public string FromProfileImageUrl { get; set; }
+
     }
 }

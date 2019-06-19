@@ -30,6 +30,13 @@ namespace meditatii.Controllers.Api
         }
 
         [HttpGet]
+        [Route("api/categories/getallwithsubcategories")]
+        public List<Models.CategoryModel> getallwithsubcategories()
+        {
+            return MappingHelper.Map<List<CategoryModel>>(this.categoryService.GetAllWithSubcategories());
+        }
+
+        [HttpGet]
         [Route("api/categories/getsubcategories")]
         public List<Models.CategoryModel> GetSubcategories(int id)
         {

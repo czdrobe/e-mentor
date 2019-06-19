@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
 var operators_1 = require("rxjs/operators");
+var http_1 = require("@angular/common/http");
 var httpOptions = {
-    headers: new http_1.Headers({ 'Content-Type': 'application/json' })
+    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
 };
 var AppoitmentsService = /** @class */ (function () {
     function AppoitmentsService(http) {
@@ -21,14 +21,33 @@ var AppoitmentsService = /** @class */ (function () {
         console.log('MessagesService initialized...');
     }
     AppoitmentsService.prototype.getAppoitments = function (page) {
-        return this.http.get('/api/appoitments/getappoitments/' + page).pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/appoitments/getappoitments/' + page).pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.getActiveAppoitments = function (page) {
+        return this.http.get('/api/appoitments/getactiveappoitments/' + page).pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.getOldAppoitments = function (page) {
+        return this.http.get('/api/appoitments/getoldappoitments/' + page).pipe(operators_1.map(function (res) { return res; }));
     };
     AppoitmentsService.prototype.saveAppoitment = function (teacherId, startDate, endDate) {
-        return this.http.post('api/appoitments/SaveNewMessage', { TeacherId: teacherId.toString(), StartDate: startDate, EndDate: endDate }, httpOptions);
+        return this.http.post('api/appoitments/SaveAppoitment', { TeacherId: teacherId.toString(), StartDate: startDate, EndDate: endDate }, httpOptions);
+    };
+    AppoitmentsService.prototype.getChatForAppoitment = function (appoitmentid) {
+        return this.http.get('/api/appoitments/getchatforappoitment/' + appoitmentid).pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.deleteAppoitment = function (appoitmentid) {
+        return this.http.get('api/appoitments/deleteappoitment/' + appoitmentid).pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.saveTeacherRating = function (appointmentid, rate) {
+        return this.http.post('api/teacherrating/getallratingforteacher', { AppoitmentId: appointmentid.toString(), Rating: rate.toString() }, httpOptions);
+    };
+    AppoitmentsService.prototype.payment = function (listOfAppoitments) {
+        var body = JSON.stringify(listOfAppoitments);
+        return this.http.post('api/appoitments/savepayments', body, httpOptions);
     };
     AppoitmentsService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], AppoitmentsService);
     return AppoitmentsService;
 }());

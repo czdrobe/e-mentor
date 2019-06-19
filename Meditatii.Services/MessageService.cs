@@ -19,10 +19,15 @@ namespace Meditatii.Services
         
         public SearchResult<Message> GetMessages(int mentorId, string useremail, int skip, int take)
         {
-            return messageData.GetMessages(useremail, skip, take);
+            return messageData.GetMessages(mentorId, useremail, skip, take);
         }
 
         public List<MentorMessage> GetListOfMenters(string useremail)
+        {
+            return messageData.GetListOfMentors(useremail);
+        }
+
+        public List<MentorMessage> GetListOfUsersWithMessage(string useremail)
         {
             return messageData.GetListOfMentors(useremail);
         }

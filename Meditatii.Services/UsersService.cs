@@ -26,5 +26,15 @@ namespace Meditatii.Services
         {
             return userData.GetUser(userId);
         }
+
+        public User GetUser(string useremail)
+        {
+            return userData.GetUser(useremail);
+        }
+
+        public void SaveUser(User user)
+        {
+            userData.SaveUser(user);
+        }
     }
 }

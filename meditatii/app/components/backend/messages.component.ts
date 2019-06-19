@@ -2,6 +2,9 @@
 import { MessagesService } from '../../services/messages.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'underscore';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 import { PagerService } from '../../services/pager.service';
 
@@ -18,6 +21,9 @@ export class MessagesComponent {
 	pager: any = {};
 	currentMentorId:number;
 	currentpage: number;
+	closeResult:string;
+	private _success = new Subject<string>();
+	successMessage: string;
 
 	model = new MessageModel("");
 
@@ -25,11 +31,13 @@ export class MessagesComponent {
 		private messagesService: MessagesService,
         private router: Router,
 		private activateRoute: ActivatedRoute,
-		private pagerService: PagerService
+		private pagerService: PagerService,
+		private modalService: NgbModal,
     )
     {
-        
+         
 	}
+	
 
 	get diagnostic() { return JSON.stringify(this.model); }
 
@@ -40,16 +48,21 @@ export class MessagesComponent {
 				this.model.newMessage = "";
 				this.currentpage = 1;
 				this.setPage(this.currentpage);		
+				this._success.next(`Mesajul a fost trimis`);
 			});
 		console.log('newmessage value:' + this.model.newMessage);
 	}
 
 	ngOnInit() {
+		this._success.subscribe((message) => this.successMessage = message);
+		this._success.pipe(
+		  debounceTime(5000)
+		).subscribe(() => this.successMessage = null);
 
 		this.activateRoute.queryParams.subscribe(params => {
 			//this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
 			//this.setPage(this.currentpage);
-			this.messagesService.getMentors().subscribe((results:any) => {
+			this.messagesService.getUsers().subscribe((results:any) => {
 				console.log(results);
 				this.mentors = results;
 				console.log(this.mentors);
@@ -87,6 +100,24 @@ export class MessagesComponent {
 			this.messages = messagesResult.Entities;
 		});
 	}
+
+	open(content:any, options: any) {
+		this.modalService.open(content, options).result.then((result) => {
+		  this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+		  this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+		});
+	  }
+
+	  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+		  return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+		  return 'by clicking on a backdrop';
+		} else {
+		  return  `with: ${reason}`;
+		}
+	  }
 }
 
 interface Message

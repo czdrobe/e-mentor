@@ -10,22 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
 var operators_1 = require("rxjs/operators");
+var http_1 = require("@angular/common/http");
 var UsersService = /** @class */ (function () {
     function UsersService(http) {
         this.http = http;
         console.log('UserService initialized...');
     }
     UsersService.prototype.getUsers = function (categoryid, cycleid, page) {
-        return this.http.get('/api/users/GetUsers?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&page=' + page).pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/users/GetUsers?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&page=' + page).pipe(operators_1.map(function (res) { return res; }));
     };
     UsersService.prototype.getUser = function (userid) {
-        return this.http.get('/api/users/GetUser?userid=' + (userid == null ? '0' : userid)).pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/users/GetUser?userid=' + (userid == null ? '0' : userid)).pipe(operators_1.map(function (res) { return res; }));
+    };
+    UsersService.prototype.getUserAvaiabilityForDay = function (userid, day) {
+        return this.http.get('/api/users/getavailabilityforday?userid=' + (userid == null ? '0' : userid + '&day=' + day)).pipe(operators_1.map(function (res) { return res; }));
+    };
+    UsersService.prototype.saveAppoitment = function (teacherid, selecteddate, time) {
+        return this.http.post('/api/users/saveappoitment?teacherId=' + (teacherid == null ? '0' : teacherid + '&selectedDate=' + selecteddate + '&startTime=' + time), null);
     };
     UsersService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], UsersService);
     return UsersService;
 }());

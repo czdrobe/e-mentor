@@ -10,25 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
 var operators_1 = require("rxjs/operators");
+var http_1 = require("@angular/common/http");
 var CategoryService = /** @class */ (function () {
     function CategoryService(http) {
         this.http = http;
         console.log('CategoryService initialized...');
     }
     CategoryService.prototype.getCategories = function () {
-        return this.http.get('/api/categories/getall').pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/categories/getall').pipe(operators_1.map(function (res) { return res; }));
     };
     CategoryService.prototype.getMainCategories = function () {
-        return this.http.get('/api/categories/getmains').pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/categories/getmains').pipe(operators_1.map(function (res) { return res; }));
+    };
+    CategoryService.prototype.getallwithsubcategories = function () {
+        return this.http.get('/api/categories/getallwithsubcategories').pipe(operators_1.map(function (res) { return res; }));
     };
     CategoryService.prototype.getSubCategories = function (id) {
-        return this.http.get('/api/categories/getsubcategories?id=' + id).pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/categories/getsubcategories?id=' + id).pipe(operators_1.map(function (res) { return res; }));
     };
     CategoryService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], CategoryService);
     return CategoryService;
 }());

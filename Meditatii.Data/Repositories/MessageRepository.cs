@@ -11,7 +11,15 @@ namespace Meditatii.Data.Repositories
 {
     public class MessageRepository : IMessageData
     {
-        public SearchResult<Message> GetMessages(string useremail, int skip, int take)
+        /// <summary>
+        /// Get all messages of the current user received form user with id=userid
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="useremail"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public SearchResult<Message> GetMessages(int userId, string useremail, int skip, int take)
         {
             using (var context = new MeditatiiDbContext())
             {
@@ -19,14 +27,15 @@ namespace Meditatii.Data.Repositories
                 {
                     int totalRows = 0;
 
-                    var messages = context.Set<Models.Message>().AsNoTracking().Where(x => x.ToUser.Email == useremail);
+                    var messages = context.Set<Models.Message>().AsNoTracking().Where(x => (x.ToUser.Email == useremail && x.FromUser.Id == userId) ||
+                                                                                            (x.FromUser.Email == useremail && x.ToUser.Id == userId));
 
                     totalRows = messages.Count();
 
                     return
                         new SearchResult<Message> {
                             Entities = MappingHelper.Map<List<Message>>(
-                                                                    messages.OrderBy(x => x.Id)
+                                                                    messages.OrderByDescending(x => x.Id)
                                                                         .Skip(skip)
                                                                         .Take(take)
                                                                         .ToList()),
@@ -56,6 +65,39 @@ namespace Meditatii.Data.Repositories
                         var count = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id).Count();
                         var isRead = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id && x.IsRead == true).Count() > 0;
                         lstMentorsMessage.Add(new MentorMessage() {
+                            Id = mentor.Id,
+                            Name = mentor.LastName + " " + mentor.FirstName,
+                            NrOfMessage = count,
+                            isRead = isRead
+                        });
+                    }
+
+                    return lstMentorsMessage;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public List<MentorMessage> GetListOfUsersWithMessage(string useremail)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    List<MentorMessage> lstMentorsMessage = new List<MentorMessage>();
+
+                    var mentorsQuery = context.Set<Models.Message>().AsNoTracking().Where(x => x.ToUser.Email == useremail);
+                    var lstmentors = mentorsQuery.OrderBy(x => x.Added).Select(x => x.FromUser).Distinct().ToList();
+
+                    foreach (var mentor in lstmentors)
+                    {
+                        var count = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id).Count();
+                        var isRead = mentorsQuery.Where(x => x.FromUser.Id == mentor.Id && x.IsRead == true).Count() > 0;
+                        lstMentorsMessage.Add(new MentorMessage()
+                        {
                             Id = mentor.Id,
                             Name = mentor.LastName + " " + mentor.FirstName,
                             NrOfMessage = count,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'meditatii-app',
-    template: `
+    template: `<app-loader></app-loader>
         <router-outlet></router-outlet>
         `,
 })

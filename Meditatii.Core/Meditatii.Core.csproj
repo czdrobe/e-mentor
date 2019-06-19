@@ -67,14 +67,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Payment.cs" />
+    <Compile Include="ITeacherRatingService.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="CycleService.cs" />
+    <Compile Include="Data\ITeacherRatingData.cs" />
     <Compile Include="Data\ITeacherAvailabilityData.cs" />
     <Compile Include="Data\ICategoryData.cs" />
     <Compile Include="Data\ICycleData.cs" />
     <Compile Include="Data\IAppoitmentData.cs" />
     <Compile Include="Data\IMessageData.cs" />
     <Compile Include="Data\IUserData.cs" />
+    <Compile Include="Entities\AppoitmentChat.cs" />
+    <Compile Include="Entities\TeacherRating.cs" />
     <Compile Include="Entities\TeacherAvailability.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Category.cs" />
@@ -90,6 +95,7 @@
     <Compile Include="ILazyLoadable.cs" />
     <Compile Include="IAppoitmentService.cs" />
     <Compile Include="IMessageService.cs" />
+    <Compile Include="LazyLoadProvider.cs" />
     <Compile Include="IUsersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -95,7 +95,67 @@
     <Compile Include="Migrations\201805141403118_teacheravailability3.Designer.cs">
       <DependentUpon>201805141403118_teacheravailability3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806151415561_UserDobIsnull.cs" />
+    <Compile Include="Migrations\201806151415561_UserDobIsnull.Designer.cs">
+      <DependentUpon>201806151415561_UserDobIsnull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806300622190_teacheravaibilitynew.cs" />
+    <Compile Include="Migrations\201806300622190_teacheravaibilitynew.Designer.cs">
+      <DependentUpon>201806300622190_teacheravaibilitynew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810040846304_addprofileimageurltouser.cs" />
+    <Compile Include="Migrations\201810040846304_addprofileimageurltouser.Designer.cs">
+      <DependentUpon>201810040846304_addprofileimageurltouser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810040934567_addprofileimageurltouser2.cs" />
+    <Compile Include="Migrations\201810040934567_addprofileimageurltouser2.Designer.cs">
+      <DependentUpon>201810040934567_addprofileimageurltouser2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810110704079_removecategoryfromappoitment.cs" />
+    <Compile Include="Migrations\201810110704079_removecategoryfromappoitment.Designer.cs">
+      <DependentUpon>201810110704079_removecategoryfromappoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810291509355_addrolestousers.cs" />
+    <Compile Include="Migrations\201810291509355_addrolestousers.Designer.cs">
+      <DependentUpon>201810291509355_addrolestousers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810291523049_addrolestousers2.cs" />
+    <Compile Include="Migrations\201810291523049_addrolestousers2.Designer.cs">
+      <DependentUpon>201810291523049_addrolestousers2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811120740064_sessionidtoappoitment.cs" />
+    <Compile Include="Migrations\201811120740064_sessionidtoappoitment.Designer.cs">
+      <DependentUpon>201811120740064_sessionidtoappoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811131636355_appoitmentchattable.cs" />
+    <Compile Include="Migrations\201811131636355_appoitmentchattable.Designer.cs">
+      <DependentUpon>201811131636355_appoitmentchattable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905091131355_Add-TeacherRating.cs" />
+    <Compile Include="Migrations\201905091131355_Add-TeacherRating.Designer.cs">
+      <DependentUpon>201905091131355_Add-TeacherRating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905100952526_make-user-rating-nullable.cs" />
+    <Compile Include="Migrations\201905100952526_make-user-rating-nullable.Designer.cs">
+      <DependentUpon>201905100952526_make-user-rating-nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905151522597_add-price.cs" />
+    <Compile Include="Migrations\201905151522597_add-price.Designer.cs">
+      <DependentUpon>201905151522597_add-price.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905211434553_add-payment.cs" />
+    <Compile Include="Migrations\201905211434553_add-payment.Designer.cs">
+      <DependentUpon>201905211434553_add-payment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905211504417_add-price-appoitment.cs" />
+    <Compile Include="Migrations\201905211504417_add-price-appoitment.Designer.cs">
+      <DependentUpon>201905211504417_add-price-appoitment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\TeacherRating.cs" />
+    <Compile Include="Models\AppoitmentChat.cs" />
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\TeacherAvailability.cs" />
     <Compile Include="Models\Cycle.cs" />
     <Compile Include="Models\Categpry.cs" />
@@ -103,6 +163,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\TeacherRatingRepository.cs" />
     <Compile Include="Repositories\TeacherAvailabilityRepository.cs" />
     <Compile Include="Repositories\CycleRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
@@ -158,6 +219,48 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805141403118_teacheravailability3.resx">
       <DependentUpon>201805141403118_teacheravailability3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806151415561_UserDobIsnull.resx">
+      <DependentUpon>201806151415561_UserDobIsnull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806300622190_teacheravaibilitynew.resx">
+      <DependentUpon>201806300622190_teacheravaibilitynew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810040846304_addprofileimageurltouser.resx">
+      <DependentUpon>201810040846304_addprofileimageurltouser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810040934567_addprofileimageurltouser2.resx">
+      <DependentUpon>201810040934567_addprofileimageurltouser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810110704079_removecategoryfromappoitment.resx">
+      <DependentUpon>201810110704079_removecategoryfromappoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810291509355_addrolestousers.resx">
+      <DependentUpon>201810291509355_addrolestousers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810291523049_addrolestousers2.resx">
+      <DependentUpon>201810291523049_addrolestousers2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811120740064_sessionidtoappoitment.resx">
+      <DependentUpon>201811120740064_sessionidtoappoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811131636355_appoitmentchattable.resx">
+      <DependentUpon>201811131636355_appoitmentchattable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905091131355_Add-TeacherRating.resx">
+      <DependentUpon>201905091131355_Add-TeacherRating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905100952526_make-user-rating-nullable.resx">
+      <DependentUpon>201905100952526_make-user-rating-nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905151522597_add-price.resx">
+      <DependentUpon>201905151522597_add-price.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905211434553_add-payment.resx">
+      <DependentUpon>201905211434553_add-payment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905211504417_add-price-appoitment.resx">
+      <DependentUpon>201905211504417_add-price-appoitment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

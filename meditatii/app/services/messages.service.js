@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
 var operators_1 = require("rxjs/operators");
+var http_1 = require("@angular/common/http");
 var httpOptions = {
-    headers: new http_1.Headers({ 'Content-Type': 'application/json' })
+    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
 };
 var MessagesService = /** @class */ (function () {
     function MessagesService(http) {
@@ -21,20 +21,23 @@ var MessagesService = /** @class */ (function () {
         console.log('MessagesService initialized...');
     }
     MessagesService.prototype.getMessages = function (mentorId, page) {
-        return this.http.get('/api/messages/getmessages/' + mentorId + '/' + page).pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('/api/messages/getmessages/' + mentorId + '/' + page).pipe(operators_1.map(function (res) { return res; }));
     };
     MessagesService.prototype.getMentors = function () {
-        return this.http.get('api/messages/listofmentors').pipe(operators_1.map(function (res) { return res.json(); }));
+        return this.http.get('api/messages/listofmentors').pipe(operators_1.map(function (res) { return res; }));
+    };
+    MessagesService.prototype.getUsers = function () {
+        return this.http.get('api/messages/getlistofuserswithmessage').pipe(operators_1.map(function (res) { return res; }));
     };
     MessagesService.prototype.saveMessage = function (toId, body) {
         var formData = new FormData();
         formData.append('ToUserId', toId.toString());
         formData.append('Body', body);
-        return this.http.post('api/messages/SaveNewMessage', { ToId: toId.toString(), Body: body }, httpOptions);
+        return this.http.post('api/messages/SaveNewMessage', { ToUserId: toId.toString(), Body: body }, httpOptions);
     };
     MessagesService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], MessagesService);
     return MessagesService;
 }());

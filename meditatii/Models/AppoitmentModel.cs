@@ -10,6 +10,11 @@ namespace meditatii.Models
         /// <summary>
         /// 
         /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int TeacherId { get; set; }
 
         /// <summary>
@@ -34,8 +39,17 @@ namespace meditatii.Models
 
         public UserModel Teacher { get; set; }
 
-        public CategoryModel  Category { get; set; }
+        public UserModel Learner { get; set; }
+
+        public decimal? Price { get; set; }
 
         public bool CanJoin { get; set; }
+
+        public string SessionId { get; set; }
+        public string TokenId { get; set; }
+
+        public bool isReadyForRating { get; set; }
+
+        public IList<PaymentModel> Payments { get; set; }
     }
 }

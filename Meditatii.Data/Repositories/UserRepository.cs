@@ -1,8 +1,10 @@
 ﻿using Meditatii.Core.Data;
 using Meditatii.Core.Entities;
+using Meditatii.Core.Enums;
 using Meditatii.Core.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace Meditatii.Data.Repositories
                 {
                     int totalRows = 0;
 
-                    var users = context.Set<Models.User>()
+                    var users = context.Set<Models.User>().Where(x => x.Roles.Where(y => y.Name == UserType.Teacher.ToString()).FirstOrDefault() != null)
                         .AsNoTracking();
 
                     totalRows = users.Count();
@@ -52,7 +54,7 @@ namespace Meditatii.Data.Repositories
                     {
                         int totalRows = 0;
 
-                        var users = context.Set<Models.User>()
+                        var users = context.Set<Models.User>().Where(x => !String.IsNullOrEmpty(x.FirstName) && !String.IsNullOrEmpty(x.LastName) && x.Roles.Where(y => y.Name == UserType.Teacher.ToString()).FirstOrDefault() != null)
                             .AsNoTracking().AsQueryable();
 
                         if (categoryId != null && categoryId > 0)
@@ -101,6 +103,42 @@ namespace Meditatii.Data.Repositories
                     throw ex;
                 }
             }
+        }
+
+        public User GetUser(string useremail)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    var users = context.Set<Models.User>()
+                        .AsNoTracking().AsQueryable();
+                    var user = MappingHelper.Map<User>(users.Where(x => x.Email == useremail).FirstOrDefault());
+
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void SaveUser(User user)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    context.Entry(MappingHelper.Map<Models.User>(user)).State = user.Id > 0 ? EntityState.Modified : EntityState.Added;
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
     }
 }

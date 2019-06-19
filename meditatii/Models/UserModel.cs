@@ -40,7 +40,7 @@ namespace meditatii.Models
         /// <summary>
         /// 
         /// </summary>
-        public DateTime Dob { get; set; }
+        public DateTime? Dob { get; set; }
 
         /// <summary>
         /// 
@@ -53,7 +53,16 @@ namespace meditatii.Models
 
         public string Description { get; set; }
 
+        public string ProfileImageUrl { get; set; }
+
+        public int? Rating { get; set; }
+
+        public decimal? Price { get; set; }
+
         public ICollection<CategoryModel> Categories { get; set; }
 
+        public ICollection<CycleModel> Cycles { get; set; }
+
+        public bool IsTeacher {get;set;}
     }
 }

@@ -1,17 +1,44 @@
 ﻿@using meditatii.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Autentificare";
 }
 
-<h2>@ViewBag.Title.</h2>
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script>
+<script type="text/javascript">
+    var isCaptchaOk = false;
+    var verifyCallback = function (response) {
+        isCaptchaOk = true;
+    };
+
+    var onloadCallback = function () {
+        isCaptchaOk = false;
+        grecaptcha.render('recaptcha', {
+            'sitekey': '6LcghYIUAAAAAGTapKL9kPFy2r9KrEzqdrWov4zT',
+            'callback': verifyCallback
+        });
+    };
+
+    function validate() {
+        //return true;
+        //check captcha
+        if (!isCaptchaOk) {
+            alert("Please enter captcha!");
+            return false;
+        }
+    }
+    
+</script>
+<meditatii-app>
+</meditatii-app>
+
+<h2 style="padding-top:20px;">@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form",  onsubmit = "return validate()" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
@@ -28,6 +55,9 @@
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <p>
+                    <div class="g-recaptcha" id="recaptcha"></div>
+                </p>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <div class="checkbox">
@@ -38,22 +68,23 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+                        <input type="submit" value="Autentifica-te" class="btn btn-default" />
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink("Register as a new user", "Register")
+                    @Html.ActionLink("Nu ai un cont? Creează-ți unul.", "Register")
                 </p>
-                @* Enable this once you have account confirmation enabled for password reset functionality
+                
                     <p>
-                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                    </p>*@
+                        @Html.ActionLink("Ai uitat parola?", "ForgotPassword")
+                    </p>
+                
             }
         </section>
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+           
         </section>
     </div>
 </div>

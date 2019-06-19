@@ -29,10 +29,28 @@ namespace Meditatii.Data
 
         public virtual DbSet<Appoitment> Appoitment { get; set; }
 
+        public virtual DbSet<Payment> Payments { get; set; }
+
+        public virtual DbSet<AppoitmentChat> AppoitmentChat { get; set; }
+
+        public virtual DbSet<TeacherRating> TeacherRatings { get; set; }
+
+        public virtual DbSet<TeacherAvailability> TeacherAvailabilities { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            modelBuilder.Entity<User>()
+               .HasMany<Roles>(s => s.Roles)
+               .WithMany(c => c.Users)
+               .Map(cs =>
+               {
+                   cs.MapLeftKey("UserId");
+                   cs.MapRightKey("RoleId");
+                   cs.ToTable("UserRoles");
+               });
 
             modelBuilder.Entity<User>()
                .HasMany<Category>(s => s.Categories)
@@ -53,8 +71,6 @@ namespace Meditatii.Data
                    cs.MapRightKey("CycleId");
                    cs.ToTable("UserCycle");
                });
-
-
         }
     }
 }

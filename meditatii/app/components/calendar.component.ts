@@ -17,7 +17,7 @@ export interface CalendarDate {
 export class CustomCalendarComponent implements OnInit, OnChanges {
 
   currentDate = moment();
-  dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  dayNames = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
   weeks: CalendarDate[][] = [];
   sortedDates: CalendarDate[] = [];
 
@@ -25,11 +25,11 @@ export class CustomCalendarComponent implements OnInit, OnChanges {
   @Output() onSelectDate = new EventEmitter<CalendarDate>();
 
   constructor() {
-    moment.locale('de');
+    moment.locale('ro');
   }
 
   ngOnInit(): void {
-    moment.locale('de');
+    moment.locale('ro');
     this.generateCalendar();
   }
 

@@ -9,59 +9,101 @@
         type = "elev";
     }
 }
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script>
+<script type="text/javascript">
+    var isCaptchaOk = false;
+    var verifyCallback = function (response) {
+        isCaptchaOk = true;
+    };
 
-<h2>@ViewBag.Title.</h2>
+    var onloadCallback = function () {
+        isCaptchaOk = false;
+        grecaptcha.render('recaptcha', {
+            'sitekey': '6LcghYIUAAAAAGTapKL9kPFy2r9KrEzqdrWov4zT',
+            'callback': verifyCallback
+        });
+    };
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    function validate() {
+        //return true;
+        //check captcha
+        if (!isCaptchaOk) {
+            alert("Please enter captcha!");
+            return false;
+        }
+    }
+
+</script>
+<h2 style="padding-top:20px;">@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", onsubmit = "return validate()" }))
 {
-    @Html.HiddenFor(m => m.Role, new { id = "role", value = (type == "elev" ? "2": "1") })
+    @Html.HiddenFor(m => m.Role, new { id = "role", value = (type == "elev" ? "2" : "1") })
     @Html.AntiForgeryToken()
     <h4>Completează câmpurile de mai jos pentru a crea un cont..</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })
+        <div class="col-md-8">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        <label class="col-md-2 control-label">Inregistreazate ca si:</label>
-        <div class="col-md-10">
-            <div class="btn-group">
-                <button name="flowSwitchBtn" class="btn btn-default" type="button" onclick="setType('elev');">
-                    <span class="d-none d-sm-inline">Elev</span>
-                </button>
-                <button name="flowSwitchBtn" class="btn btn-default" type="button" onclick="setType('profesor');">
-                    <span class="d-none d-sm-inline">Profesor</span>
-                </button>
-            </div>
+        <label class="col-md-3 control-label">Înregistrează-te ca și:</label>
+        <div class="btn-group">
+            <button name="flowSwitchBtn" id="btnlearner" class="btn btn-default" style="margin-right:10px;" type="button" onclick="setType('elev');">
+                <span class="d-none d-sm-inline">Elev</span>
+            </button>
+            <button name="flowSwitchBtn" id="btnteacher" class="btn btn-default" type="button" onclick="setType('profesor');">
+                <span class="d-none d-sm-inline">Profesor</span>
+            </button>
         </div>
     </div>
+    <p>
+        <div class="g-recaptcha" id="recaptcha"></div>
+    </p>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-primary" value="Inregistreaza-te" />
         </div>
     </div>
 }
-    <script>
+<script>
         function setType(type)
         {
-            $('#role').val(type == "elev" ? 2 : 1); 
+            $('#role').val(type == "elev" ? 2 : 1);
+
+            if (type == "elev") {
+                $('#btnlearner').removeClass("btn-default");
+                $('#btnlearner').addClass("btn-primary");
+
+                $('#btnteacher').removeClass("btn-primary");
+                $('#btnteacher').addClass("btn-default");
+            }
+            else {
+                $('#btnteacher').removeClass("btn-default");
+                $('#btnteacher').addClass("btn-primary");
+
+                $('#btnlearner').removeClass("btn-primary");
+                $('#btnlearner').addClass("btn-default");
+            }
+
         }
-    </script>
+        @Html.Raw("setType('" + type + "');");
+</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

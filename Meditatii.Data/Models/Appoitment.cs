@@ -23,8 +23,6 @@ namespace Meditatii.Data.Models
 
         public int LearnerId { get; set; }
 
-        public int CategoryId { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
@@ -35,7 +33,7 @@ namespace Meditatii.Data.Models
         /// </summary>
         public DateTime EndDate { get; set; }
 
-
+        public decimal? Price { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -46,8 +44,11 @@ namespace Meditatii.Data.Models
         public virtual User Teacher { get; set; }
         [ForeignKey("LearnerId")]
         public virtual User Learner { get; set; }
-        [ForeignKey("CategoryId")]
-        public virtual Category Category { get; set; }
 
+        public string SessionId { get; set; }
+        public string TokenId { get; set; }
+
+        public virtual ICollection<TeacherRating> Ratings { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

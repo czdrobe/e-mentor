@@ -11,40 +11,52 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var users_service_1 = require("../services/users.service");
+var profile_service_1 = require("../services/profile.service");
 var category_service_1 = require("../services/category.service");
 var cycle_service_1 = require("../services/cycle.service");
 var router_1 = require("@angular/router");
+var messages_service_1 = require("../services/messages.service");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var pager_service_1 = require("../services/pager.service");
 var TeacherlistComponent = /** @class */ (function () {
-    function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService) {
+    function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService, messagesService, modalService, profileService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.cycleService = cycleService;
         this.router = router;
         this.activateRoute = activateRoute;
         this.pagerService = pagerService;
+        this.messagesService = messagesService;
+        this.modalService = modalService;
+        this.profileService = profileService;
         // pager object
         this.pager = {};
     }
     TeacherlistComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.selectedCategoryName = "Alege o materie";
+        this.selectedCycleName = "Alege ciclul scolar";
         // load main categories
-        this.categoryService.getMainCategories().subscribe(function (cats) {
-            console.log(cats);
-            _this.categories = cats;
-            _this.activateRoute.queryParams.subscribe(function (params) {
-                if (params.hasOwnProperty("maincategory")) {
-                    _this.selectedMainCategory = params.maincategory;
-                    _this.selectMainCategory(_this.selectedMainCategory);
-                }
-                if (params.hasOwnProperty("category")) {
-                    _this.selectedCategory = params.category;
-                }
-                if (params.hasOwnProperty("cycle")) {
-                    _this.selectedCycle = params.cycle;
-                }
-                _this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
-                _this.setPage(_this.currentpage);
+        this.profileService.getCurrentProfile().subscribe(function (profile) {
+            _this.isCurrentUserIsLoggedIn = profile != null;
+            _this.categoryService.getallwithsubcategories().subscribe(function (cats) {
+                console.log(cats);
+                _this.categories = cats;
+                _this.searchMaterii = ""; //in fact we reset the search
+                _this.activateRoute.queryParams.subscribe(function (params) {
+                    if (params.hasOwnProperty("maincategory")) {
+                        _this.selectedMainCategory = params.maincategory;
+                        _this.selectMainCategory(_this.selectedMainCategory);
+                    }
+                    if (params.hasOwnProperty("category")) {
+                        _this.selectedCategory = params.category;
+                    }
+                    if (params.hasOwnProperty("cycle")) {
+                        _this.selectedCycle = params.cycle;
+                    }
+                    _this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
+                    _this.setPage(_this.currentpage);
+                });
             });
         });
         // load cycles
@@ -66,14 +78,17 @@ var TeacherlistComponent = /** @class */ (function () {
             _this.updateUrl();
         });
     };
-    TeacherlistComponent.prototype.selectCategory = function (id) {
+    TeacherlistComponent.prototype.selectCategory = function (id, categorytName) {
         //console.log('categories');
+        //this.ddService.
         this.selectedCategory = id;
+        this.selectedCategoryName = categorytName;
         this.currentpage = 1;
         this.updateUrl();
     };
-    TeacherlistComponent.prototype.selectCycle = function (id) {
+    TeacherlistComponent.prototype.selectCycle = function (id, cycleName) {
         this.selectedCycle = id;
+        this.selectedCycleName = cycleName;
         this.currentpage = 1;
         this.updateUrl();
     };
@@ -94,19 +109,51 @@ var TeacherlistComponent = /** @class */ (function () {
             _this.teachers = usersResult.Entities;
         });
     };
+    TeacherlistComponent.prototype.selectUser = function (userId) {
+        this.selectedUserId = userId;
+    };
+    TeacherlistComponent.prototype.open = function (content, options) {
+        var _this = this;
+        this.modalService.open(content, options).result.then(function (result) {
+            _this.closeResult = "Closed with: " + result;
+        }, function (reason) {
+            _this.closeResult = "Dismissed " + _this.getDismissReason(reason);
+        });
+    };
+    TeacherlistComponent.prototype.getDismissReason = function (reason) {
+        if (reason === ng_bootstrap_1.ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        }
+        else if (reason === ng_bootstrap_1.ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        }
+        else {
+            return "with: " + reason;
+        }
+    };
+    TeacherlistComponent.prototype.sendMessage = function () {
+        var _this = this;
+        this.messagesService.saveMessage(this.selectedUserId, this.newMessage).subscribe(function (result) {
+            _this.newMessage = "";
+        });
+        console.log('newmessage value:' + this.newMessage);
+    };
     TeacherlistComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'teacherlist',
             templateUrl: 'teacherlist.component.html',
-            providers: [users_service_1.UsersService, category_service_1.CategoryService, cycle_service_1.CycleService, pager_service_1.PagerService]
+            providers: [users_service_1.UsersService, category_service_1.CategoryService, cycle_service_1.CycleService, pager_service_1.PagerService, messages_service_1.MessagesService, profile_service_1.ProfileService]
         }),
         __metadata("design:paramtypes", [users_service_1.UsersService,
             category_service_1.CategoryService,
             cycle_service_1.CycleService,
             router_1.Router,
             router_1.ActivatedRoute,
-            pager_service_1.PagerService])
+            pager_service_1.PagerService,
+            messages_service_1.MessagesService,
+            ng_bootstrap_1.NgbModal,
+            profile_service_1.ProfileService])
     ], TeacherlistComponent);
     return TeacherlistComponent;
 }());

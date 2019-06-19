@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InMeditatii - @ViewBag.Title</title>
+    <title>eMeditatii - @ViewBag.Title</title>
 
     @Styles.Render("~/css/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -19,6 +19,10 @@
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="systemjs.config.js"></script>
+
+    <link rel="shortcut icon" sizes="any" type="image/png" href="/favicon.ico">
+    <link rel="icon" sizes="any" type="image/png" href="https://emeditatii.ro/favicon.ico">
+
     <script>
         System.import('app/main.js').catch(function (err) { console.error(err); });
     </script>
@@ -37,9 +41,9 @@
 
             <div class="collapse navbar-collapse justify-content-md-cente" id="navbarsExample04">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">@Html.ActionLink("Profesori", "", "teacher", new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Cum functioneaza", "About", "Home", new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
+                    <li class="nav-item"><a class="nav-link" href="/teacher">Profesori</a></li>
+                    <li class="nav-item">@Html.ActionLink("Cum functioneaza", "CumFunctioneaza", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
                     @Html.Partial("_LoginPartial")
                 </ul>
             </div>
@@ -48,15 +52,96 @@
     
     @Html.Partial("_SectionPartial")
 
-
     <div class="container body-content @ViewBag.CssExtra">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - <span class="brandcolored">e</span>Meditatii</p>
-        </footer>
     </div>
 
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="container text-center">
+                Daca cauti un profesor <a href="/teacher">Click aici.</a>    
+            </div>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="row">
+                    <div class=col-md-3>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div id="text-2" class="widget widget_text">
+                            <div class="textwidget">
+                                <ul>
+                                    <li><a href="/teacher">Profesori</a></li>
+                                    <li><a href="/cumfunctioneaza">Cum funtioneaza</a></li>
+                                    <li><a href="/contact">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div id="text-2" class="widget widget_text">
+                            <div class="textwidget">
+                                <ul>
+                                    <li>@Html.ActionLink("Termeni si conditii", "termenisiconditii", "Home", null, new { @target="_blank" }) </li>
+                                    <li><a href="http://www.anpc.gov.ro/" target="_blank">ANPC</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <img src="/img/visa.png" style="width: 33%;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-social">
+            <div class="container  text-center">
+                <ul>
+                    <li>Ne gasiti pe:</li>
+                    <li><a href="https://www.facebook.com/emeditatii.ro" target="_blank" title="Facebook">Facebook</a></li>
+                    <li><a href="https://twitter.com/emeditatii" target="_blank" title="Twitter">Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-copy">
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - <span class="brandcolored">e</span>Meditatii</p>
+            </div>
+        </div>
+    </footer>
+    @if ( Request.Cookies["acceptedcookie"] == null )
+    {
+    <emeditatii-cookie-banner>
+        <div class="cookie-banner">eMeditatii utilizeaza cookie-uri pentru a personaliza continutul, pentru a oferi functii de retele sociale si pentru a analiza traficul. In cazul in care alegeti sa continuati sa utilizati website-ul nostru, sunteti de acord cu utilizarea modulelor noastre cookie.
+        <button type="button" class="close" onclick="acceptCookie();">
+            <up-c-close-icon class="hydrated">
+                <style data-style-tag="up-c-close-icon">.close-btn{font-size:22px;font-weight:200}</style>
+                <span class="close-btn" aria-label="close">×</span>
+            </up-c-close-icon></button>
+        </div>
+    </emeditatii-cookie-banner>
+    }
+
+    <script>
+        function acceptCookie()
+        {
+            setCookie("acceptedcookie","true", 365)
+            var cookiebanner = document.getElementsByTagName("emeditatii-cookie-banner")[0];
+            cookiebanner.style.display = "none";
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires="+ d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+    </script>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

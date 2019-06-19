@@ -11,6 +11,7 @@ namespace Meditatii.Core
     {
         SearchResult<Message> GetMessages(int mentorId, string useremail, int skip, int take);
         List<MentorMessage> GetListOfMenters(string useremail);
+        List<MentorMessage> GetListOfUsersWithMessage(string useremail);
         void SaveNewMessage(string useremail, int toId, string bodyMessage);
     }
 }

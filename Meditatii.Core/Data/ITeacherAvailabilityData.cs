@@ -10,6 +10,8 @@ namespace Meditatii.Core.Data
     public interface ITeacherAvailabilityData : ILazyLoadable
     {
         SearchResult<TeacherAvailability> GetAvailability(string useremail, int skip, int take);
-        //void SaveNewAppoitment(string useremail, int teacherId, DateTime startDate, DateTime endDate);
+        SearchResult<TeacherAvailability> GetTeacherAvailabilityForDay(int userId, int day);
+        void RemoveAllAvailabilityForTeacher(string username);
+        void SaveNewAvailability(string useremail, int day, int Time);
     }
 }

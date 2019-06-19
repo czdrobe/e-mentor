@@ -15,15 +15,15 @@ var _ = require("underscore");
 var CustomCalendarComponent = /** @class */ (function () {
     function CustomCalendarComponent() {
         this.currentDate = moment();
-        this.dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+        this.dayNames = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
         this.weeks = [];
         this.sortedDates = [];
         this.selectedDates = [];
         this.onSelectDate = new core_1.EventEmitter();
-        moment.locale('de');
+        moment.locale('ro');
     }
     CustomCalendarComponent.prototype.ngOnInit = function () {
-        moment.locale('de');
+        moment.locale('ro');
         this.generateCalendar();
     };
     CustomCalendarComponent.prototype.ngOnChanges = function (changes) {

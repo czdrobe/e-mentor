@@ -72,6 +72,9 @@ namespace meditatii.web
             container.RegisterType<ICycleData, CycleRepository>();
             container.RegisterType<ICycleService, CycleService>();
 
+            container.RegisterType<ITeacherRatingData, TeacherRatingRepository>();
+            container.RegisterType<ITeacherRatingService, TeacherRatingService>();
+
             //The current type, Microsoft.AspNet.Identity.IUserStore`2[meditatii.Models.ApplicationUser,System.Int32], is an interface and cannot be constructed. Are you missing a type mapping?
 
             container.RegisterType<AccountController>(new InjectionConstructor());

@@ -2,24 +2,28 @@
 <div class="row message-container paddingtop20">
 	<aside class="col-md-2 col-sm-4" style="height:100%;">
 		<div class="left-navigation">
-				<div class="logo" (click)="open(content)">
-						<img src="/img/users/cristi.jpg"  class="avatar-big"  />
+				<div class="logo" (click)="open(content)" *ngIf="model">
+						<a ><img [src]="model.ProfileImageUrl"  class="avatar-big" placement="bottom" ngbTooltip="Click pentru a schimba poza."  /></a>
 					</div>
 					<br>
-			<ul class="list-group">
+			<ul class="list-group" *ngIf="model && model.IsTeacher">
 				<li class="list-group-item" data-toggle="modal" data-target="#myModal"><a>Profilul meu</a></li>
+				<li class="list-group-item" data-toggle="modal" data-target="#myModal" (click)="open(disciplines, { windowClass: 'disciplinesmodal' })"><a>Materii</a></li>
+				<li class="list-group-item" data-toggle="modal" data-target="#myModal" (click)="open(grades)"><a>Ciclu școlar</a></li>
 			</ul>
 		</div>
 	</aside>
 
-	<div class="col-md-10 col-sm-8 conversation-section">
+	<div class="col-md-10 col-sm-8 conversation-section" *ngIf="model">
 		<!--Main content code to be written here -->
 		<h1>Profilul meu</h1>
 		
 			<div class="card">
-				<div class="card-header">Date generale
+				<div class="card-header"><b>Date generale</b>
 						<div class="btn-group float-right" style="margin-top:-7px;">
-							<a href="javascript:void();" (click)="editProfile()" class="btn btn-primary">Modifica</a>
+							<a href="javascript:void(0);" *ngIf="!editmodeprofile" (click)="editProfile()" class="btn btn-primary">Modifică</a>
+							<a href="javascript:void(0);" *ngIf="editmodeprofile" (click)="saveProfile()" class="btn btn-primary">Salvează</a>
+							<a href="javascript:void(0);" *ngIf="editmodeprofile" (click)="cancelEditProfile()" class="btn btn-outline-secondary">Anulează</a>
 						</div>
 				</div>
 				<div class="card-body">
@@ -27,31 +31,50 @@
 						<div class="form-group row">
 							<label class="col-md-2 col-form-label">Nume:</label>
 								<div class="col-md-6">
-									<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Zdrobe" >
+									<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticFirstName" [(ngModel)]="model.FirstName" name="FirstName" >
+									<input type="text" *ngIf="editmodeprofile" class="form-control" id="FirstName" [(ngModel)]="model.FirstName" name="FirstName" >
 								</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-md-2 col-form-label">Prenume:</label>
 								<div class="col-md-6">
-										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Cristian">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticLastName"  [(ngModel)]="model.LastName" name="LastName">
+										<input type="text" *ngIf="editmodeprofile" class="form-control" id="LastName" [(ngModel)]="model.LastName" name="LastName" >
 								</div>
 						</div>
 						<div class="form-group row">
 								<label class="col-md-2 col-form-label">Email:</label>
 								<div class="col-md-6">
-										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="profesor@gmail.com">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" [(ngModel)]="model.Email" name="Email">
+										<input type="text" *ngIf="editmodeprofile" class="form-control" id="LastName" [(ngModel)]="model.Email" name="Email" >
 								</div>
 						</div>
 						<div class="form-group row">
-								<label class="col-md-2 col-form-label">Data nasterii:</label>
+								<label class="col-md-2 col-form-label">Data nașterii:</label>
 								<div class="col-md-6">
-										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="27 Februarie 1978">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticDob" value="{{model.Dob | date:'yyyy-MM-dd'}}" name="staticDob">
+										<div class="input-group-append" *ngIf="editmodeprofile">
+										<input type="text" class="form-control" id="Dob" [(ngModel)]="model.Dob" name="Dob" [(ngModel)]="model.Dob" ngbDatepicker #d="ngbDatepicker" [minDate]="{year: 1910, month: 1, day: 1}" [maxDate]="mytime">
+										
+											<button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+											  <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+											</button>
+										
+										</div>
 								</div>
 						</div>
 						<div class="form-group row">
 								<label class="col-md-2 col-form-label">Sex:</label>
 								<div class="col-md-6">
-										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="Barbat">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" value="{{model.Sex ? 'Masculin' : 'Feminin'}}">
+										<div *ngIf="editmodeprofile">
+											<label class="form-check-inline">
+												<input class="form-check-input" type="radio" name="mode" [value]="true" [(ngModel)]="model.Sex">Masculin
+											</label>
+											<label class="form-check-inline">
+												<input class="form-check-input" type="radio" name="mode" [value]="false" [(ngModel)]="model.Sex">Feminin
+											</label>
+										</div>
 								</div>
 						</div>
 					</form>
@@ -64,9 +87,11 @@
 			  </div>
 				<br/>
 			  <div class="card">
-					<div class="card-header">Adresa
+					<div class="card-header"><b>Adresa</b>
 							<div class="btn-group float-right" style="margin-top:-7px;">
-								<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+								<a href="javascript:void(0);" *ngIf="!editmodeaddress" (click)="editAddress()" class="btn btn-primary">Modifică</a>
+								<a href="javascript:void(0);" *ngIf="editmodeaddress" (click)="saveAddress()" class="btn btn-primary">Salvează</a>
+								<a href="javascript:void(0);" *ngIf="editmodeaddress" (click)="cancelEditAddress()" class="btn btn-outline-secondary">Anulează</a>
 							</div>
 					</div>
 					<div class="card-body">
@@ -74,48 +99,45 @@
 							<div class="form-group row">
 									<label class="col-md-2 col-form-label">Adresa:</label>
 									<div class="col-md-6">
-											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Str:Strada, Nr:1, Ap:38">
+											<input type="text" *ngIf="!editmodeaddress" readonly class="form-control-plaintext" id="staticAddress" [(ngModel)]="model.Address" name="Address">
+											<input type="text" *ngIf="editmodeaddress" class="form-control" id="Address" [(ngModel)]="model.Address" name="Address" >
 										</div>
 							</div>							
 							<div class="form-group row">
 									<label class="col-md-2 col-form-label">Localitate:</label>
 									<div class="col-md-6">
-											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Cluj Napoca">
+											<input type="text" *ngIf="!editmodeaddress" readonly class="form-control-plaintext" id="staticCity" [(ngModel)]="model.City" name="City">
+											<input type="text" *ngIf="editmodeaddress" class="form-control" id="City" [(ngModel)]="model.City" name="City" >
 										</div>
 							</div>
 							<div class="form-group row">
 									<label class="col-md-2 col-form-label">Judetul:</label>
 									<div class="col-md-6">
-											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Cluj">
-										</div>
-							</div>
-							<div class="form-group row">
-									<label class="col-md-2 col-form-label">Email:</label>
-									<div class="col-md-6">
-											<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="profesor@gmail.com">
+											<input type="text" *ngIf="!editmodeaddress" readonly class="form-control-plaintext" id="staticCounty" [(ngModel)]="model.County" name="County">
+											<input type="text" *ngIf="editmodeaddress" class="form-control" id="County" [(ngModel)]="model.County" name="County" >
 										</div>
 							</div>
 						</form>
-	
-						<div class="form-group" style="display: none;">
-							<label for="nume">Nume:</label>
-							<input type="email" class="form-control" id="nume">
-						  </div>
 					</div>
 				  </div>
 					
 					<br/>
 
-				  <div class="card ">
-						<div class="card-header">Descriere
+				  <div class="card " *ngIf="model && model.IsTeacher">
+						<div class="card-header"><b>Descriere</b>
 								<div class="btn-group float-right" style="margin-top:-7px;">
-									<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+										<a href="javascript:void(0);" *ngIf="!editmodedescription" (click)="editDescription()" class="btn btn-primary">Modifică</a>
+										<a href="javascript:void(0);" *ngIf="editmodedescription" (click)="saveDescription()" class="btn btn-primary">Salvează</a>
+										<a href="javascript:void(0);" *ngIf="editmodedescription" (click)="cancelEditDescription()" class="btn btn-outline-secondary">Anulează</a>
 								</div>
 						</div>
 						<div class="card-body">
 							<form>
 								<div class="row">
-										<div class="col-md-9"><input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Descriere"></div>
+										<div class="col-md-12">
+											<input type="text" *ngIf="!editmodedescription" readonly class="form-control-plaintext" id="staticCounty" [(ngModel)]="model.Description" name="Description">
+											<textarea *ngIf="editmodedescription" rows="10"  cols="100" class="form-control" id="Description" [(ngModel)]="model.Description" name="Description" style="max-width: 100% !important;"></textarea>
+										</div>
 								</div>							
 							</form>
 		
@@ -124,57 +146,59 @@
 						
 						<br/>
 
-					  <div class="card">
-							<div class="card-header">Disponibilitate
+						<div class="card " *ngIf="model && model.IsTeacher">
+							<div class="card-header"><b>Pret</b><br/>
+								Indicati pretul in lei pe ora.
 									<div class="btn-group float-right" style="margin-top:-7px;">
-										<a href="javascript:void();" class="btn btn-primary">Modifica</a>
+											<a href="javascript:void(0);" *ngIf="!editmodeprice" (click)="editPrice()" class="btn btn-primary">Modifică</a>
+											<a href="javascript:void(0);" *ngIf="editmodeprice" (click)="savePrice()" class="btn btn-primary">Salvează</a>
+											<a href="javascript:void(0);" *ngIf="editmodeprice" (click)="cancelEditPrice()" class="btn btn-outline-secondary">Anulează</a>
 									</div>
 							</div>
 							<div class="card-body">
 								<form>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Luni:</label>
+									<div class="row">
+											<div class="col-md-12">
+												<input type="text" *ngIf="!editmodeprice" readonly class="form-control-plaintext" id="staticPrice" [(ngModel)]="model.Price" name="Price">
+												<input type="text" *ngIf="editmodeprice" class="form-control" id="Price" [(ngModel)]="model.Price" name="Price" class="form-control" type="number"  >
+											</div>
+									</div>							
+								</form>
+			
+							</div>
+							</div>	
+							
+							<br/>						
+
+					  <div class="card" *ngIf="model && model.IsTeacher && availability != null">
+							<div class="card-header"><b>Disponibilitate</b><br/>
+								Selecteaza disponibilitatea pentru fiecare zi. Selecteaza ora de inceput si ora de sfarsit. <br/>
+								De exemplu: 17-20
+									<div class="btn-group float-right" style="margin-top:-7px;">
+										<a href="javascript:void(0);" *ngIf="!editmodeavaiability" (click)="editAva()" class="btn btn-primary">Modifică</a>
+										<a href="javascript:void(0);" *ngIf="editmodeavaiability" (click)="saveAva()" class="btn btn-primary">Salvează</a>
+										<a href="javascript:void(0);" *ngIf="editmodeavaiability" (click)="cancelAva()" class="btn btn-outline-secondary">Anulează</a>
+									</div>
+							</div>
+							<div class="card-body">
+								
+										<div class="row" *ngFor="let item of availability">
+												<label class="col-md-2 col-form-label">{{item.dayName}}:</label>
 												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
+													<input type="text" *ngIf="!editmodeavaiability" readonly class="form-control-plaintext" id="static{{item.dayName}}" value="{{item.startTime}}:00 - {{item.endTime}}:00">
+													<div *ngIf="editmodeavaiability" class="row">
+														<div class="col-sm-3">
+															<input *ngIf="editmodeavaiability" ng-disabled="item.available" type="number" class="form-control form-control-sm" [(ngModel)]="item.startTime" min=1
+															 max=24/>
 														</div>
+														<div class="col-sm-3">
+															<input *ngIf="editmodeavaiability" ng-disabled="item.available" type="number"  class="form-control form-control-sm" [(ngModel)]="item.endTime" min=1 max=24
+															/>
+														</div>
+													</div>
+												</div>
 										</div>							
-										<div class="row">
-												<label class="col-md-2 col-form-label">Marti:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Miercuri:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Joi:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Vineri:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Sambata:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>
-										<div class="row">
-												<label class="col-md-2 col-form-label">Duminica:</label>
-												<div class="col-md-6">
-														<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="14:00 - 18:00">
-													</div>
-										</div>										
-									</form>
+								
 			
 								<div class="form-group" style="display: none;">
 									<label for="nume">Nume:</label>
@@ -187,7 +211,7 @@
 <!-- Modal -->
 <ng-template #content let-c="close" let-d="dismiss">
 	<div class="modal-header">
-	  <h4 class="modal-title">Profile update</h4>
+	  <h4 class="modal-title">Schimbă poza</h4>
 	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
 		<span aria-hidden="true">&times;</span>
 	  </button>
@@ -200,6 +224,44 @@
 		</span>
 	</div>
 	<div class="modal-footer">
-	  <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+	  <button type="button" class="btn btn-outline-dark" (click)="saveImage();c('Save click');">Save</button>
+	</div>
+  </ng-template>
+
+  <ng-template #disciplines let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Materii</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		<ul class="list-group">
+			<li *ngFor="let category of categories; let i = index" class="list-group-item">
+				<input type="checkbox" [(ngModel)]="category.selected"> {{category.Name}}
+			</li>
+		</ul>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="saveCategories();d('Cross click');">Save</button>
+	</div>
+  </ng-template>
+
+  <ng-template #grades let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Ciclul scolar</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		<ul class="list-group">
+			<li *ngFor="let cycle of cycles; let i = index"  class="list-group-item">
+				<input type="checkbox" [(ngModel)]="cycle.selected"> {{cycle.Name}}
+			</li>
+		</ul>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="saveCycles();c('Save click')">Save</button>
 	</div>
   </ng-template>

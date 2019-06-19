@@ -20,7 +20,7 @@ namespace meditatii.Controllers.Api
         [Route("api/messages/getmessages/{mentorId}/{page}")]
         public SearchResult<MessageModel> GetMessages(int mentorId, int page)
         {
-            int itemsPerPage = 10;
+            int itemsPerPage = 100;
             int skip = (page - 1) * itemsPerPage;
             int take = itemsPerPage;
             return MappingHelper.Map<SearchResult<MessageModel>>(this.messagesService.GetMessages(mentorId, System.Web.HttpContext.Current.User.Identity.Name, skip, take));
@@ -29,6 +29,13 @@ namespace meditatii.Controllers.Api
         [HttpGet]
         [Route("api/messages/listofmentors")]
         public List<MentorMessageModel> GetListOfMentors()
+        {
+            return MappingHelper.Map<List<MentorMessageModel>>(this.messagesService.GetListOfMenters(System.Web.HttpContext.Current.User.Identity.Name));
+        }
+
+        [HttpGet]
+        [Route("api/messages/getlistofuserswithmessage")]
+        public List<MentorMessageModel> GetListOfUsersWithMessage()
         {
             return MappingHelper.Map<List<MentorMessageModel>>(this.messagesService.GetListOfMenters(System.Web.HttpContext.Current.User.Identity.Name));
         }

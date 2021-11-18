@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-md-12" *ngIf="currentUser">
+        <br>
+        <p class="lead green" *ngIf="currentUser.IsSubscriptionOk">
+            Abonament activat: {{currentUser.SubscriptionStartDate | date:"dd LLL yyyy"}} - {{currentUser.SubscriptionEndDate | date:"dd LLL yyyy"}}
+        </p>
+        <p class="lead red" *ngIf="!currentUser.IsSubscriptionOk">
+            Nu este activat un abonament. <a href="/u/abonamente">Vezi abonamentele</a>
+        </p>
+    </div>
+</div>
+<div class="row" *ngIf="currentUser && currentUser.IsSubscriptionOk">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <tbody><tr>
+                <th>Abonament</th>
+                <th>Status</th>
+                <th>Start</th>
+                <th>Sfarsit </th>
+                
+            </tr>
+            <tr>
+                <td>Pachet - {{activeProduct}}</td>
+                <td>    
+                    Activat
+                </td>
+                <td>{{currentUser.SubscriptionStartDate | date:"dd LLL yyyy"}}</td>
+                <td>{{currentUser.SubscriptionEndDate | date:"dd LLL yyyy"}}</td>
+            </tr>
+        </tbody></table>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <br/><br/>
+        <hr/>
+    <div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <p class="lead green">
+            Istoric plati
+        </p>
+    </div>
+</div>
+<div class="row" *ngIf="lstPayments && lstPayments.length > 0">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <tbody><tr>
+                <th>Numar factura</th>
+                <th>Data</th>
+                <th>Produs</th>
+                <th>Download</th>
+            </tr>
+            <tr *ngFor="let payment of lstPayments">
+                <td>Factura {{payment.InvoiceNumber}}</td>
+                <td>{{payment.Added | date:"dd LLL yyyy"}}</td>
+                <td>Pachet - {{payment.ProductName}}</td>
+                <td><a href="/payment/download/{{payment.PaymentCode}}" target="_blank">Factura {{payment.InvoiceNumber}}</a></td>
+            </tr>
+        </tbody></table>
+</div>
+</div>
+<div class="row" *ngIf="lstPayments && lstPayments.length == 0">
+    <div class="col-md-12">
+        Nu sunt plati
+    </div>
+</div>

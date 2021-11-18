@@ -85,6 +85,14 @@ var AppoitmentsComponent = /** @class */ (function () {
     AppoitmentsComponent.prototype.selectUser = function (userId) {
         this.selectedUserId = userId;
     };
+    AppoitmentsComponent.prototype.acceptAppoitment = function (appoitmentId) {
+        var _this = this;
+        if (confirm("Esit sigur că accepți această programare ?")) {
+            this.appoitmentsService.acceptByTeacher(appoitmentId).subscribe(function (results) {
+                _this.loadAppoitments();
+            });
+        }
+    };
     AppoitmentsComponent.prototype.selectPayment = function (appoitmentId, price, button) {
         if (button.tagName != "BUTTON") {
             button = button.parentElement;
@@ -115,26 +123,28 @@ var AppoitmentsComponent = /** @class */ (function () {
         this.calculateTotalToPay();
     };
     AppoitmentsComponent.prototype.pay = function () {
-        var _this = this;
-        if (this.isDebug) {
-            var lstOfAppoitments = this.selectedPayment.map(function (el) { return el.AppoitmentId; });
-            this.appoitmentsService.payment(lstOfAppoitments).subscribe(function (result) {
-                _this.loadAppoitments();
-                _this.selectedPayment = [];
+        var lstOfAppoitments = this.selectedPayment.map(function (el) { return el.AppoitmentId; });
+        /*if (this.isDebug)
+        {
+          this.appoitmentsService.payment(lstOfAppoitments).subscribe(result =>
+            {
+              this.loadAppoitments();
+              this.selectedPayment = [];
             });
         }
-        else {
-            //TODO: need to implement real payment
-        }
+        else
+        {*/
+        //TODO: need to implement real payment
+        window.location.href = "/payment/" + lstOfAppoitments.join(',');
+        //}
     };
-    AppoitmentsComponent.prototype.chekcIfNeedToPay = function (appoitment) {
-        var item = appoitment.Payments.find(function (x) { return x.Status == 1; });
-        if (item) {
+    AppoitmentsComponent.prototype.needToPay = function (appoitment) {
+        if (!appoitment.AcceptedByTeacher) {
+            //do not show payment button if teacher not accepted the appoitment 
             return false;
         }
-        else {
-            return true;
-        }
+        var isPaid = appoitment.Payment != null && appoitment.Payment.Status == 1;
+        return !isPaid;
     };
     AppoitmentsComponent.prototype.calculateTotalToPay = function () {
         var total = 0;
@@ -171,15 +181,15 @@ var AppoitmentsComponent = /** @class */ (function () {
         this.selectedRate = rate;
     };
     AppoitmentsComponent.prototype.saveRate = function () {
-        var _this = this;
         var localModalRef = this.modalRef;
         if (this.selectedRate > -1 && this.selectedAppoitment > -1) {
-            this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(function (result) {
-                _this.loadOldAppoitments();
-                _this.selectedRate = -1;
-                _this.selectedAppoitment = -1;
+            /*this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(result =>
+              {
+                this.loadOldAppoitments();
+                this.selectedRate = -1;
+                this.selectedAppoitment =-1;
                 localModalRef.close();
-            });
+              });*/
         }
     };
     AppoitmentsComponent.prototype.selectAppoitment = function (appoitmentId) {
@@ -188,7 +198,7 @@ var AppoitmentsComponent = /** @class */ (function () {
     AppoitmentsComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'appoitments.component.html',
+            templateUrl: 'html/appoitments.component.html',
             providers: [appoitments_service_1.AppoitmentsService, profile_service_1.ProfileService, messages_service_1.MessagesService]
         }),
         __metadata("design:paramtypes", [router_1.Router,

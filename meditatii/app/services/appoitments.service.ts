@@ -53,9 +53,9 @@ export class AppoitmentsService
         ))
     }
 
-    saveTeacherRating(appointmentid:number, rate:number)
+    saveTeacherRating(teacherid:number, rate:number, ratingtext:string)
     {
-        return this.http.post('api/teacherrating/getallratingforteacher', {AppoitmentId : appointmentid.toString(), Rating: rate.toString()}, httpOptions);
+        return this.http.post('api/teacherrating/SaveRatingForTeacher', {TeacherIdEncoded : teacherid.toString(), Rating: rate.toString(), RatingText: ratingtext}, httpOptions);
     }
 
     payment(listOfAppoitments:number[])
@@ -63,6 +63,31 @@ export class AppoitmentsService
         let body = JSON.stringify( listOfAppoitments );
 
         return this.http.post('api/appoitments/savepayments', body, httpOptions);
+    }
+
+    acceptByTeacher(appoitmentid:number)
+    {
+        return this.http.get('api/appoitments/acceptByTeacher/'+ appoitmentid).pipe(map(
+            (res:any) => res
+        ));
+    }
+
+    getCurrentPayment() {
+        return this.http.get('/api/appoitments/getcurrentpayment/').pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    getPaymentForUser() {
+        return this.http.get('/api/appoitments/getpaymentforuser/').pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    realpayment()
+    {
+        //construct the xml
+        //go to the payment page
     }
 
 }

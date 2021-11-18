@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 @Component({
 	moduleId: module.id,
 	selector: 'backend-menu',
-	templateUrl: 'menu.component.html',
+	templateUrl: 'html/menu.component.html',
     providers: []
 })
 export class BackEndMenuComponent {

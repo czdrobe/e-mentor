@@ -52,11 +52,23 @@ export class ProfileService
         return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
     }
 
+    saveCityForCurrentProfie(city1:number, city2:number, city3:number, isOnline:boolean)
+    {
+        return this.http.post('/api/users/savecityforcurrentprofie', {cityid1: city1, cityid2: city2, cityid3: city3, isOnline: isOnline}, httpOptions);
+    }
+
     saveProfileImage(image:any)
     {
         var formData = new FormData();
         formData.append('profileimage', image.image);
         return this.http.post('/api/users/saveprofileimage', formData);
+    }
+
+    getCities()
+    {
+        return this.http.get('/api/users/GetCities').pipe(map(
+            (res:any) => res
+        ))
     }
 
     private handleError(error: HttpErrorResponse) {

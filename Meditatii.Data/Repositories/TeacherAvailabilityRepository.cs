@@ -40,15 +40,22 @@ namespace Meditatii.Data.Repositories
             }
         }
 
-        public SearchResult<TeacherAvailability> GetTeacherAvailabilityForDay(int userId, int day)
+        public SearchResult<TeacherAvailability> GetTeacherAvailabilityForDay(int userId, int day, bool isToday)
         {
             using (var context = new MeditatiiDbContext())
             {
                 try
                 {
                     int totalRows = 0;
-
-                    var availabilities = context.Set<Models.TeacherAvailability>().AsNoTracking().Where(x => x.Teacher.Id == userId && x.Day == day);
+                    IQueryable<Models.TeacherAvailability> availabilities;
+                    if (isToday)
+                    {
+                        availabilities = context.Set<Models.TeacherAvailability>().AsNoTracking().Where(x => x.Teacher.Id == userId && x.Day == day && x.Time > DateTime.Now.Hour);
+                    }
+                    else
+                    {
+                        availabilities = context.Set<Models.TeacherAvailability>().AsNoTracking().Where(x => x.Teacher.Id == userId && x.Day == day);
+                    }
 
                     totalRows = availabilities.Count();
 

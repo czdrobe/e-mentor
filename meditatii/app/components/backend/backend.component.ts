@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 @Component({
     moduleId: module.id,
     selector: 'backend',
-    templateUrl: 'backend.component.html',
+    templateUrl: 'html/backend.component.html',
     providers: []
 })
 export class BackendComponent {

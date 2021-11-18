@@ -17,13 +17,15 @@ namespace Meditatii.Core.Entities
 
         public int Id { get; set; }
 
-        public int AppoitmentId { get; set; }
+        public int? AppoitmentId { get; set; }
 
         public int TeacherId { get; set; }
 
         public int StudentId { get; set; }
 
         public int Rating { get; set; }
+
+        public string RatingText { get; set; }
 
         public DateTime Added { get; set; }
 

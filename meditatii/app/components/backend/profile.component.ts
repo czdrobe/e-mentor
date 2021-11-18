@@ -11,10 +11,11 @@ import {NgbDateStruct, NgbCalendar, NgbDateAdapter, NgbDateNativeAdapter} from '
 import { Cycle } from '../../types/cycle.type';
 import { Category } from '../../types/categories.type';
 import { elementAt } from 'rxjs/operators';
+import { City } from '../../types/city.type';
 
 @Component({
 	moduleId: module.id,
-	templateUrl: 'profile.component.html',
+	templateUrl: 'html/profile.component.html',
 	providers: [CycleService, CategoryService, ProfileService,ImageCropperComponent, {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}],
 	selector: 'ngbd-datepicker-popup'
 })
@@ -24,6 +25,7 @@ export class ProfileComponent {
 	cropper:         ImageCropperComponent;
 	closeResult:     string;
 	editmodeprofile: boolean;
+	editmodecity: boolean;
 	editmodeaddress: boolean;
 	editmodedescription: boolean;
 	editmodeprice: boolean;
@@ -35,6 +37,25 @@ export class ProfileComponent {
 	ismeridian: boolean;
 	categories: Category[];
 	cycles: Cycle[];
+	selectedCityName1: string;
+	selectedCity1: number;
+
+	selectedCityName2: string;
+	selectedCity2: number;
+
+	selectedCityName3: string;
+	selectedCity3: number;
+
+	bIsOnline: boolean;
+
+	lstCity:City[];
+	lstCity2:City[];
+	lstCity3:City[];
+	searchCity: string;
+	searchCity2: string;
+	searchCity3: string;
+
+	errorCity: string;
     
 	constructor(
 		private calendar: NgbCalendar,
@@ -57,6 +78,7 @@ export class ProfileComponent {
     
 		this.data = {};
 		this.editmodeprofile = false;
+		this.editmodecity = false;
 	}
 	
 	changed()
@@ -68,8 +90,17 @@ export class ProfileComponent {
 		this.mytime =  new Date();
 		this.ismeridian = true;
 
+		this.selectedCityName1 = "Alege o localitate";
+		this.selectedCityName2 = "Alege o localitate";
+		this.selectedCityName3 = "Alege o localitate";
+
 		this.profileService.getCurrentProfile().subscribe((results:any) => {
 			this.model = results;
+			this.searchCity = "";
+
+			this.bIsOnline = this.model.AlsoOnline;
+			this.resetEditCity();
+
 			if (this.model.Dob != null)
 			{
 				var dob = new Date(this.model.Dob);
@@ -94,6 +125,14 @@ export class ProfileComponent {
 					element.selected =  foundElements.length > 0;
 				});
 				this.cycles = cycles;
+			})
+			// load cities
+			this.profileService.getCities().subscribe((results:any) => {
+				console.log(results);
+				this.lstCity = results;
+				this.lstCity2 = results;
+				this.lstCity3 = results;
+
 			})
 		});
 
@@ -166,27 +205,84 @@ export class ProfileComponent {
 
 	}
 
+	selectCity1(id: number, cityName: string)
+    {
+        this.selectedCity1 = id;
+        this.selectedCityName1 = cityName;
+    }
+
+	selectCity2(id: number, cityName: string)
+    {
+        this.selectedCity2 = id;
+        this.selectedCityName2 = cityName;
+    }
+
+	selectCity3(id: number, cityName: string)
+    {
+        this.selectedCity3 = id;
+        this.selectedCityName3 = cityName;
+    }
+	
+	resetCity1()
+	{
+        this.selectedCity1 = 0;
+        this.selectedCityName1 = "Alege o localitate";
+	}
+
+	resetCity2()
+	{
+        this.selectedCity2 = 0;
+        this.selectedCityName2 = "Alege o localitate";
+	}
+
+	resetCity3()
+	{
+        this.selectedCity3 = 0;
+        this.selectedCityName3 = "Alege o localitate";
+	}
+
+	saveCity()
+	{
+		if ( (this.selectedCity1 === undefined || this.selectedCity1 <= 0) && !this.bIsOnline)
+		{
+			this.errorCity = "Te rog alege un oras sau meditatii online";
+		}
+		else
+		{
+			this.errorCity = "";
+			this.profileService.saveCityForCurrentProfie(this.selectedCity1, this.selectedCity2, this.selectedCity3, this.bIsOnline).subscribe(result => 
+				{
+					console.log("Saved");
+					
+					window.location.href = window.location.href + "?refreshuser=1";
+				});	
+		}
+
+	}
+
 	saveProfile()
 	{
-		this.saveProfileToDB();
-		this.editProfile();
+		this.saveProfileToDB(true);
+		//this.editProfile();
+		//reload page to refresh user in session
+		//this.router.navigate(['/u/profile'], { queryParams: { refreshuser: 1 } });
 	}
 
 	saveAddress()
 	{
-		this.saveProfileToDB();
+		this.saveProfileToDB(false);
 		this.editAddress();
 	}
 
 	saveDescription()
 	{
-		this.saveProfileToDB();
+		this.saveProfileToDB(false);
 		this.editDescription();
 	}
 
 	savePrice()
 	{
-		this.saveProfileToDB();
+		this.saveProfileToDB(false);
 		this.editPrice();
 	}
 
@@ -216,19 +312,40 @@ export class ProfileComponent {
 				console.log("Saved");
 			});
 	}
-	saveProfileToDB()
+	saveProfileToDB(reload:boolean)
 	{
 		
 		if (this.model.Dob != null)
 		{
+			if (typeof this.model.Dob == "string")
+			{
+				var dobFromString = new Date(this.model.Dob);
+				this.model.Dob =  dobFromString;
+			}
 			var dob = new Date(Date.UTC(this.model.Dob.getFullYear(), this.model.Dob.getMonth(), this.model.Dob.getDate()));
 			this.model.Dob =  dob;
 		}
 		this.profileService.saveCurrentProfie(this.model).subscribe(result => 
 			{
 				console.log("Saved");
+				if (reload)
+				{
+					window.location.href = window.location.href + "?refreshuser=1";
+				}
 			});
 	}
+
+	editCity()
+	{
+		this.editmodecity = !this.editmodecity;
+		if (this.editmodecity)
+		{
+			this.bIsOnline = this.model.AlsoOnline;
+			this.copymodel = JSON.parse(JSON.stringify(this.model));
+			
+		}
+	}
+
 
 	editProfile()
 	{
@@ -280,6 +397,37 @@ export class ProfileComponent {
 		this.model = JSON.parse(JSON.stringify(this.copymodel));
 		this.editProfile();	
 	}
+	
+	cancelEditCity()
+	{
+		this.errorCity = "";
+		this.model = JSON.parse(JSON.stringify(this.copymodel));
+		this.bIsOnline = this.model.AlsoOnline;
+		this.resetEditCity();
+		this.editCity();
+	}
+
+	resetEditCity()
+	{
+
+		if (this.model.Cities.length > 0)
+		{
+			this.selectedCity1 = this.model.Cities[0].Id;
+			this.selectedCityName1 = this.model.Cities[0].Name;
+		}
+
+		if (this.model.Cities.length > 1)
+		{
+			this.selectedCity2 = this.model.Cities[1].Id;
+			this.selectedCityName2 = this.model.Cities[1].Name;
+		}
+
+		if (this.model.Cities.length > 2)
+		{
+			this.selectedCity3 = this.model.Cities[2].Id;
+			this.selectedCityName3 = this.model.Cities[2].Name;
+		}
+	}
 
 	cancelEditAddress()
 	{
@@ -296,7 +444,7 @@ export class ProfileComponent {
 	cancelEditPrice()
 	{
 		this.model = JSON.parse(JSON.stringify(this.copymodel));
-		this.editDescription();
+		this.editPrice();
 	}
 	
 	cancelAva()

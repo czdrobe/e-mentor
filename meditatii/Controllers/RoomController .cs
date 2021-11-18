@@ -10,15 +10,22 @@ namespace meditatii.Controllers
 {
     public class RoomController : BaseController
     {
-        public RoomController(Func<IAppoitmentService> appoitmentService) : base(appoitmentService)
+        /*public RoomController(Func<IAppoitmentService> appoitmentService) : base(appoitmentService)
         {
 
+        }*/
+        public RoomController(IAppoitmentService appoitmentService, IUsersService usersService)
+        {
+            this.appoitmentService = appoitmentService;
+            this.usersService = usersService;
         }
 
-        private IAppoitmentService appoitmentService => GetService<IAppoitmentService>();
-
+        //private IAppoitmentService appoitmentService => GetService<IAppoitmentService>();
+        private IAppoitmentService appoitmentService;
         public ActionResult Index(int appoitmentid)
         {
+            ViewBag.user = CurrentUser;
+
             string tokenid = string.Empty;
             string sessionid = string.Empty;
             int remainingTime = -1;
@@ -49,7 +56,7 @@ namespace meditatii.Controllers
 
                     sessionid = newSession.Id;
                     appoitment.SessionId = newSession.Id;
-                    appoitmentService.SaveAppoitment(appoitment);
+                    appoitmentService.UpdateSessionIdOfAppoitment(appoitment.Id, newSession.Id);
                 }
 
                 //calculate the seconds expire time for token - based on the the booked time for current meditation

@@ -23,7 +23,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -67,7 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\IReportData.cs" />
+    <Compile Include="Entities\CityUser.cs" />
+    <Compile Include="Entities\City.cs" />
+    <Compile Include="Entities\ReportTeacherAppoitment.cs" />
+    <Compile Include="Entities\PaymentOut.cs" />
     <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\Request.cs" />
+    <Compile Include="Entities\UserSats.cs" />
+    <Compile Include="Enums\AppoitmentNotification.cs" />
+    <Compile Include="IAdminService.cs" />
+    <Compile Include="IReportService.cs" />
     <Compile Include="ITeacherRatingService.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="CycleService.cs" />

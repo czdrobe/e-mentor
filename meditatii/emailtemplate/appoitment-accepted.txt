@@ -1,0 +1,3 @@
+Rezervarea din data/ora <dateandtime> a fost acceptat de catre <teacher-firstname> <teacher-lastname>
+
+Plata meditatiei se poate face <a href="<appoitmentsurl>">aici</a>

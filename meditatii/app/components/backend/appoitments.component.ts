@@ -9,7 +9,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	moduleId: module.id,
-	templateUrl: 'appoitments.component.html',
+	templateUrl: 'html/appoitments.component.html',
     providers: [AppoitmentsService, ProfileService, MessagesService]
 })
 export class AppoitmentsComponent {
@@ -116,6 +116,15 @@ export class AppoitmentsComponent {
         this.selectedUserId = userId;
     }
 
+    acceptAppoitment(appoitmentId:number)
+    {
+      if(confirm("Esit sigur că accepți această programare ?")) {
+          this.appoitmentsService.acceptByTeacher(appoitmentId).subscribe((results:any) => {
+            this.loadAppoitments();
+        });
+      }
+    }
+
     selectPayment(appoitmentId:number, price:number, button:any)
     {
       if (button.tagName != "BUTTON")
@@ -155,9 +164,9 @@ export class AppoitmentsComponent {
 
     pay()
     {
-      if (this.isDebug)
+      var lstOfAppoitments = this.selectedPayment.map(function (el) {return el.AppoitmentId} );
+      /*if (this.isDebug)
       {
-        var lstOfAppoitments = this.selectedPayment.map(function (el) {return el.AppoitmentId} );
         this.appoitmentsService.payment(lstOfAppoitments).subscribe(result =>
           {
             this.loadAppoitments();
@@ -165,23 +174,22 @@ export class AppoitmentsComponent {
           });
       }
       else
-      {
+      {*/
         //TODO: need to implement real payment
-      }
+        window.location.href = "/payment/" + lstOfAppoitments.join(',');
+      //}
     }
 
-    chekcIfNeedToPay(appoitment:Appoitment)
+    needToPay(appoitment:Appoitment)
     {
-      var item = appoitment.Payments.find(x => x.Status == 1)
-
-      if (item)
+      if (!appoitment.AcceptedByTeacher)
       {
+        //do not show payment button if teacher not accepted the appoitment 
         return false;
       }
-      else
-      {
-        return true;
-      }
+      var isPaid = appoitment.Payment != null && appoitment.Payment.Status == 1;
+
+      return !isPaid;
 
     }
 
@@ -228,13 +236,13 @@ export class AppoitmentsComponent {
         let localModalRef = this.modalRef;
         if (this.selectedRate > -1 && this.selectedAppoitment > -1)
         {
-          this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(result =>
+          /*this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(result =>
             {
               this.loadOldAppoitments();
               this.selectedRate = -1;
               this.selectedAppoitment =-1;
               localModalRef.close();
-            });
+            });*/
         }
       }
       selectAppoitment(appoitmentId:number)
@@ -251,8 +259,10 @@ interface Appoitment
 	Added: string,
 	isRead: boolean,
   SenderName: string,
+
+  AcceptedByTeacher: boolean,
   
-  Payments: Payment[]
+  Payment: Payment
 }
 
 interface AppoitmentChat

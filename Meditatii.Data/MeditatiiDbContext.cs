@@ -29,7 +29,11 @@ namespace Meditatii.Data
 
         public virtual DbSet<Appoitment> Appoitment { get; set; }
 
+        public virtual DbSet<Request> Requests { get; set; }
+
         public virtual DbSet<Payment> Payments { get; set; }
+
+        public virtual DbSet<PaymentOut> PaymentsOut { get; set; }
 
         public virtual DbSet<AppoitmentChat> AppoitmentChat { get; set; }
 
@@ -70,6 +74,16 @@ namespace Meditatii.Data
                    cs.MapLeftKey("UserId");
                    cs.MapRightKey("CycleId");
                    cs.ToTable("UserCycle");
+               });
+
+            modelBuilder.Entity<User>()
+               .HasMany<City>(s => s.Cities)
+               .WithMany(c => c.Users)
+               .Map(cs =>
+               {
+                   cs.MapLeftKey("UserId");
+                   cs.MapRightKey("CityId");
+                   cs.ToTable("CityUser");
                });
         }
     }

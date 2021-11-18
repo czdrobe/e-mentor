@@ -8,6 +8,11 @@ using Meditatii.Data.Repositories;
 using meditatii.Controllers;
 using Unity;
 using Unity.Injection;
+using Microsoft.AspNet.Identity;
+using meditatii.Models;
+using System.Data.Entity;
+using Unity.Lifetime;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace meditatii.web
 {
@@ -60,6 +65,9 @@ namespace meditatii.web
             container.RegisterType<IAppoitmentData, AppoitmentRepository>();
             container.RegisterType<IAppoitmentService, AppoitmentService>();
 
+            container.RegisterType<IReportData, ReportRepository>();
+            container.RegisterType<IReportService, ReportService>();
+
             container.RegisterType<IMessageData, MessageRepository>();
             container.RegisterType<IMessageService, MessageService>();
 
@@ -77,7 +85,7 @@ namespace meditatii.web
 
             //The current type, Microsoft.AspNet.Identity.IUserStore`2[meditatii.Models.ApplicationUser,System.Int32], is an interface and cannot be constructed. Are you missing a type mapping?
 
-            container.RegisterType<AccountController>(new InjectionConstructor());
+            //container.RegisterType<AccountController>(new InjectionConstructor());
 
         }
     }

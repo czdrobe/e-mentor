@@ -11,7 +11,7 @@ declare var jquery: any;
 @Component({
     moduleId: module.id,
     selector: 'room',
-    templateUrl: 'room.component.html',
+    templateUrl: 'html/room.component.html',
     providers: [UsersService]
 })
 export class RoomComponent {

@@ -111,7 +111,7 @@ var CustomCalendarComponent = /** @class */ (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'yoshimi-calendar',
-            templateUrl: 'calendar.component.html',
+            templateUrl: 'html/calendar.component.html',
             providers: []
         }),
         __metadata("design:paramtypes", [])

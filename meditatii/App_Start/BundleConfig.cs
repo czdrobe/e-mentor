@@ -38,6 +38,12 @@ namespace meditatii
           "~/css/styles.css"
           ));
 
+#if DEBUG
+        BundleTable.EnableOptimizations = false;
+#else
+            BundleTable.EnableOptimizations = true;
+#endif
+
         }
     }
 }

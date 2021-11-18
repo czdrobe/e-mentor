@@ -57,21 +57,24 @@ namespace Meditatii.Data.Repositories
             {
                 try
                 {
-                    //we only have the appoitmentid and the rating
-                    //need to find the appoitment and get the teacher id and studentid
-                    //also check if the current logged user is the student because just this can rate the teacher
+                    var users = context.Set<Models.User>()
+                        .AsQueryable();
 
-                    var appoitment = context.Set<Models.Appoitment>().Where(x => x.Id == rating.AppoitmentId)
-                                .AsNoTracking()
-                                .FirstOrDefault();
+                    var user = MappingHelper.Map<User>(users.Where(x => x.Email  == currentUserEmail).FirstOrDefault());
 
-                    if (appoitment != null && appoitment.Learner.Email == currentUserEmail)
+                    if (user != null)
                     {
-                        context.Database.ExecuteSqlCommand("insert into TeacherRating (AppoitmentId, TeacherId, StudentId, Rating, Added) Values (" + rating.AppoitmentId + ", " + appoitment.TeacherId + "," + appoitment.LearnerId + "," + rating.Rating + "," + "'" + DateTime.Now + "')");
+                        string sql = "insert into TeacherRating (AppoitmentId, TeacherId, StudentId, Rating, Added, RatingText) Values (null, @teacherId, @studentId, @rating, @added, @ratingtext)";
+                        context.Database.ExecuteSqlCommand(sql, 
+                                                                new SqlParameter("@teacherId", rating.TeacherId),
+                                                                new SqlParameter("@studentId", user.Id),
+                                                                new SqlParameter("@rating", rating.Rating),
+                                                                new SqlParameter("@added", DateTime.Now),
+                                                                new SqlParameter("@ratingtext", rating.RatingText));
                         context.SaveChanges();
 
                         //recalculate rating
-                        CalculateRatingForTeacher(appoitment.TeacherId);
+                        CalculateRatingForTeacher(rating.TeacherId);
                     }
                 }
                 catch (Exception ex)
@@ -87,7 +90,10 @@ namespace Meditatii.Data.Repositories
             {
                 try
                 {
-                    decimal newrating = (decimal)context.Set<Models.TeacherRating>().Where(x => x.TeacherId == teacherId).Average(y => y.Rating);
+                    decimal newrating = (decimal)context.Set<Models.TeacherRating>()
+                                                                .Where(x => x.TeacherId == teacherId)
+                                                                .GroupBy(x => x.TeacherId, r => r.Rating)
+                                                                .Select(x => x.Average()).FirstOrDefault();
 
                     var users = context.Set<Models.User>()
                         .AsQueryable();

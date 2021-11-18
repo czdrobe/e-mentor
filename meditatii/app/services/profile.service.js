@@ -43,10 +43,16 @@ var ProfileService = /** @class */ (function () {
     ProfileService.prototype.saveCycles = function (lstCycles) {
         return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
     };
+    ProfileService.prototype.saveCityForCurrentProfie = function (city1, city2, city3, isOnline) {
+        return this.http.post('/api/users/savecityforcurrentprofie', { cityid1: city1, cityid2: city2, cityid3: city3, isOnline: isOnline }, httpOptions);
+    };
     ProfileService.prototype.saveProfileImage = function (image) {
         var formData = new FormData();
         formData.append('profileimage', image.image);
         return this.http.post('/api/users/saveprofileimage', formData);
+    };
+    ProfileService.prototype.getCities = function () {
+        return this.http.get('/api/users/GetCities').pipe(operators_1.map(function (res) { return res; }));
     };
     ProfileService.prototype.handleError = function (error) {
         if (error.error instanceof ErrorEvent) {

@@ -9,16 +9,25 @@ using Meditatii.Core.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Mail;
+using System.Configuration;
+using meditatii.web.Utils;
+using Meditatii.CoreNew.Enums;
 
 namespace meditatii.Controllers.Api
 {
     public class AppoitmentApiController : ApiController
     {
         private IAppoitmentService appoitmentService;
+        private IUsersService usersService;
 
-        public AppoitmentApiController(IAppoitmentService appoitmentService)
+        public AppoitmentApiController(IAppoitmentService appoitmentService, IUsersService usersService)
         {
             this.appoitmentService = appoitmentService;
+            this.usersService = usersService;
         }
 
         [HttpGet]
@@ -96,6 +105,45 @@ namespace meditatii.Controllers.Api
 
             return MappingHelper.Map<SearchResult<AppoitmentChatModel>>(this.appoitmentService.GetChatForAppoitment(appoitmentid, skip, take));
         }
+        
+        [HttpGet]
+        [Route("api/appoitments/acceptByTeacher/{appoitmentId}")]
+        public void AcceptByTeacher(int appoitmentId)
+        {
+            this.appoitmentService.AcceptByTeacher(appoitmentId);
+            //send email to student
+            //TODO get the info about the appoitment - about the student and send email
+            var appoitment = this.appoitmentService.GetAppoitment(appoitmentId);
+
+            string urlappoitment = ConfigurationManager.AppSettings["WebSite.URL"] + "/u/appoitments";
+            string emailbody = EmailHelper.GetEmailTemplate("appoitment-accepted");
+            emailbody = emailbody.Replace("<teacher-firstname>", appoitment.Teacher.FirstName);
+            emailbody = emailbody.Replace("<teacher-lastname>", appoitment.Teacher.LastName);
+            emailbody = emailbody.Replace("<dateandtime>", appoitment.StartDate.ToString());
+            emailbody = emailbody.Replace("<appoitmentsurl>", urlappoitment);
+            
+
+            //appManager.EmailService.SendAsync(new IdentityMessage { Body = emailbody, Destination = userToSendMessage.Email, Subject = "Mesaj nou - eMeditatii.ro" );
+            var email = new MailMessage(new MailAddress(ConfigurationManager.AppSettings["SendEmail.Address"], ConfigurationManager.AppSettings["SendEmail.Alias"]),
+                new MailAddress(appoitment.Learner.Email))
+            {
+                Subject = "Meditatie acceptata de profesor - eMeditatii.ro",
+                Body = emailbody,
+                IsBodyHtml = true
+            };
+
+            var client = new SmtpClient();
+            client.SendCompleted += (s, e) =>
+            {
+                client.Dispose();
+                this.appoitmentService.SetAppoitmentNotification(appoitmentId, AppoitmentNotification.NotificationAccepted, true);
+            };
+            Task t = Task.Run(async () =>
+            {
+                await client.SendMailAsync(email);
+            });
+            t.Wait();
+        }
 
         [HttpGet]
         [Route("api/appoitments/GetRemaningTimeForAppoitment/{appoitmentId}")]
@@ -110,13 +158,49 @@ namespace meditatii.Controllers.Api
         [Route("api/appoitments/savepayments")]
         public void SavePayments([FromBody]int[] lstappoitmentid)
         {
-            this.appoitmentService.Payment(lstappoitmentid, HttpContext.Current.User.Identity.Name);
+            this.appoitmentService.CreatePaymentWithStatusPaid(lstappoitmentid, HttpContext.Current.User.Identity.Name);
+        }
+
+        [Route("api/appoitments/attachment")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UploadSingleFile()
+        {
+            var root = HttpContext.Current.Server.MapPath("~/img/attachments");
+
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                return StatusCode(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var filesReadToProvider = await Request.Content.ReadAsMultipartAsync();
+
+            foreach (var stream in filesReadToProvider.Contents)
+            {
+                var fileBytes = await stream.ReadAsByteArrayAsync();
+            }
+
+            return StatusCode(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("api/appoitments/getcurrentpayment")]
+        public PaymentModel GetCurrentPayment()
+        {
+            return MappingHelper.Map<PaymentModel>(this.appoitmentService.GetCurrentPayment(HttpContext.Current.User.Identity.Name));
+        }
+
+
+        [HttpGet]
+        [Route("api/appoitments/getpaymentforuser")]
+        public SearchResult<PaymentModel> GetPaymentsForUser()
+        {
+            return MappingHelper.Map<SearchResult<PaymentModel>>(this.appoitmentService.GetPaymentsForUser(System.Web.HttpContext.Current.User.Identity.Name));
         }
     }
+}
 
 
     public class AppoitmentIdMocker
     {
         int[] Lstappoitmentid { get; set;}
     }
-}

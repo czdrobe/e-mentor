@@ -1,0 +1,170 @@
+﻿<!--<div class="row teachersfilter paddingtop20">
+    <div>
+        <ul class="list">
+            <li *ngFor="let category of categories; let i = index">
+                <a (click)="selectMainCategory(category.Id)">{{category.Name}}</a> 
+                <ul *ngIf="category.Id == selectedMainCategory" class="list">
+                    <li *ngFor="let subCategory of subCategories; let i = index">
+                        <a (click)="selectCategory(subCategory.Id)">{{subCategory.Name}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>-->
+
+<div class="row teachers paddingtop20">
+    
+    <div class="col-md-12 col-sm-10 main-content">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="d-inline-block" ngbDropdown autoClose="outside" #myDrop="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_materia"  ngbDropdownAnchor (click)="myDrop.toggle()">
+                        {{selectedCategoryName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_materia">
+                        <div class="px-4 py-2">
+                            <input type="search" class="form-control"  [(ngModel)]="searchMaterii" name="searchMaterii" placeholder="Cauta materia">
+                        </div>
+                        <ng-container *ngIf="categories | filterByMateria:searchMaterii as result ">
+                            <div id="menuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subCategory of result; let i = index" (click)="selectCategory(subCategory.Id, subCategory.Name); myDrop.close();">{{subCategory.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="d-inline-block" ngbDropdown autoClose="outside" #myCity="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_city"  ngbDropdownAnchor (click)="myCity.toggle()">
+                        {{selectedCityName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_city">
+                        <div class="px-4 py-2">
+                            <input type="search" class="form-control"  [(ngModel)]="searchCity" name="searchCity" placeholder="Cauta">
+                        </div>
+                        <ng-container *ngIf="cities | filterByMateria:searchCity as result ">
+                            <div id="citiesMenuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity(subCities.Id, subCities.Name); myCity.close();">{{subCities.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+                <!--
+                <div class="d-inline-block" ngbDropdown autoClose="outside" #myCycle="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_cycle"  ngbDropdownAnchor (click)="myCycle.toggle()">
+                        {{selectedCycleName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_cycle">
+                        <div class="px-4 py-2">
+                            <input type="search" class="form-control"  [(ngModel)]="searchCycle" name="searchCycle" placeholder="Cauta">
+                        </div>
+                        <ng-container *ngIf="cycles | filterByMateria:searchMaterii as result ">
+                            <div id="cyckesMenuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subCycles of result; let i = index" (click)="selectCycle(subCycles.Id, subCycles.Name); myCycle.close();">{{subCycles.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+                -->
+                <button class="btn btn-link ml-2" (click)="resetFilters()" >Reseteaza filtrele</button>
+            </div>
+<!--
+            <div class="col-md-5">
+                <div>Ordoneaza dupa:</div>
+                <div class="d-inline-block" ngbDropdown autoClose="outside" #myOrder="ngbDropdown">
+                    <button class="btn btn-secondary mr-2" id="dropdown_order"  ngbDropdownAnchor (click)="myOrder.toggle()">
+                        {{selectedOrderName}}
+                    </button>                    
+                    <div ngbDropdownMenu aria-labelledby="dropdown_order">
+                        <ng-container *ngIf="orders | filterByMateria:searchMaterii as result ">
+                            <div id="orderMenuItems">
+                                <button class="dropdown-item" type="button"  *ngFor="let subOrder of result; let i = index" (click)="selectOrder(subOrder.Id, subOrder.Name); myOrder.close();">{{subOrder.Name}}</button>
+                            </div>
+                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+-->
+        </div>
+
+        <div class="row">
+            
+        </div>
+        <!--Main content code to be written here -->
+        <h2>Lista profesorilor {{selectedCategoryNameWithoutMain==null || selectedCategoryNameWithoutMain == '' ? '' : '(' + selectedCategoryNameWithoutMain + ')'}} ({{nrOfTeachers}} profesori) </h2>
+        <div>
+            <div *ngFor="let teacher of teachers">
+                <article class="row teacherlist-item">
+                    <div class="col-md-1"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/' + teacher.UserCode : '/Account/login'"><img src="{{teacher.ProfileImageUrl}}" class="avatar" /></a></div>
+                    <div class="col-md-9">
+                        <div id="name" class="m-0-top-bottom display-inline-block"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/'+ teacher.UserCode : '/Account/login'"> {{teacher.FirstName}}  {{isCurrentUserIsLoggedIn ? teacher.LastName : ''}} </a></div>
+                        <div class="star-rating-small">
+                            <div class="star-rating-small-cover">
+                                <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
+                            </div>
+                        </div>
+                         
+                        <div id="cities" class="m-0-top-bottom">
+                            <img src="/img/point.png" style="float:left;margin-right: 5px;;">
+                            <div *ngFor="let city of teacher.Cities;let last = last" class="category-item">{{city.Name}}{{last? "" : ","}}</div>  
+                            <div id="online" class="category-item" *ngIf="teacher.AlsoOnline"> - <img src="/img/online.png">Meditatii oferite si online</div> 
+                        </div>
+                       
+                        <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div> </div>
+                        <div id="cycles" class="m-0-top-bottom"><div *ngFor="let cycle of teacher.Cycles;let last = last" class="category-item">{{cycle.Name}}{{last? "" : ","}}</div> </div>
+                        <div class="price">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>
+                        <div class="description">{{ (teacher.Description != null && teacher.Description.length>100)? (teacher.Description | slice:0:100)+'..':(teacher.Description) }}</div> 
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- pager -->
+            <ul *ngIf="pager.pages && pager.pages.length > 1" class="pagination">
+                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link" (click)="setCurrentPage(1)">Prima Pagina</a>
+                </li>-->
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link" (click)="setCurrentPage(pager.currentPage - 1)">Pagina anterioara</a>
+                </li>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link" (click)="setCurrentPage(page)">{{page}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link" (click)="setCurrentPage(pager.currentPage + 1)">Pagina urmatoare</a>
+                </li>
+                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link" (click)="setCurrentPage(pager.totalPages)">Ultima pagina</a>
+                </li>-->
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Trimite mesaj</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="newMessage" required rows="5" style="width:100% !important; max-width: 100% !important;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="sendMessage();c('Save click');">Save</button>
+    </div>
+  </ng-template>

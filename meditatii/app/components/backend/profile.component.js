@@ -36,6 +36,7 @@ var ProfileComponent = /** @class */ (function () {
         this.cropperSettings.rounded = true;
         this.data = {};
         this.editmodeprofile = false;
+        this.editmodecity = false;
     }
     ProfileComponent.prototype.changed = function () {
     };
@@ -43,8 +44,14 @@ var ProfileComponent = /** @class */ (function () {
         var _this = this;
         this.mytime = new Date();
         this.ismeridian = true;
+        this.selectedCityName1 = "Alege o localitate";
+        this.selectedCityName2 = "Alege o localitate";
+        this.selectedCityName3 = "Alege o localitate";
         this.profileService.getCurrentProfile().subscribe(function (results) {
             _this.model = results;
+            _this.searchCity = "";
+            _this.bIsOnline = _this.model.AlsoOnline;
+            _this.resetEditCity();
             if (_this.model.Dob != null) {
                 var dob = new Date(_this.model.Dob);
                 _this.model.Dob = dob;
@@ -66,6 +73,13 @@ var ProfileComponent = /** @class */ (function () {
                     element.selected = foundElements.length > 0;
                 });
                 _this.cycles = cycles;
+            });
+            // load cities
+            _this.profileService.getCities().subscribe(function (results) {
+                console.log(results);
+                _this.lstCity = results;
+                _this.lstCity2 = results;
+                _this.lstCity3 = results;
             });
         });
         this.profileService.getAvailability().subscribe(function (results) {
@@ -134,20 +148,58 @@ var ProfileComponent = /** @class */ (function () {
             }
         });
     };
+    ProfileComponent.prototype.selectCity1 = function (id, cityName) {
+        this.selectedCity1 = id;
+        this.selectedCityName1 = cityName;
+    };
+    ProfileComponent.prototype.selectCity2 = function (id, cityName) {
+        this.selectedCity2 = id;
+        this.selectedCityName2 = cityName;
+    };
+    ProfileComponent.prototype.selectCity3 = function (id, cityName) {
+        this.selectedCity3 = id;
+        this.selectedCityName3 = cityName;
+    };
+    ProfileComponent.prototype.resetCity1 = function () {
+        this.selectedCity1 = 0;
+        this.selectedCityName1 = "Alege o localitate";
+    };
+    ProfileComponent.prototype.resetCity2 = function () {
+        this.selectedCity2 = 0;
+        this.selectedCityName2 = "Alege o localitate";
+    };
+    ProfileComponent.prototype.resetCity3 = function () {
+        this.selectedCity3 = 0;
+        this.selectedCityName3 = "Alege o localitate";
+    };
+    ProfileComponent.prototype.saveCity = function () {
+        if ((this.selectedCity1 === undefined || this.selectedCity1 <= 0) && !this.bIsOnline) {
+            this.errorCity = "Te rog alege un oras sau meditatii online";
+        }
+        else {
+            this.errorCity = "";
+            this.profileService.saveCityForCurrentProfie(this.selectedCity1, this.selectedCity2, this.selectedCity3, this.bIsOnline).subscribe(function (result) {
+                console.log("Saved");
+                window.location.href = window.location.href + "?refreshuser=1";
+            });
+        }
+    };
     ProfileComponent.prototype.saveProfile = function () {
-        this.saveProfileToDB();
-        this.editProfile();
+        this.saveProfileToDB(true);
+        //this.editProfile();
+        //reload page to refresh user in session
+        //this.router.navigate(['/u/profile'], { queryParams: { refreshuser: 1 } });
     };
     ProfileComponent.prototype.saveAddress = function () {
-        this.saveProfileToDB();
+        this.saveProfileToDB(false);
         this.editAddress();
     };
     ProfileComponent.prototype.saveDescription = function () {
-        this.saveProfileToDB();
+        this.saveProfileToDB(false);
         this.editDescription();
     };
     ProfileComponent.prototype.savePrice = function () {
-        this.saveProfileToDB();
+        this.saveProfileToDB(false);
         this.editPrice();
     };
     ProfileComponent.prototype.saveAva = function () {
@@ -170,14 +222,28 @@ var ProfileComponent = /** @class */ (function () {
             console.log("Saved");
         });
     };
-    ProfileComponent.prototype.saveProfileToDB = function () {
+    ProfileComponent.prototype.saveProfileToDB = function (reload) {
         if (this.model.Dob != null) {
+            if (typeof this.model.Dob == "string") {
+                var dobFromString = new Date(this.model.Dob);
+                this.model.Dob = dobFromString;
+            }
             var dob = new Date(Date.UTC(this.model.Dob.getFullYear(), this.model.Dob.getMonth(), this.model.Dob.getDate()));
             this.model.Dob = dob;
         }
         this.profileService.saveCurrentProfie(this.model).subscribe(function (result) {
             console.log("Saved");
+            if (reload) {
+                window.location.href = window.location.href + "?refreshuser=1";
+            }
         });
+    };
+    ProfileComponent.prototype.editCity = function () {
+        this.editmodecity = !this.editmodecity;
+        if (this.editmodecity) {
+            this.bIsOnline = this.model.AlsoOnline;
+            this.copymodel = JSON.parse(JSON.stringify(this.model));
+        }
     };
     ProfileComponent.prototype.editProfile = function () {
         this.editmodeprofile = !this.editmodeprofile;
@@ -213,6 +279,27 @@ var ProfileComponent = /** @class */ (function () {
         this.model = JSON.parse(JSON.stringify(this.copymodel));
         this.editProfile();
     };
+    ProfileComponent.prototype.cancelEditCity = function () {
+        this.errorCity = "";
+        this.model = JSON.parse(JSON.stringify(this.copymodel));
+        this.bIsOnline = this.model.AlsoOnline;
+        this.resetEditCity();
+        this.editCity();
+    };
+    ProfileComponent.prototype.resetEditCity = function () {
+        if (this.model.Cities.length > 0) {
+            this.selectedCity1 = this.model.Cities[0].Id;
+            this.selectedCityName1 = this.model.Cities[0].Name;
+        }
+        if (this.model.Cities.length > 1) {
+            this.selectedCity2 = this.model.Cities[1].Id;
+            this.selectedCityName2 = this.model.Cities[1].Name;
+        }
+        if (this.model.Cities.length > 2) {
+            this.selectedCity3 = this.model.Cities[2].Id;
+            this.selectedCityName3 = this.model.Cities[2].Name;
+        }
+    };
     ProfileComponent.prototype.cancelEditAddress = function () {
         this.model = JSON.parse(JSON.stringify(this.copymodel));
         this.editAddress();
@@ -223,7 +310,7 @@ var ProfileComponent = /** @class */ (function () {
     };
     ProfileComponent.prototype.cancelEditPrice = function () {
         this.model = JSON.parse(JSON.stringify(this.copymodel));
-        this.editDescription();
+        this.editPrice();
     };
     ProfileComponent.prototype.cancelAva = function () {
         this.model = JSON.parse(JSON.stringify(this.copymodel));
@@ -285,7 +372,7 @@ var ProfileComponent = /** @class */ (function () {
     ProfileComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            templateUrl: 'profile.component.html',
+            templateUrl: 'html/profile.component.html',
             providers: [cycle_service_1.CycleService, category_service_1.CategoryService, profile_service_1.ProfileService, ng2_img_cropper_1.ImageCropperComponent, { provide: ng_bootstrap_2.NgbDateAdapter, useClass: ng_bootstrap_2.NgbDateNativeAdapter }],
             selector: 'ngbd-datepicker-popup'
         }),

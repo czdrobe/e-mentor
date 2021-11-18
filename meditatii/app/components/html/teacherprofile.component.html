@@ -1,0 +1,231 @@
+﻿<div class="profile-container paddingtop20" *ngIf="teacher">
+	<section class="intro section-wrapper">
+        <div class="container-fluid">
+            <div class="row align-items-end">
+                <div class="col-md-10">
+                   <h2> <img src="{{teacher.ProfileImageUrl}}"  class="avatar"/>
+                    {{teacher.FirstName}} {{teacher.LastName}} </h2>
+                </div>
+                <div class="col-md-2">
+                    <div class="m-sm-bottom m-0-top">
+                        
+                            <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" (click)="open(content);" *ngIf="isCurrentUserIsLoggedIn">
+                                <span>Trimite mesaj</span>
+                            </button>
+                        
+                        
+                            <button class="btn btn-block btn-secondary btn-sm m-0-top m-0-left-right m-sm-bottom" (click)="getPhoneNumber();" *ngIf="0 == 1 && isCurrentUserIsLoggedIn && teacher.PhoneNumber != null && teacher.PhoneNumber != ''  " id="phonenumber">
+                                <span>{{phoneNumber}}</span>
+                            </button>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="star-rating-small mb-3">
+                    <div class="star-rating-small-cover">
+                        <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
+                    </div>
+            </div>
+            <div class="row">
+                <div id="cities" class="col-md-12"><img src="/img/point.png" style="float:left;margin-right: 5px;;"><div *ngFor="let city of teacher.Cities;let last = last" class="category-item">{{city.Name}}{{last? "" : ","}}</div>  <div id="online" class="category-item" *ngIf="teacher.AlsoOnline"> - <img src="/img/online.png"> Meditatii oferite si online</div> </div>
+            </div>
+
+            <div class="row">
+                    <div class="col-md-12"> 
+                        <div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="cycles"> 
+                    <div *ngFor="let cycle of teacher.Cycles;let last = last" class="category-item">{{cycle.Name}}{{last? "" : ","}}</div>
+                </div>
+            </div>
+            <div class="row bottomline">
+                <div class="col-md-12" id="cycles"> 
+                    <div class="price" style="font-weight: 600;">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>
+                </div>
+            </div>
+            <div class="row bottomline-dark">
+                    <div class="col-md-12 mb-2" style="white-space: pre-line;">
+                        <h4>Descriere</h4>
+                            {{teacher.Description}}
+                    </div>
+            </div>
+            <div class="row bottomline">
+                <div class="col-md-6 float-left"><small class="float-left">Adaugat la data: {{teacher.Added | date:'yyyy-MM-dd'}}</small></div>
+                <div class="col-md-6 float-right"><small class="float-right">Vizualizari: {{teacher.NrOfVisitors}}</small></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="review-section section-wrapper">
+        <div class="container-fluid">
+            <div class="row align-items-end bottomline">
+                <div class="col-md-10">
+                    <h4>Review-uri ({{nrOfReviews}} de review-uri)</h4>
+                </div>
+                <div class="col-md-2" *ngIf="canAddReview">
+                    <button class="btn btn-block btn-primary btn-sm m-0-top m-0-left-right m-sm-bottom" (click)="open(teacherrating, { windowClass: 'teacherratingmodal' });" *ngIf="isCurrentUserIsLoggedIn">
+                        <span>Adauga un review</span>
+                    </button>
+                </div>
+            </div>
+
+            <div *ngFor="let rating of lstRatings " class="row bottomline pt-3 pb-3">
+                <div class="col-md-2">
+                    <a><img src="{{rating.Student.ProfileImageUrl}}"  class="avatar"/></a>
+                    <div class="review-user-meta">
+                        <p class="review-author">{{rating.Student.FirstName}} {{rating.Student.LastName}}</p>
+                        <p class="small text-muted mrg-sep-none">{{rating.Added | date: 'yyyy-MM-dd'}}</p>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="star-rating-small-cover">
+                        <div class="star-rating-small-progress" [style.width.%]="rating.Rating * 10"></div>
+                    </div>
+                    <div class="review-text">
+                        {{rating.RatingText}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="recomandation-section section-wrapper" *ngIf="!teacher.IsSubscriptionOk">
+        <div class="container-fluid">
+            <div class="row align-items-end bottomline">
+                <div class="col-md-10">
+                    <h4>Meditatori recomandați</h4>
+                </div>
+            </div>
+
+            <div *ngFor="let teacher of lstRecomandations" class="row bottomline pt-3 pb-3">
+                <div class="col-sm-12 col-md-6">
+                    <div class="miniature">
+                        <div class="image"><a><img src="{{teacher.ProfileImageUrl}}"  class="avatar"/></a></div>
+
+                        <div id="name" class="m-0-top-bottom display-inline-block"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/'+ teacher.UserCode : '/Account/login'"> {{teacher.FirstName}}  {{isCurrentUserIsLoggedIn ? teacher.LastName : ''}} </a></div>
+                        <div class="star-rating-small">
+                            <div class="star-rating-small-cover">
+                                <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
+                            </div>
+                        </div>
+                        <div id="cities" class="m-0-top-bottom"><img src="/img/point.png" style="float:left;margin-right: 5px;;"><div *ngFor="let city of teacher.Cities;let last = last" class="city-item">{{city.Name}}{{last? "" : ","}}</div> <div id="online" class="online" *ngIf="teacher.AlsoOnline"> - <img src="/img/online.png"> Meditatii oferite si online</div> </div>
+                        <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div> </div>
+                        <div class="price">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>    
+
+                        <div *ngIf="false"  class="description">{{ (teacher.Description != null && teacher.Description.length>100)? (teacher.Description | slice:0:100)+'..':(teacher.Description) }}</div> 
+                    </div> <!-- .miniature -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+</div>
+
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Trimite mesaj</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+            <textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="newMessage" required rows="5" style="width:100% !important; max-width: 100% !important;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="sendMessage();c('Save click');">Save</button>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmreservation let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title">Confirma programarea</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+                <div class="row align-items-end">
+                    <div class="col-md-4">Nume profesor:</div>
+                    <div class="col-md-8">{{teacher.FirstName}} {{teacher.LastName}}</div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col-md-4">Data:</div>
+                    <div class="col-md-8">{{selectedDateToDisplay}} </div>
+                </div>
+                <div class="row align-items-end pb-3">
+                    <div class="col-md-4">Ora:</div>
+                    <div class="col-md-8">{{selectedTime}}:00</div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col-md-12"><input type="checkbox" name="chkAgree" id="chkAgree" [(ngModel)]="agreeCheckBox"><span class="pl-3">Sunt de acord cu <a hef="#">termenii si conditiile</a></span></div>
+                </div>    
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="saveAppoitment();">Confirm programarea</button>
+        </div>
+      </ng-template>
+
+      <ng-template #teacherrating let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">Acorda o nota</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    Spune-ti parerea acordand o nota profesorului.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Te rugăm să folosești următoarea scală 
+                </div>
+            </div>
+            <div class="row pb-3">
+                <div class="col-md-12">
+                    0 = foate slab, 10 = foarte buna
+                </div>
+            </div>    
+            <div class="row d-flex justify-content-center bg-secondary text-white">
+                <div class="col-md-1">0</div>
+                <div class="col-md-1">1</div>
+                <div class="col-md-1">2</div>
+                <div class="col-md-1">3</div>
+                <div class="col-md-1">4</div>
+                <div class="col-md-1">5</div>
+                <div class="col-md-1">6</div>
+                <div class="col-md-1">7</div>
+                <div class="col-md-1">8</div>
+                <div class="col-md-1">9</div>
+                <div class="col-md-1">10</div>
+            </div>
+            <div class="row d-flex justify-content-center bg-light">
+                <div class="col-md-1"><input type="radio" name="rate" id="rate0" (click)="selectRate(0)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate1" (click)="selectRate(1)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate2" (click)="selectRate(2)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate3" (click)="selectRate(3)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate4" (click)="selectRate(4)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate5" (click)="selectRate(5)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate6" (click)="selectRate(6)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate7" (click)="selectRate(7)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate8" (click)="selectRate(8)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate9" (click)="selectRate(9)"></div>
+                <div class="col-md-1"><input type="radio" name="rate" id="rate10" (click)="selectRate(10)"></div>
+            </div>
+            <div class="row pb-3 pt-3">
+                <textarea rows="10" placeholder="Descrie experiența ta cu profesorul" 
+                cols="100" class="form-control" id="Description" [(ngModel)]="ratingText" name="Description" style="max-width: 100% !important;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="saveRate();">Salveaza nota acordata</button>
+        </div>
+    </ng-template>

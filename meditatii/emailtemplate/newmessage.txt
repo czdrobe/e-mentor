@@ -1,0 +1,10 @@
+Ai primit un mesaj nou de la: <from-firstname> <from-lastname>.
+
+Vezi si raspunde mesajului <a href="<readmessageurl>">aici</a>
+
+
+
+
+
+
+

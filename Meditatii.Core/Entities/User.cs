@@ -66,9 +66,29 @@ namespace Meditatii.Core.Entities
 
         public decimal? Price { get; set; }
 
+        public int ServiceFee { get; set; }
+
+        public int Tax { get; set; }
+
+        public bool Active { get; set; }
+
+        public int NrOfVisitors { get; set; }
+
+        public int NrOfPhoneViews { get; set; }
+
+        public DateTime Added { get; set; }
+
+        public bool AlsoOnline { get; set; }
+
+        public DateTime? SubscriptionStartDate { get; set; }
+
+        public DateTime? SubscriptionEndDate { get; set; }
+
         public ICollection<Category> Categories { get; set; }
 
         public ICollection<Cycle> Cycles { get; set; }
+
+        public ICollection<City> Cities { get; set; }
 
     }
 }

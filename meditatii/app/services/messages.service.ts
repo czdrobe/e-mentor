@@ -18,6 +18,12 @@ export class MessagesService
         return this.http.get('/api/messages/getmessages/' + mentorId + '/' + page).pipe(map(
             (res:any) => res
         ))
+    }
+    
+    getMessagesByMentorCode(mentorId:any, page: number) {
+        return this.http.get('/api/messages/getmessagesbymentorcode/' + mentorId + '/' + page).pipe(map(
+            (res:any) => res
+        ))
 	}
 
 	getMentors()
@@ -34,11 +40,16 @@ export class MessagesService
 		))
     }
     
-    saveMessage(toId:number, body:string)
+    saveMessage(toId:any, body:string)
     {
         var formData = new FormData();
         formData.append('ToUserId',toId.toString());
         formData.append('Body',body);
         return this.http.post('api/messages/SaveNewMessage', {ToUserId : toId.toString(), Body : body}, httpOptions);
+    }
+
+    saveMessageForRequest(requestId:string, message:string)
+    {
+        return this.http.post('api/messages/saveMessageForRequest', {requestId : requestId, message : message}, httpOptions);
     }
 }

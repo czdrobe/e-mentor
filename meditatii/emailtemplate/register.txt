@@ -1,0 +1,10 @@
+Bine aţi venit şi vă mulţumim că v-aţi înregistrat pe eMeditatii.ro <br/>
+<br/>
+Contul tau eMeditatii.ro a fost creat cu succes.<br/>
+<br/>
+Pentru activare te rugam sa dai click pe link-ul urmator: <a href="<callbackurl>">Validare cont.</a><br/>
+<br/>
+Îți dorim o zi excelentă,<br/>
+Echipa eMeditatii.ro
+
+

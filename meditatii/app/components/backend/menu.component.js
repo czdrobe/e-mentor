@@ -22,7 +22,7 @@ var BackEndMenuComponent = /** @class */ (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'backend-menu',
-            templateUrl: 'menu.component.html',
+            templateUrl: 'html/menu.component.html',
             providers: []
         }),
         __metadata("design:paramtypes", [router_1.Router,

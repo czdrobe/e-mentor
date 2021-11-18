@@ -12,14 +12,12 @@ namespace Meditatii.Data.Models
     {
         public Payment()
         {
-            
+
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        public int AppoitmentId { get; set; }
 
         public int LearnerId { get; set; }
 
@@ -28,6 +26,15 @@ namespace Meditatii.Data.Models
         public decimal Amount { get; set; }
 
         public int Status { get; set; }
+
+        public string PaymentTimeStamp { get; set; }
+
+        public string PaymentCRC { get; set; }
+
+        public DateTime? Updated { get; set; } 
+
+        //can be 31, 93, 365 - basically subscription days
+        public int Product { get; set; }
 
         [ForeignKey("LearnerId")]
         public virtual User Learner { get; set; }

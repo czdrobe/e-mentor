@@ -29,7 +29,7 @@ var LoaderComponent = /** @class */ (function () {
     LoaderComponent = __decorate([
         core_1.Component({
             selector: 'app-loader',
-            templateUrl: './app/components/loader.component.html'
+            templateUrl: 'html/loader.component.html'
         }),
         __metadata("design:paramtypes", [loader_service_1.LoaderService])
     ], LoaderComponent);

@@ -11,7 +11,7 @@ export interface CalendarDate {
 @Component({
     moduleId: module.id,
     selector: 'yoshimi-calendar', 
-    templateUrl: 'calendar.component.html',
+    templateUrl: 'html/calendar.component.html',
     providers: []
 })
 export class CustomCalendarComponent implements OnInit, OnChanges {

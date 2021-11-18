@@ -1,0 +1,3 @@
+Meditatia din data/ora <dateandtime> a fost platita de catre <student-firstname> <student-lastname>
+
+Meditatiile se pot verifica <a href="<appoitmentsurl>">aici</a>

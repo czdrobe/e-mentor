@@ -25,7 +25,7 @@ var RoomComponent = /** @class */ (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'room',
-            templateUrl: 'room.component.html',
+            templateUrl: 'html/room.component.html',
             providers: [users_service_1.UsersService]
         }),
         __metadata("design:paramtypes", [users_service_1.UsersService,

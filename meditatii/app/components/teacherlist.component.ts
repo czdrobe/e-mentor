@@ -6,6 +6,7 @@ import { CycleService } from '../services/cycle.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'underscore';
 import { Cycle } from '../types/cycle.type';
+import { City } from '../types/city.type';
 import { Category } from '../types/categories.type';
 import { MessagesService } from '../services/messages.service';
 import {NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -16,21 +17,27 @@ import { PagerService } from '../services/pager.service';
 @Component({
     moduleId: module.id,
     selector: 'teacherlist',
-    templateUrl: 'teacherlist.component.html',
+    templateUrl: 'html/teacherlist.component.html',
     providers: [UsersService, CategoryService, CycleService, PagerService, MessagesService, ProfileService]
 })
 export class TeacherlistComponent {
     searchMaterii:string;
+    searchCity: string;
     searchCycle:string;
     teachers: Teacher[];
+    nrOfTeachers: number;
     categories: Category[];
     subCategories: Category[];
     cycles: Cycle[];
+    cities:City[];
     selectedMainCategory: number;
     selectedCategory: number;
     selectedCategoryName: string;
+    selectedCategoryNameWithoutMain: string;
     selectedCycle: number;
+    selectedCity: number;
     selectedCycleName: string;
+    selectedCityName: string;
     // pager object
     pager: any = {};
     currentpage: number;
@@ -38,6 +45,9 @@ export class TeacherlistComponent {
     closeResult:string;
     newMessage: string;
     isCurrentUserIsLoggedIn: boolean;
+    selectedOrderName:string;
+    selectedOrder:number;
+    orders:Order[];
 
     constructor(
         private userService: UsersService,
@@ -52,12 +62,16 @@ export class TeacherlistComponent {
         //private ddService: NgbDropdown,
     )
     {
-        
+        this.orders = [ {Id:1, Name:'Cele mai populare'}, {Id:2, Name:'Review-uri'}, {Id:3, Name:'Cele mai noi'}];
     }
 
     ngOnInit() {
         this.selectedCategoryName = "Alege o materie";
         this.selectedCycleName = "Alege ciclul scolar";
+        this.selectedOrderName = "Cele mai populare";
+        this.selectedCityName = "Alege o localitate";
+
+        this.selectedOrder = 1;
         
         // load main categories
         this.profileService.getCurrentProfile().subscribe((profile:any) => {
@@ -66,6 +80,7 @@ export class TeacherlistComponent {
                 console.log(cats);
                 this.categories = cats;
                 this.searchMaterii = ""; //in fact we reset the search
+                this.searchCity = "";
 
                 this.activateRoute.queryParams.subscribe(params => {
                     if (params.hasOwnProperty("maincategory"))
@@ -78,6 +93,12 @@ export class TeacherlistComponent {
                     }
                     if (params.hasOwnProperty("cycle")) {
                         this.selectedCycle = params.cycle;
+                    }
+                    if (params.hasOwnProperty("city")) {
+                        this.selectedCity = params.city;
+                    }
+                    if (params.hasOwnProperty("order")) {
+                        this.selectedOrder = params.order;
                     }
 
                     this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
@@ -92,11 +113,31 @@ export class TeacherlistComponent {
             console.log(cycles);
             this.cycles = cycles;
         })
+
+        // load cities
+        this.profileService.getCities().subscribe((cities:any) => {
+            console.log(cities);
+            this.cities = cities;
+        })        
+    }
+
+    resetFilters()
+    {
+        this.selectedOrderName = "Cele mai populare";
+        this.selectedCategoryName = "Alege o materie";
+        this.selectedCycleName = "Alege ciclul scolar";
+        this.selectedCityName = "Alege o localitate";
+        this.selectedMainCategory = null;
+        this.selectedCategory = null;
+        this.selectedCycle = null;
+        this.selectedCity = null;
+        this.currentpage = 1;
+        this.updateUrl();
     }
 
     updateUrl()
     {
-        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
+        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
     }
 
     selectMainCategory(id: number)
@@ -104,9 +145,7 @@ export class TeacherlistComponent {
         console.log('main');
         this.selectedMainCategory = id;
         this.categoryService.getSubCategories(id).subscribe((cats:any) => {
-            //console.log('subCategories:' + cats);
             this.subCategories = cats
-
             this.updateUrl();
         })
     }
@@ -116,10 +155,17 @@ export class TeacherlistComponent {
         //this.ddService.
         this.selectedCategory = id;
         this.selectedCategoryName = categorytName;
+        this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') +3, categorytName.length);
+        this.currentpage = 1;
+        this.updateUrl();        
+    }
+
+    selectOrder(id: number, orderName:string)
+    {
+        this.selectedOrder = id;
+        this.selectedOrderName = orderName;
         this.currentpage = 1;
         this.updateUrl();
-
-        
     }
 
     selectCycle(id: number, cycleName: string)
@@ -129,6 +175,15 @@ export class TeacherlistComponent {
         this.currentpage = 1;
         this.updateUrl();
     }
+
+    selectCity(id: number, cityName: string)
+    {
+        this.selectedCity = id;
+        this.selectedCityName = cityName;
+        this.currentpage = 1;
+        this.updateUrl();
+    }
+
 
     setCurrentPage(page: number)
     {
@@ -141,13 +196,15 @@ export class TeacherlistComponent {
             return;
         }
         this.currentpage = page;
-        this.userService.getUsers(this.selectedCategory, this.selectedCycle, page).subscribe((usersResult:any) => {
+        this.userService.getUsers(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe((usersResult:any) => {
             console.log(usersResult);
 
             // get pager object from service
             this.pager = this.pagerService.getPager(usersResult.TotalRows, page);
 
             this.teachers = usersResult.Entities;
+
+            this.nrOfTeachers = usersResult.TotalRows;
         });
     }
 
@@ -191,4 +248,9 @@ interface Teacher {
     email: string,
     description: string,
     Categories: Category[]
+}
+
+interface Order {
+    Id:number,
+    Name:string
 }

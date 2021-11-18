@@ -24,7 +24,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -151,7 +151,99 @@
     <Compile Include="Migrations\201905211504417_add-price-appoitment.Designer.cs">
       <DependentUpon>201905211504417_add-price-appoitment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004221024497_Add-PaymentId-To-Appoitment.cs" />
+    <Compile Include="Migrations\202004221024497_Add-PaymentId-To-Appoitment.Designer.cs">
+      <DependentUpon>202004221024497_Add-PaymentId-To-Appoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004240535372_newupdate.cs" />
+    <Compile Include="Migrations\202004240535372_newupdate.Designer.cs">
+      <DependentUpon>202004240535372_newupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004240540007_newupdate2.cs" />
+    <Compile Include="Migrations\202004240540007_newupdate2.Designer.cs">
+      <DependentUpon>202004240540007_newupdate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004240905055_newupdate1.cs" />
+    <Compile Include="Migrations\202004240905055_newupdate1.Designer.cs">
+      <DependentUpon>202004240905055_newupdate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005041552148_addpayementfileds.cs" />
+    <Compile Include="Migrations\202005041552148_addpayementfileds.Designer.cs">
+      <DependentUpon>202005041552148_addpayementfileds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005072014022_addacceptedbyteacher.cs" />
+    <Compile Include="Migrations\202005072014022_addacceptedbyteacher.Designer.cs">
+      <DependentUpon>202005072014022_addacceptedbyteacher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005151549242_addservicefeeandtax.cs" />
+    <Compile Include="Migrations\202005151549242_addservicefeeandtax.Designer.cs">
+      <DependentUpon>202005151549242_addservicefeeandtax.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005191600428_add-paymentout.cs" />
+    <Compile Include="Migrations\202005191600428_add-paymentout.Designer.cs">
+      <DependentUpon>202005191600428_add-paymentout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008252113067_add-active-to-user.cs" />
+    <Compile Include="Migrations\202008252113067_add-active-to-user.Designer.cs">
+      <DependentUpon>202008252113067_add-active-to-user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008261217517_add-active-to-user2.cs" />
+    <Compile Include="Migrations\202008261217517_add-active-to-user2.Designer.cs">
+      <DependentUpon>202008261217517_add-active-to-user2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009081014062_add-active-to-appoitment.cs" />
+    <Compile Include="Migrations\202009081014062_add-active-to-appoitment.Designer.cs">
+      <DependentUpon>202009081014062_add-active-to-appoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009090831357_add-notifications-to-appoitment.cs" />
+    <Compile Include="Migrations\202009090831357_add-notifications-to-appoitment.Designer.cs">
+      <DependentUpon>202009090831357_add-notifications-to-appoitment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010231430028_addtousersnrofviewsandphoneviews.cs" />
+    <Compile Include="Migrations\202010231430028_addtousersnrofviewsandphoneviews.Designer.cs">
+      <DependentUpon>202010231430028_addtousersnrofviewsandphoneviews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202010261504241_addtousersaddedfiled.cs" />
+    <Compile Include="Migrations\202010261504241_addtousersaddedfiled.Designer.cs">
+      <DependentUpon>202010261504241_addtousersaddedfiled.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011041032373_ratingtext.cs" />
+    <Compile Include="Migrations\202011041032373_ratingtext.Designer.cs">
+      <DependentUpon>202011041032373_ratingtext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109231530123_add-city.cs" />
+    <Compile Include="Migrations\202109231530123_add-city.Designer.cs">
+      <DependentUpon>202109231530123_add-city.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109270926413_city2.cs" />
+    <Compile Include="Migrations\202109270926413_city2.Designer.cs">
+      <DependentUpon>202109270926413_city2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110111557289_subscriptionfields.cs" />
+    <Compile Include="Migrations\202110111557289_subscriptionfields.Designer.cs">
+      <DependentUpon>202110111557289_subscriptionfields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110190902239_requests.cs" />
+    <Compile Include="Migrations\202110190902239_requests.Designer.cs">
+      <DependentUpon>202110190902239_requests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110271011415_citynullonrequest.cs" />
+    <Compile Include="Migrations\202110271011415_citynullonrequest.Designer.cs">
+      <DependentUpon>202110271011415_citynullonrequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110280424458_addcycletorequest.cs" />
+    <Compile Include="Migrations\202110280424458_addcycletorequest.Designer.cs">
+      <DependentUpon>202110280424458_addcycletorequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202111021537525_addproducttopaymen.cs" />
+    <Compile Include="Migrations\202111021537525_addproducttopaymen.Designer.cs">
+      <DependentUpon>202111021537525_addproducttopaymen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\CityUser.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\PaymentOut.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\TeacherRating.cs" />
     <Compile Include="Models\AppoitmentChat.cs" />
@@ -163,6 +255,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\TeacherRatingRepository.cs" />
     <Compile Include="Repositories\TeacherAvailabilityRepository.cs" />
     <Compile Include="Repositories\CycleRepository.cs" />
@@ -261,6 +354,72 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905211504417_add-price-appoitment.resx">
       <DependentUpon>201905211504417_add-price-appoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004221024497_Add-PaymentId-To-Appoitment.resx">
+      <DependentUpon>202004221024497_Add-PaymentId-To-Appoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004240535372_newupdate.resx">
+      <DependentUpon>202004240535372_newupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004240540007_newupdate2.resx">
+      <DependentUpon>202004240540007_newupdate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004240905055_newupdate1.resx">
+      <DependentUpon>202004240905055_newupdate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005041552148_addpayementfileds.resx">
+      <DependentUpon>202005041552148_addpayementfileds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005072014022_addacceptedbyteacher.resx">
+      <DependentUpon>202005072014022_addacceptedbyteacher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005151549242_addservicefeeandtax.resx">
+      <DependentUpon>202005151549242_addservicefeeandtax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005191600428_add-paymentout.resx">
+      <DependentUpon>202005191600428_add-paymentout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008252113067_add-active-to-user.resx">
+      <DependentUpon>202008252113067_add-active-to-user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008261217517_add-active-to-user2.resx">
+      <DependentUpon>202008261217517_add-active-to-user2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009081014062_add-active-to-appoitment.resx">
+      <DependentUpon>202009081014062_add-active-to-appoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009090831357_add-notifications-to-appoitment.resx">
+      <DependentUpon>202009090831357_add-notifications-to-appoitment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010231430028_addtousersnrofviewsandphoneviews.resx">
+      <DependentUpon>202010231430028_addtousersnrofviewsandphoneviews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010261504241_addtousersaddedfiled.resx">
+      <DependentUpon>202010261504241_addtousersaddedfiled.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011041032373_ratingtext.resx">
+      <DependentUpon>202011041032373_ratingtext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109231530123_add-city.resx">
+      <DependentUpon>202109231530123_add-city.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109270926413_city2.resx">
+      <DependentUpon>202109270926413_city2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110111557289_subscriptionfields.resx">
+      <DependentUpon>202110111557289_subscriptionfields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110190902239_requests.resx">
+      <DependentUpon>202110190902239_requests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110271011415_citynullonrequest.resx">
+      <DependentUpon>202110271011415_citynullonrequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110280424458_addcycletorequest.resx">
+      <DependentUpon>202110280424458_addcycletorequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111021537525_addproducttopaymen.resx">
+      <DependentUpon>202111021537525_addproducttopaymen.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

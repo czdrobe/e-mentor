@@ -5,6 +5,7 @@ import * as _ from 'underscore';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import { ProfileService } from '../../services/profile.service';
 
 import { PagerService } from '../../services/pager.service';
 
@@ -12,18 +13,19 @@ import {MessageModel} from '../../models/messageModel'
 
 @Component({
 	moduleId: module.id,
-	templateUrl: 'messages.component.html',
-	providers: [PagerService, MessagesService]
+	templateUrl: 'html/messages.component.html',
+	providers: [PagerService, MessagesService, ProfileService]
 })
 export class MessagesComponent {
 	messages: Message[];
 	mentors: MentorMessage[];
 	pager: any = {};
-	currentMentorId:number;
+	currentMentorId:any;
 	currentpage: number;
 	closeResult:string;
 	private _success = new Subject<string>();
 	successMessage: string;
+	currentUser:any;
 
 	model = new MessageModel("");
 
@@ -33,9 +35,10 @@ export class MessagesComponent {
 		private activateRoute: ActivatedRoute,
 		private pagerService: PagerService,
 		private modalService: NgbModal,
+		private profileService: ProfileService,
     )
     {
-         
+		this.currentMentorId = "";
 	}
 	
 
@@ -59,16 +62,47 @@ export class MessagesComponent {
 		  debounceTime(5000)
 		).subscribe(() => this.successMessage = null);
 
+		this.profileService.getCurrentProfile().subscribe((results:any) => {
+			this.currentUser = results;
+		});
+
 		this.activateRoute.queryParams.subscribe(params => {
 			//this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
 			//this.setPage(this.currentpage);
+			//this.currentMentorId = 
 			this.messagesService.getUsers().subscribe((results:any) => {
 				console.log(results);
 				this.mentors = results;
 				console.log(this.mentors);
 			});
+
+			if (params.hasOwnProperty("user"))
+			{
+				this.currentMentorId=params.user;
+				this.currentpage = 1;
+				this.setPage(this.currentpage);
+			}
 		});
 
+	}
+
+	checkSendMessage(messageContent:any, subscriptionContent:any)
+	{
+		if (this.currentUser == null)
+		{
+			this.router.navigate(['/Account/Login'], { queryParams : {}});
+		}
+
+		if ( this.currentUser.IsTeacher && !this.currentUser.IsSubscriptionOk)
+		{
+			//this.open(content1,null);
+			//this.modalService.open(newmessage);
+			this.modalService.open(subscriptionContent);
+		}
+		else
+		{
+			this.modalService.open(messageContent)
+		}
 	}
 
 	updateUrl() {
@@ -77,7 +111,7 @@ export class MessagesComponent {
 
 	LoadMessages(mentorMessage:MentorMessage) {
 			this.currentpage = 1;
-			this.currentMentorId =mentorMessage.Id;
+			this.currentMentorId =mentorMessage.Code;
 			this.setPage(this.currentpage);
 	}
 
@@ -91,7 +125,7 @@ export class MessagesComponent {
 			return;
 		}
 		this.currentpage = page;
-		this.messagesService.getMessages(this.currentMentorId, page).subscribe((messagesResult:any) => {
+		this.messagesService.getMessagesByMentorCode(this.currentMentorId, page).subscribe((messagesResult:any) => {
 			console.log(messagesResult);
 
 			// get pager object from service
@@ -133,6 +167,7 @@ interface Message
 interface MentorMessage
 {
 	Id: number,
+	Code: string,
 	name: string,
 	nrofmessage: number,
 	isread: boolean

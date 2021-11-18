@@ -1,0 +1,197 @@
+﻿
+<div class="demand-header paddingtop20" *ngIf="request != null">
+    <h1 class="headline main green">Solicitare de meditații</h1>
+    <h2 class="headline medium red"> {{request.Category.Name}}, {{request.City != null ? request.City.Name : ""}}  {{request.IsOnline ? " / Online" : ""}}</h2>
+</div>
+
+<div class="row" *ngIf="request != null">
+    <div class=" col-sm-8 offset-sm-2 col-xs-12">
+        <div class="demand-message">
+            <div class="row ">
+
+                <div class="col-md-8 public-demand-message-container">
+                    <p>
+                        {{request.Description}}
+                        <span class="time-ago">&nbsp;&nbsp;&nbsp; -- {{request.StartDate | niceDateFormatPipe }}</span>
+                    </p>
+                    <div class="message-signature-name">
+                        {{request.Learner.FirstName}}
+                    </div>
+                </div>
+                <ul class="col-md-4 public-demand-info">
+                    <li rel="tooltip" title="" data-original-title="Materie la care ai nevoie de meditații">
+                        <span class="glyphicon glyphicon-book"><img src="/img/book.png"></span> {{request.Category.Name}}
+                    </li>
+                    <li rel="tooltip" title="" data-original-title="Materie">
+                        <span class="glyphicon glyphicon-random"><img src="/img/hat.png"></span> Pentru {{request.Cycle.Name}}
+                    </li>
+                    <li rel="tooltip" title="" data-original-title="Orașul în care ai nevoie de meditații">
+                        <span class="glyphicon glyphicon-home"><img src="/img/point-small.png"></span>
+                            <span *ngIf="request.City != null">{{request.City.Name}}</span>
+                        &nbsp;
+                    </li>
+                    
+					<li rel="tooltip" title="" data-original-title="Online" *ngIf="request.IsOnline">
+                        <span class="glyphicon glyphicon-random"><img src="/img/online-small.png"></span> Online
+                    </li>
+
+                    <li rel="tooltip" title="" data-original-title="Solicitare validă până la:">
+                        <span class="glyphicon glyphicon-calendar"><img src="/img/clock.png"></span>valid până la: <br/> {{request.EndDate | date: medium}}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row public-demand-get-contacts-row" *ngIf="(currentUser == null) || (request != null && currentUser != null && request.Learner.UserCode != currentUser.UserCode)">
+                <div class="col-md-8 public-demand-contacts-button-container">
+                        <a href="javascript:void(0)"  class="btn btn-primary btn-green btn-x btn-lg btn-shrink-xs" (click)="checkSendMessage(newmessage,subscriptions)">
+                            Răspunde solicitării
+                        </a>
+                </div>
+                <div class="col-md-4 public-demand-how-it-works">
+
+                </div>
+            </div>
+        </div> <!-- .demand-message -->
+    </div> <!-- .col-md-8 -->
+
+</div>
+
+<!-- Modal -->
+<ng-template #newmessage let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Mesaj nou</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+		
+		<div class="alert alert-success" id="recommendations-for-teachers">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+			<b>Cum să câștigi un elev cu un răspuns potrivit...</b> <br>
+Nu uita să menționezi: 
+<ul>
+<li>locul și timpul meditației voastre</li>
+<li>ceva mai mult despre experiența și calitățile tale</li>
+<li>recompensa așteptată pentru lecțiile tale</li>	
+</ul>
+		</div>
+
+		<textarea placeholder="Mesaj" name="newMessage" id="newMessage" [(ngModel)]="newMessage" required style="width:100%;max-width: 100%;"></textarea>
+	</div>
+	<div class="modal-footer">
+	  <button type="button" class="btn btn-outline-dark" (click)="sendMessage();d('Cross click');">Trimite mesajul</button>
+	</div>
+  </ng-template>
+
+  <ng-template #subscriptions let-c="close" let-d="dismiss">
+	<div class="modal-header">
+	  <h4 class="modal-title">Abonamente</h4>
+	  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+
+		<div class="row package-list">
+			<div class="col-md-4 col-sm-6">
+				<div class="package-container package-1">
+					<strong class="package-name">
+						1 lună
+					</strong>
+					<span class="price">
+						39,00RON
+					</span>
+					<p class="billing-frequency">facturare lunară</p>
+					<span class="cancel-anytime">
+						anulează oricând
+					</span>
+					<a class="btn btn-block activate-package-btn" href="/payment/31" id="activate-package-btn-31">
+						rezervă abonament
+					</a>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="package-container package-2">
+					<strong class="package-name">
+						3 luni
+					</strong>
+					<span class="price">
+						69,00RON
+					</span>
+					<p class="billing-frequency">facturare la fiecare 3 luni</p>
+					<span class="cancel-anytime">
+						anulează oricând
+					</span>
+					<a class="btn btn-block activate-package-btn" href="/payment/93" id="activate-package-btn-93">
+						rezervă abonament
+					</a>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="package-container package-3">
+					<strong class="package-name">
+						1 an
+					</strong>
+					<span class="price">
+						179,00RON
+					</span>
+					<p class="billing-frequency">facturare anuală</p>
+					<span class="cancel-anytime">
+						anulează oricând
+					</span>
+					<a class="btn btn-block activate-package-btn" href="/payment/365" id="activate-package-btn-365">
+						rezervă abonament
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="row package-benefits">
+			<div class="col-md-12">
+				<div id="carousel-benefits" class="row package-benefits in-modal carousel slide" data-ride="carousel" data-interval="10000">
+					<div class="benefit-icons">
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit no-ads">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="0">
+								<div class="benefit-header">Niciun alt meditator pe profilul tău</div>
+							</a>
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit topping-profiles">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="1">
+								<div class="benefit-header">Top clasament pe eMeditatii.ro </div>
+							</a>
+						</div>
+						<div class="clearfix d-block d-sm-none"></div>
+	
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit no-subscription">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="2">
+								<div class="benefit-header">Anulează oricând, fără contract fix</div>
+							</a>
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit money-back">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="3">
+								<div class="benefit-header">Garanția returnării banilor</div>
+							</a>
+						</div>
+						<div class="clearfix d-block d-sm-none"></div>
+	
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit recommended active">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="4">
+								<div class="benefit-header">Mai multă vizibilitate pentru profilul tău</div>
+							</a>
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-6 benefit student-contacts">
+							<a href="#" data-target="#carousel-benefits" data-slide-to="5">
+								<div class="benefit-header">Găsește câți elevi vrei</div>
+							</a>
+						</div>
+					</div>
+	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+	  
+	</div>
+  </ng-template>

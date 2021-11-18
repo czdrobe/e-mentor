@@ -1,19 +1,44 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+@if (Request.IsAuthenticated && ViewBag.user != null)
 {
+
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
         @Html.AntiForgeryToken()
 
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Html.Raw(User.Identity.GetUserName())</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-                <a class="dropdown-item" href="/u/messages">Mesaje</a>
-                <a class="dropdown-item" href="/u/appoitments">Programari</a>
-                <a class="dropdown-item" href="/u/profile">Profil</a>
-                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Iesire din cont</a>
-            </div>
-        </li>
+<li class="nav-item dropdown">
+
+    @if (ViewBag.user.Active)
+    {
+    <a class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @Html.Raw(User.Identity.GetUserName())
+            @if ( String.IsNullOrEmpty(ViewBag.user.FirstName) || String.IsNullOrEmpty(ViewBag.user.LastName) || (ViewBag.user.IsTeacher && ViewBag.user.Cities.Count <= 0  && !ViewBag.user.AlsoOnline)  )
+            {
+                <span class="badge" title="Profilul este incomplet">i</span>
+            }
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdown04">
+            <a class="dropdown-item" href="/u/messages">Mesaje</a>
+            <a class="dropdown-item" href="/u/profile">Profil</a>
+            @if (ViewBag.user.IsTeacher)
+            {
+                <a class="dropdown-item" href="/u/abonamentul-meu">Abonamentul meu</a>
+                <a class="dropdown-item" href="/u/abonamente">Abonamente si preturi</a>
+             }
+            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Iesire din cont</a>
+        </div>
+    }
+    else
+    {
+        <a class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Html.Raw(User.Identity.GetUserName())
+            <span class="badge">I</span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdown04">
+            <a class="dropdown-item" style="color:red !important;">Contul nu este activat</a>
+            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Iesire din cont</a>
+        </div>
+    }
+</li>
     }
 }
 else

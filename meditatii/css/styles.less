@@ -21,7 +21,7 @@
   font-weight:400;
   src: url('../fonts/MarkPro.eot'); /* IE9 Compat Modes */
   src: url('../fonts/MarkPro.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('../fonts/MarkPro.woff2') format('woff2'), /* Super Modern Browsers */
+       
        url('../fonts/MarkPro.woff') format('woff'), /* Pretty Modern Browsers */
        url('../fonts/MarkPro.ttf')  format('truetype'), /* Safari, Android, iOS */
        url('../fonts/MarkPro.svg#svgFontName') format('svg'); /* Legacy iOS */
@@ -190,6 +190,7 @@ input,select,textarea {max-width: 280px;}
     height: 12px;
 }
 
+
 a{
     color:@brand-color !important;
     outline:none;
@@ -246,6 +247,13 @@ teacherlist {
       {
         display: inline-block;
       }
+      & #cities
+      {
+        display: inline-block;
+        clear: both;
+        margin-top:5px;
+      }
+
     }
 
     & .category-item
@@ -273,6 +281,12 @@ teacherlist {
     padding-bottom: 10px;
 }
 
+.bottomline-dark {
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
 .message-container
 {
     height:100%;
@@ -297,7 +311,7 @@ teacherlist {
     bottom: auto;
   .message
   {
-    margin-right: 75px;
+    margin-right: 200px;
     margin-top: 20px;
     word-wrap: break-word;
   }
@@ -322,14 +336,25 @@ teacherlist {
     border-radius: 5px;
     }
 
+  .time-ago {
+      color: #a79e96;
+      font-size: 12px;
+      font-style: italic;
+   }
+
   .my
   {
-      margin-left: 75px;
+      margin-left: 200px;
       margin-right: 0;  
 
       .messagebody
       {
           background: #b6e469;
+      }
+
+      .time-ago
+      {
+        text-align: right;
       }
   }    
 }
@@ -354,6 +379,10 @@ teacherlist {
     overflow: auto;
 }
 
+.teacherratingmodal .modal-body {
+  max-height: 600px;
+  overflow: auto;
+}
 
 
 @dayBase: 50px;
@@ -617,6 +646,12 @@ emeditatii-cookie-banner
     font-weight: 200;
   }
 }
+.glyphicon 
+{
+  width:22px;
+  margin-right: 5px;
+
+}
 
 .profile-container
 {
@@ -625,6 +660,397 @@ emeditatii-cookie-banner
     float:left;
     font-weight: 600;
     padding-right: 5px;
+  }
+
+  & .recomandation-section
+  {
+    & #cities
+    {
+      
+      
+      clear: both;
+      margin-top:5px;
+    }
+
+    & .city-item, .title, .price
+    {
+      //clear: both;
+      
+      float:left;
+
+    }
+
+    & .online
+    {
+      
+      //font-weight: 600;
+      padding-right: 5px;
+    }
+
+    &.title
+    {
+      clear: both;
+    }
+    & .price
+    {
+      clear: both;
+    }
+  }
+
+  /*& .image{
+    float: left;
+    display: block;
+  }
+
+  &.info
+  {
+    display: block;
+  }*/
+}
+.visible-xs-block
+{
+  display: none !important;
+}
+
+.package-list {
+  padding-top: 35px;
+  & .package-container {
+    background: rgb(248, 248, 248);
+    text-align: center;
+    margin-top: 34px;
+    padding-bottom: 12px;
+    position: relative;
+
+    & .package-name {
+      &:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        height: 1px;
+        width: 114px;
+        margin-left: -57px;
+        border-top: 1px solid #6b6765;
+      }
+
+      position: relative;
+      display: block;
+      padding: 35px 0 24px 0;
+      margin-bottom: 21px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 7px;
+      font-size: 34px;
+      line-height: 40px;
+    }
+    
+    
+    & .price{
+      font-size: 45px;
+      line-height: 48px;
+      font-family: Montserrat,sans-serif
+    }
+
+    & .billing-frequency {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    & .cancel-anytime
+    {
+      color: #a9a9a9;
+
+    }
+
+    & .activate-package-btn
+    {
+
+
+    }
+
+    & .btn{
+      max-width: 250px;
+      margin: 30px auto 29px auto;
+      text-transform: uppercase;
+      padding: 17px;
+      letter-spacing: 3px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+  }
+
+  & .package-1
+  {
+    border-top: 4px solid #029b68;
+    & .price {
+      color: #029b68;
+    }
+    & .btn {
+      color: #fff;
+      background-color: #029b68;
+      border-color: #029b68;
+    }
+  }
+
+  & .package-2
+  {
+    border-top: 4px solid #008329;
+    & .price {
+      color: #008329;
+    }
+    & .btn {
+      color: #fff;
+      background-color: #008329;
+      border-color: #008329;
+    }
+  }
+
+  & .package-3
+  {
+    border-top: 4px solid #4cb921;
+    & .price {
+      color: #4cb921;
+    }
+    & .btn {
+      color: #fff;
+      background-color: #4cb921;
+      border-color: #4cb921;
+    }
+  }
+
+}
+
+.search-form-container
+{
+  background-color: #e9e9e9;
+  border-radius: 5px;
+  padding: 15px 0 0 0;
+  margin: 0 0 20px 0;
+}
+
+.miniature {
+  height: 225px;
+  background: #f1f1f1;
+  padding: 2px 2px 12px 2px;
+  margin: 6px 0 12px 0;
+  overflow: hidden;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.public-demand-miniature {
+  height: auto;
+  & p {
+    margin-top: 15px;
+  }
+}
+
+.wizard-progress-container {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color:#4cb921;
+}
+.validationerror
+{
+  background-color: #e75f5f;
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.wizard-container {
+  margin: 30px 30px 0 30px;
+  font-size: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  word-wrap: break-word;
+  overflow: hidden;
+  background: #f1f1f1;
+
+  & .header {
+    text-align: left;
+    padding: 0 20px 0 20px;
+    }
+  & .content {
+      position: relative;
+      padding: 20px;
+    }
+    & textarea, input {
+      max-width: 100%;
+    }
+    & button
+    {
+      width:100%;
+    }
+}
+.headline {
+  text-align: center;
+  &.main{
+    font-size: 45px;
+  }
+  &.green
+  {
+    color:@brand-color-active;
+  }
+  &.red
+  {
+    color: #eb460a;
+  }
+  &.medium
+  {
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 50px;
+  }
+}
+
+
+.package-benefits 
+{
+  position: relative;
+  text-align: center;
+  padding-top: 31px;
+  margin-top: 11px;
+
+  &:before{
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 1px;
+    width: 114px;
+    margin-left: -57px;
+    border-top: 1px solid #d3cecb;
+  }
+
+  &.in-modal:before
+  {
+    border:none;
+  }
+  
+  & .benefit
+  {
+    height: 150px;
+    float:left;
+
+    & .benefit-header {
+      padding-top: 102px;
+      line-height: 17px;
+      font-weight: 700;
+    }
+  }
+
+  & .no-ads {
+    background: url(../img/abonamente/adfree.png) center 35px no-repeat;
+  }
+  & .topping-profiles {
+    background: url(../img/abonamente/topping_profiles.png) center 38px no-repeat;
+  }
+  & .no-subscription {
+    background: url(../img/abonamente/no-subscription.png) center 39px no-repeat;
+  }
+  & .money-back {
+    background: url(../img/abonamente/moneyback_smaller.png) center 38px no-repeat;
+  }
+  & .recommended {
+    background: url(../img/abonamente/recommended.png) center 36px no-repeat;
+  }
+  & .student-contacts {
+    background: url(../img/abonamente/contacts.png) center 39px no-repeat;
+}
+}
+
+.modal-dialog {
+  width: 8300px;
+  max-width: 830px;
+  margin: auto;
+}
+
+.payment-benefits{
+  position: relative;
+  margin-top: 91px;
+  padding-top: 21px;
+  text-align: center;
+  &:before{
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      height: 1px;
+      width: 114px;
+      margin-left: -57px;
+      border-top: 1px solid #d3cecb;
+  }
+
+  & h2 {
+      font-size: 14px;
+      line-height: 1.5em;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+  }
+  & .benefit-safe
+  {
+    padding-top: 0;
+  }
+  & .benefit-favourites
+  {
+    padding-top: 9px;
+  }
+  & .benefit-reliable
+  {
+    padding-top: 10px;
+  }
+}
+
+.cc-icon-independent {
+  width: 48px;
+  height: 30px;
+  display: inline-block;
+  background-size: cover;
+  margin: 0 3px 3px 0;
+  & .ci-visa {
+    background-image: url(../img/payment_methods/visa.png);
+  }
+}
+
+.lead{
+  font-size: 21px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.green
+{
+  color:#4cb921
+}
+.col-md-offset-2
+{
+  margin-left: 16.666666666666664%;
+}
+
+.benefit-icons
+{
+& .no-ads
+{
+  height: 150px;
+}
+
+}
+
+.review-section {
+  font-size:0.9em;
+  margin-top: 3rem;
+  & .review-author{
+    margin-top: 1rem;
+    margin-bottom: 0rem;
+  }
+  & .review-text {
+    white-space: pre-line;
   }
 }
 
@@ -753,5 +1179,121 @@ emeditatii-cookie-banner
   &.dropdown-menu {
     max-height: 20rem;
     overflow-y: auto;
+  }
+}
+
+#recaptcha
+{
+
+padding-left: 15px;
+padding-right: 15px;
+}
+
+.unpaid
+{
+  color:red;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  padding: 3px 7px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
+.carousel-card{
+  display: inline-block;
+  vertical-align: bottom;
+  width: calc(1210px / 6);
+}
+
+h3
+{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.demand-message {
+  position: relative;
+  border-top: 3px solid #d54b1a;
+  background: #f1f1f1;
+  padding: 38px;
+  & .message-signature-name {
+    color: #d54b1a;
+    padding-left: 0;
+    font-family: Montserrat,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+}
+ul.public-demand-info {
+  border: solid #d4cfcb;
+  border-width: 0 0 0 1px;
+  list-style: none;
+
+  & li {
+    margin-bottom: 7px;
+  }
+}
+
+.public-demand-message-container {
+    padding-bottom: 20px;
+}
+
+ul.public-demand-info li {
+  position: relative;
+  margin: 0;
+  padding: 5px 0 5px 40px;
+}
+ul.public-demand-info li .glyphicon, ul.public-demand-info li .glyphicon-pro {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  text-align: center;
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media @phone {
+  .public-demand-miniature {
+    & p {
+      text-align: left !important;
+    }
+  }
+
+  .conversation-section
+  {
+    .message
+    {
+      margin-right: 0px;
+    }
+    .my
+    {
+        margin-left: 00px;
+    }    
+  }
+
+}
+
+@media @desktop
+{
+  .wizard-container-wrapper
+  {
+    margin-left: 25%;
+    
+    & .col-xs-12 {
+      width: 100%;
+    }
   }
 }

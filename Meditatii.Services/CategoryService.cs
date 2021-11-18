@@ -44,7 +44,8 @@ namespace Meditatii.Services
                 {
                     allCategoriesWithParentName.Add(new Category()
                     {
-                        Name = mainCategory.Name + " - " + category.Name,
+                        //Name = mainCategory.Name + " - " + category.Name,
+                        Name = category.Name,
                         Id = category.Id
                     });
                 }

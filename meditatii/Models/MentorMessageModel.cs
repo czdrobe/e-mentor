@@ -9,7 +9,9 @@ namespace meditatii.Models
         /// <summary>
         /// 
         /// </summary>
-        public int Id { get; set; }
+        //public int Id { get; set; } //do not send the is of the user
+
+        public string Code { get; set; }
 
         /// <summary>
         /// 

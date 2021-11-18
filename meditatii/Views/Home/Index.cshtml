@@ -1,8 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Platforma online de neditatii";
+    ViewBag.Title = "Platforma online de meditatii";
 }
 <meditatii-app>
 </meditatii-app>
+    <hr />
+
     <div class="row text-center">
         <h1 class="homefindbestteachertitle">Gaseste profesorul cel mai potrivit pentru tine</h1>
         <ul class="__list list-unstyled marginauto">
@@ -17,14 +19,13 @@
         </ul>
     </div>
 
-    <hr />
     <div class="row">
         <div class="col-md-4">
             <div class="prag text-center">
                 <i>
                     <img src="~/img/svg/prof.svg" />
                 </i>
-                <span class="prag-numar" data-speed="2000" data-stop="120">120</span><span class="prag-numar">+</span>
+                <span class="prag-numar" data-speed="2000" data-stop="120">@ViewBag.TotalTeacher</span><span class="prag-numar">+</span>
                 <div style="color:;font-size:20px" class="preg-text">Profesori înscriși</div>
             </div>
         </div>
@@ -33,17 +34,35 @@
                 <i>
                     <img src="~/img/svg/users.svg" />
                 </i>
-                <span class="prag-numar" data-speed="2000" data-stop="120">3200</span><span class="prag-numar">+</span>
+                <span class="prag-numar" data-speed="2000" data-stop="120">@ViewBag.TotalUser</span><span class="prag-numar">+</span>
                 <div style="color:;font-size:20px" class="preg-text">Conturi active</div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="prag text-center">
                 <i>
                     <img src="~/img/svg/videoconferinta.svg" />
                 </i>
-                <span class="prag-numar" data-speed="2000" data-stop="120">65200</span><span class="prag-numar">+</span>
+                <span class="prag-numar" data-speed="2000" data-stop="120">@ViewBag.TotalMeetingMinutes</span><span class="prag-numar">+</span>
                 <div style="color:;font-size:20px" class="preg-text">Minute petrecute în meditații</div>
             </div>
         </div>
     </div>
+    <div class="row text-center">
+     
+        <div class="col-md-12">
+            <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5390319007504241"
+     data-ad-slot="5486709324"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+        
+    </div>
+
+    <hr />

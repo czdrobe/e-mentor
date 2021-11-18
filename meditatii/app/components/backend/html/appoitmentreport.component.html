@@ -1,0 +1,71 @@
+﻿<div class="appoitments-container">
+    <h1>Raport meditații - {{today}}</h1>
+    
+    <h4>Balanță: {{balance}} Lei</h4>
+    <div>
+        <article class="row paddingtop20">
+            <div class="col-md-1">
+                <div id="name" class="m-0-top-bottom display-inline-block">
+                     ID
+                </div>
+            </div>
+            <div class="col-md-2">
+                Data / Ora
+            </div>
+            <div class="col-md-1">
+                Suma (Lei)
+            </div>
+            <div class="col-md-2">
+                <div id="name" class="m-0-top-bottom display-inline-block">
+                     Elev
+                </div>
+            </div>
+            <div class="col-md-2">
+                Plata catre profesor
+            </div>
+            <div class="col-md-2">
+                Plata platforma
+            </div>
+            <div class="col-md-2">
+                Plata impozitului
+            </div>
+
+        </article>
+    </div>
+    <div *ngFor="let appoitment of appoitmentsTeacherReport">
+        <article class="row paddingtop20" [ngClass]="{'unpaid': appoitment.PayOutTeacher == ''}">
+            <div class="col-md-1">
+                <div id="name" class="m-0-top-bottom display-inline-block">
+                     {{appoitment.AppoitmentId}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                {{appoitment.StartDate | date:'yyyy-MM-dd'}} <br/> {{appoitment.StartDate | date:'HH:mm'}} - {{appoitment.EndDate | date:'HH:mm'}}
+            </div>
+            <div class="col-md-1">
+                {{appoitment.Price}}
+            </div>
+            <div class="col-md-2">
+                <div id="name" class="m-0-top-bottom display-inline-block">
+                     {{appoitment.Learner.FirstName}} {{appoitment.Learner.LastName}} 
+                </div>
+            </div>
+            <div class="col-md-2">
+                {{appoitment.PayOutTeacher  | date:'yyyy-MM-dd'}}
+            </div>
+            <div class="col-md-2">
+                {{appoitment.PayOutPlatform | date:'yyyy-MM-dd'}}
+            </div>
+            <div class="col-md-2">
+                {{appoitment.PayOutTax | date:'yyyy-MM-dd'}}
+            </div>
+
+        </article>
+    </div>
+    <div *ngIf="appoitmentsTeacherReport && appoitmentsTeacherReport.length == 0">
+        Nu sunt informatii.
+    </div>
+    <br/>
+    <br/>
+ 
+</div>

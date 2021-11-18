@@ -5,15 +5,18 @@ export class FilterByMateriaPipe implements PipeTransform {
 
     transform(categories : any, materia: string): any[] {
         if (categories) {
-            if (materia != "")
+            if (materia !== undefined && materia != "")
             {
                 var lowermateria = materia.toLowerCase();
-                return categories.filter((listing: Category) => listing.Name.toLowerCase().indexOf(lowermateria) > -1);
+                var filteredItems = categories.filter((listing: Category) => listing.Name.toLowerCase().indexOf(lowermateria) > -1).splice(0, 10);
+                return filteredItems;
+                //return categories.filter((listing: Category) => listing.Name.toLowerCase().indexOf(lowermateria) > -1);
             }
-            else
+            /*else
             {
-                return categories;
-            }
+                var filteredItems = categories.splice(0,10);
+                return filteredItems;
+            }*/
         }
     }
 }

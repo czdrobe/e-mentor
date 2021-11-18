@@ -1,0 +1,111 @@
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 wizard-container-wrapper">
+				<div class="wizard-container">
+					<div class="header">
+						<h1 class="title">Trimite o solicitare</h1>
+					</div>
+	
+					<div class="wizard-progress-container"><span class="filled step-1"></span></div>
+	
+	
+	<div class="content">
+		<div class="form-group">
+			<p>Vom contacta meditatorii potriviți în numele tău. Dacă sunt interesați, aceștia vor lua legătura cu tine.</p>
+		</div>
+		<div id="jq_add-demand-error-container">
+		</div>
+	
+		<div class="row form-group">
+			<label for="dropdown_materia" class="col-xs-12 control-label">Materie:</label>
+			<div class="col-xs-12">
+				<div ngbDropdown autoClose="outside" #myDrop="ngbDropdown">
+					<button class="btn btn-secondary mr-2" id="dropdown_materia"  ngbDropdownAnchor (click)="myDrop.toggle()">
+						{{selectedCategoryName}}
+					</button>                    
+					<div ngbDropdownMenu aria-labelledby="dropdown_materia">
+						<div class="px-4 py-2">
+							<input type="search" class="form-control"  [(ngModel)]="searchMaterii" name="searchMaterii" placeholder="Cauta materia">
+						</div>
+						<ng-container *ngIf="categories | filterByMateria:searchMaterii as result ">
+							<div id="menuItems">
+								<button class="dropdown-item" type="button"  *ngFor="let subCategory of result; let i = index" (click)="selectCategory(subCategory.Id, subCategory.Name); myDrop.close();">{{subCategory.Name}}</button>
+							</div>
+							<div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+						</ng-container>
+					</div>
+				</div>			
+			</div>
+		</div>
+	
+		<div class="row form-group">
+			<label for="dropdown_city" class="col-xs-12 control-label">Oras:</label>
+			<div class="col-xs-12">
+				<div ngbDropdown autoClose="outside" #myCity="ngbDropdown">
+					<button class="btn btn-secondary mr-2" id="dropdown_city"  ngbDropdownAnchor (click)="myCity.toggle()">
+						{{selectedCityName}}
+					</button>                    
+					<div ngbDropdownMenu aria-labelledby="dropdown_city">
+						<div class="px-4 py-2">
+							<input type="search" class="form-control"  [(ngModel)]="searchCity" name="searchCity" placeholder="Cauta">
+						</div>
+						<ng-container *ngIf="cities | filterByMateria:searchCity as result ">
+							<div id="citiesMenuItems">
+								<button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity(subCities.Id, subCities.Name); myCity.close();">{{subCities.Name}}</button>
+							</div>
+							<div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+
+			<div style="padding-top: 5px;">
+				<input type="checkbox" name="skype" id="frm-addDemand-addDemandForm-skype"  [(ngModel)]="isOnline">&nbsp;
+				<label for="frm-addDemand-addDemandForm-skype" class="inline-label">Meditații online/pe skype</label>
+			</div>
+		</div>
+	
+		<div class="row form-group">
+			<label for="frm-addDemand-addDemandForm-note" class="col-xs-12 control-label">Ce anume cauți:</label>
+			<div class="col-xs-12">
+				<textarea name="newMessage" id="newMessage" class="form-control" [(ngModel)]="newMessage" required rows="5"></textarea>
+			</div>
+		</div>
+	
+		<div class="row">
+			<div class="col-sm-6 col-xs-12 form-group">
+				<div class="row">
+					<label for="frm-addDemand-addDemandForm-validity" class="col-xs-12 control-label">Durata solicitării:</label>
+					<div class="col-xs-12"><select name="validity" id="frm-addDemand-addDemandForm-validity" required=""  class="form-control"  [(ngModel)]="duration">
+						<option value="3">3 zile</option>
+						<option value="7">1 săptămână</option>
+						<option value="14" selected="">2 săptămâni</option>
+						<option value="31">1 lună</option>
+					</select></div>	
+				</div>
+			</div>
+			<div class="col-sm-6 col-xs-12 form-group">
+				<div class="row">
+					<label for="frm-addDemand-addDemandForm-ageCategoryId" class="col-xs-12 control-label">Categoria de vârstă:</label>
+					<div class="col-xs-12">
+						<select name="ageCategoryId" id="frm-addDemand-addDemandForm-ageCategoryId" class="form-control"  [(ngModel)]="selectedCycle">
+							<option *ngFor="let item of cycles" [ngValue]="item.Id">{{item.Name}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="validationerror" >{{errorMessage}}</div>
+	</div>
+	<div class="footer">
+		<div class="jq_add_demand_submit_button">
+			<input type="button" name="_submit" value="Trimite solicitarea" class="btn btn-primary btn-block btn-md btn-green btn-x btn-shrink-xs no-border-radius" (click)="saveNewRequest()" >
+		</div>
+	</div>
+	
+			</div>
+			</div>
+		</div>
+	</div>

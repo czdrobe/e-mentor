@@ -1,4 +1,6 @@
-﻿using Microsoft.Owin;
+﻿using meditatii.web.Utils;
+using Meditatii.Core;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(meditatii.Startup))]
@@ -9,7 +11,8 @@ namespace meditatii
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            int i = 0;
+
+            AppStats.Current = new AppStats { TotalMeetingMinutes = 0, TotalTeacher = 0, TotalUser = 0 };
         }
     }
 }

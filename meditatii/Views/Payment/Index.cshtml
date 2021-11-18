@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Plata";
+}
+<meditatii-app>
+
+</meditatii-app>
+
+<form method="POST" action="@ViewBag.paymentUrl" onload='doSubmit()'>
+    <input type="hidden" name="env_key" id="env_key" value="@ViewBag.env_key" />
+    <input type="hidden" name="data" id="data" value="@ViewBag.data" />
+    Transfer catre pagina de plata...
+</form>
+
+<script>
+    (function closure() {
+        document.forms[1].submit();
+        return true;
+    })();
+</script>

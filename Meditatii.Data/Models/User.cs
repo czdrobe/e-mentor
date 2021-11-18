@@ -71,10 +71,30 @@ namespace Meditatii.Data.Models
 
         public decimal? Price { get; set; }
 
+        public int ServiceFee { get; set; }
+
+        public int Tax { get; set; }
+
+        public bool Active { get; set; }
+
+        public int NrOfVisitors { get; set; }
+
+        public int NrOfPhoneViews { get; set; }
+
+        public DateTime Added { get; set; }
+
+        public bool AlsoOnline { get; set; }
+
+        public DateTime? SubscriptionStartDate { get; set; }
+
+        public DateTime? SubscriptionEndDate { get; set; }
+
         public virtual ICollection<Category> Categories { get; set; }
 
         public virtual ICollection<Cycle> Cycles { get; set; }
 
         public virtual ICollection<Roles> Roles { get; set; }
+
+        public virtual ICollection<City> Cities { get; set; }
     }
 }

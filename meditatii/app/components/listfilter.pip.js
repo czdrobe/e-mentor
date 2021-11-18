@@ -12,13 +12,17 @@ var FilterByMateriaPipe = /** @class */ (function () {
     }
     FilterByMateriaPipe.prototype.transform = function (categories, materia) {
         if (categories) {
-            if (materia != "") {
+            if (materia !== undefined && materia != "") {
                 var lowermateria = materia.toLowerCase();
-                return categories.filter(function (listing) { return listing.Name.toLowerCase().indexOf(lowermateria) > -1; });
+                var filteredItems = categories.filter(function (listing) { return listing.Name.toLowerCase().indexOf(lowermateria) > -1; }).splice(0, 10);
+                return filteredItems;
+                //return categories.filter((listing: Category) => listing.Name.toLowerCase().indexOf(lowermateria) > -1);
             }
-            else {
-                return categories;
-            }
+            /*else
+            {
+                var filteredItems = categories.splice(0,10);
+                return filteredItems;
+            }*/
         }
     };
     FilterByMateriaPipe = __decorate([

@@ -23,6 +23,9 @@ var MessagesService = /** @class */ (function () {
     MessagesService.prototype.getMessages = function (mentorId, page) {
         return this.http.get('/api/messages/getmessages/' + mentorId + '/' + page).pipe(operators_1.map(function (res) { return res; }));
     };
+    MessagesService.prototype.getMessagesByMentorCode = function (mentorId, page) {
+        return this.http.get('/api/messages/getmessagesbymentorcode/' + mentorId + '/' + page).pipe(operators_1.map(function (res) { return res; }));
+    };
     MessagesService.prototype.getMentors = function () {
         return this.http.get('api/messages/listofmentors').pipe(operators_1.map(function (res) { return res; }));
     };
@@ -34,6 +37,9 @@ var MessagesService = /** @class */ (function () {
         formData.append('ToUserId', toId.toString());
         formData.append('Body', body);
         return this.http.post('api/messages/SaveNewMessage', { ToUserId: toId.toString(), Body: body }, httpOptions);
+    };
+    MessagesService.prototype.saveMessageForRequest = function (requestId, message) {
+        return this.http.post('api/messages/saveMessageForRequest', { requestId: requestId, message: message }, httpOptions);
     };
     MessagesService = __decorate([
         core_1.Injectable(),

@@ -77,7 +77,7 @@ namespace meditatii.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirma parola")]
-        [Compare("Password", ErrorMessage = "Nu este la fel cu parola.")]
+        [Compare("Password", ErrorMessage = "Parolele nu coincid.")]
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Selecteaza tipul contului.")]

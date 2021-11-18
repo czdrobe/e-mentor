@@ -22,7 +22,7 @@ var BackendComponent = /** @class */ (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'backend',
-            templateUrl: 'backend.component.html',
+            templateUrl: 'html/backend.component.html',
             providers: []
         }),
         __metadata("design:paramtypes", [router_1.Router,

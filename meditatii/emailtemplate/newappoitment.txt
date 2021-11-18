@@ -1,0 +1,3 @@
+A fost creat o noua rezervare pentru meditatie pentru data si ora:<dateandtime>, de catre <from-firstname> <from-lastname>.
+
+Daca iti convine data si ora trebuie sa aprobi rezervarea in aplicatie <a href="<appoitmentsurl>">aici</a>

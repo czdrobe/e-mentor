@@ -27,7 +27,7 @@ namespace Meditatii.Services
 
         public SearchResult<TeacherAvailability> GetAvailabilityTeacherAvaiabilityForDay(int userId, DateTime day)
         {
-            var avaibility = availabilityData.GetTeacherAvailabilityForDay(userId, (int)day.DayOfWeek);
+            var avaibility = availabilityData.GetTeacherAvailabilityForDay(userId, (int)day.DayOfWeek, day == DateTime.Now.Date);
             var appoitments = appoitmentData.GetAppoitmentsForDate(userId, day);
 
             //filter out appoitment times from avaibility 
@@ -35,7 +35,7 @@ namespace Meditatii.Services
             {
                 foreach (var appoitment in appoitments.Entities)
                 {
-                    var itemFound = avaibility.Entities.Single(x => x.Time == appoitment.StartDate.Hour);
+                    var itemFound = avaibility.Entities.Where(x => x.Time == appoitment.StartDate.Hour).FirstOrDefault();
                     if (itemFound != null)
                     {
                         avaibility.Entities.Remove(itemFound);

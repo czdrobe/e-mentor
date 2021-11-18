@@ -1,0 +1,4 @@
+Notificare meditatie.
+Data si ora inceperii meditatiei: <startdateandtime>
+Participant: <nameofparticipant>
+

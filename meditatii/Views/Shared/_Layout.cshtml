@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @RenderSection("metatags", required: false)
+
     <title>eMeditatii - @ViewBag.Title</title>
 
     @Styles.Render("~/css/css")
@@ -12,6 +14,7 @@
     <!-- Angular2 Code -->
     <base href="/">
 
+    <!--DEVELOPMENT-->
     <!-- Polyfill(s) for older browsers -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
     <script src="node_modules/core-js/client/shim.min.js"></script>
@@ -19,14 +22,27 @@
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="systemjs.config.js"></script>
+    <!--LIVE-->
+    <!-- Polyfill(s) for older browsers -->
+    <!-- <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script>
+     <script src="node_modules/core-js/client/shim.min.js"></script>
+     <script src="node_modules/zone.js/dist/zone.min.js"></script>
+     <script src="dist/js/app.min.js"></script>-->
 
     <link rel="shortcut icon" sizes="any" type="image/png" href="/favicon.ico">
     <link rel="icon" sizes="any" type="image/png" href="https://emeditatii.ro/favicon.ico">
 
     <script>
+        //DEVELOPMENT
         System.import('app/main.js').catch(function (err) { console.error(err); });
+
+        //LIVE
+        //System.import('dist/js/app.min.js').catch(function (err) { console.error(err); });
+
     </script>
     <!-- Angular2 Code -->
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
     <div class="container">
@@ -42,7 +58,7 @@
             <div class="collapse navbar-collapse justify-content-md-cente" id="navbarsExample04">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href="/teacher">Profesori</a></li>
-                    <li class="nav-item">@Html.ActionLink("Cum functioneaza", "CumFunctioneaza", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item"><a class="nav-link" href="/solicitare-de-meditatii">Solicitări de meditații</a></li>
                     <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
                     @Html.Partial("_LoginPartial")
                 </ul>
@@ -73,7 +89,6 @@
                             <div class="textwidget">
                                 <ul>
                                     <li><a href="/teacher">Profesori</a></li>
-                                    <li><a href="/cumfunctioneaza">Cum funtioneaza</a></li>
                                     <li><a href="/contact">Contact</a></li>
                                 </ul>
                             </div>
@@ -84,7 +99,8 @@
                         <div id="text-2" class="widget widget_text">
                             <div class="textwidget">
                                 <ul>
-                                    <li>@Html.ActionLink("Termeni si conditii", "termenisiconditii", "Home", null, new { @target="_blank" }) </li>
+                                    <li>@Html.ActionLink("Termeni si conditii", "termeni-si-conditii", "Home", null, new { @target = "_blank" }) </li>
+                                    <li>@Html.ActionLink("Politica de confidentialitate", "politica-de-confidentialitate", "Home", null, new { @target = "_blank" }) </li>
                                     <li><a href="http://www.anpc.gov.ro/" target="_blank">ANPC</a></li>
                                 </ul>
                             </div>
@@ -92,7 +108,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <img src="/img/visa.png" style="width: 33%;"/>
+                        
                     </div>
                 </div>
             </div>

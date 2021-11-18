@@ -4,7 +4,7 @@ import { LoaderService } from '../services/loader.service';
 import { LoaderState } from '../models/loader';
 @Component({
   selector: 'app-loader',
-  templateUrl: './app/components/loader.component.html'
+  templateUrl: 'html/loader.component.html'
 })
 export class LoaderComponent implements OnInit, OnDestroy {
   show = false;

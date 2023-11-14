@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var users_service_1 = require("../services/users.service");
-var RoomComponent = (function () {
+var RoomComponent = /** @class */ (function () {
     function RoomComponent(userService, router, activateRoute) {
         this.userService = userService;
         this.router = router;
@@ -35,3 +35,4 @@ var RoomComponent = (function () {
     return RoomComponent;
 }());
 exports.RoomComponent = RoomComponent;
+//# sourceMappingURL=room.component.js.map

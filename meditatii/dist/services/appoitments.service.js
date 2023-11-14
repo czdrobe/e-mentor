@@ -15,7 +15,7 @@ var http_1 = require("@angular/common/http");
 var httpOptions = {
     headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
 };
-var AppoitmentsService = (function () {
+var AppoitmentsService = /** @class */ (function () {
     function AppoitmentsService(http) {
         this.http = http;
         console.log('MessagesService initialized...');
@@ -38,12 +38,25 @@ var AppoitmentsService = (function () {
     AppoitmentsService.prototype.deleteAppoitment = function (appoitmentid) {
         return this.http.get('api/appoitments/deleteappoitment/' + appoitmentid).pipe(operators_1.map(function (res) { return res; }));
     };
-    AppoitmentsService.prototype.saveTeacherRating = function (appointmentid, rate) {
-        return this.http.post('api/teacherrating/getallratingforteacher', { AppoitmentId: appointmentid.toString(), Rating: rate.toString() }, httpOptions);
+    AppoitmentsService.prototype.saveTeacherRating = function (teacherid, rate, ratingtext) {
+        return this.http.post('api/teacherrating/SaveRatingForTeacher', { TeacherIdEncoded: teacherid.toString(), Rating: rate.toString(), RatingText: ratingtext }, httpOptions);
     };
     AppoitmentsService.prototype.payment = function (listOfAppoitments) {
         var body = JSON.stringify(listOfAppoitments);
         return this.http.post('api/appoitments/savepayments', body, httpOptions);
+    };
+    AppoitmentsService.prototype.acceptByTeacher = function (appoitmentid) {
+        return this.http.get('api/appoitments/acceptByTeacher/' + appoitmentid).pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.getCurrentPayment = function () {
+        return this.http.get('/api/appoitments/getcurrentpayment/').pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.getPaymentForUser = function () {
+        return this.http.get('/api/appoitments/getpaymentforuser/').pipe(operators_1.map(function (res) { return res; }));
+    };
+    AppoitmentsService.prototype.realpayment = function () {
+        //construct the xml
+        //go to the payment page
     };
     AppoitmentsService = __decorate([
         core_1.Injectable(),
@@ -52,3 +65,4 @@ var AppoitmentsService = (function () {
     return AppoitmentsService;
 }());
 exports.AppoitmentsService = AppoitmentsService;
+//# sourceMappingURL=appoitments.service.js.map

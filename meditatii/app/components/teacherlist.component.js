@@ -19,7 +19,9 @@ var messages_service_1 = require("../services/messages.service");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var pager_service_1 = require("../services/pager.service");
 var TeacherlistComponent = /** @class */ (function () {
-    function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService, messagesService, modalService, profileService) {
+    function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService, messagesService, modalService, profileService, 
+    //private ddService: NgbDropdown,
+    rootElement) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.cycleService = cycleService;
@@ -31,10 +33,23 @@ var TeacherlistComponent = /** @class */ (function () {
         this.profileService = profileService;
         // pager object
         this.pager = {};
+        this.selectedUrlCategory = "";
+        this.selectedUrlCategoryName = "";
+        var domElementCat = document.getElementById("catId");
+        if (domElementCat != null) {
+            this.selectedUrlCategory = domElementCat.getAttribute("value");
+            this.selectedCategory = Number(this.selectedUrlCategory);
+        }
+        var domElementCatName = document.getElementById("catName");
+        if (domElementCatName != null) {
+            this.selectedUrlCategoryName = domElementCatName.getAttribute("value");
+        }
         this.orders = [{ Id: 1, Name: 'Cele mai populare' }, { Id: 2, Name: 'Review-uri' }, { Id: 3, Name: 'Cele mai noi' }];
     }
     TeacherlistComponent.prototype.ngOnInit = function () {
         var _this = this;
+        console.log(this.selectedUrlCategory);
+        console.log(this.selectedUrlCategoryName);
         this.selectedCategoryName = "Alege o materie";
         this.selectedCycleName = "Alege ciclul scolar";
         this.selectedOrderName = "Cele mai populare";
@@ -48,6 +63,10 @@ var TeacherlistComponent = /** @class */ (function () {
                 _this.categories = cats;
                 _this.searchMaterii = ""; //in fact we reset the search
                 _this.searchCity = "";
+                _this.activateRoute.params.subscribe(function (params) {
+                    if (params.hasOwnProperty("maincategory")) {
+                    }
+                });
                 _this.activateRoute.queryParams.subscribe(function (params) {
                     if (params.hasOwnProperty("maincategory")) {
                         _this.selectedMainCategory = params.maincategory;
@@ -70,6 +89,10 @@ var TeacherlistComponent = /** @class */ (function () {
                 });
             });
         });
+        this.categoryService.getCategoriesGroupped().subscribe(function (cats) {
+            console.log(cats);
+            _this.lstCategoryGroupped = cats;
+        });
         // load cycles
         this.cycleService.getCycles().subscribe(function (cycles) {
             console.log(cycles);
@@ -80,6 +103,23 @@ var TeacherlistComponent = /** @class */ (function () {
             console.log(cities);
             _this.cities = cities;
         });
+    };
+    TeacherlistComponent.prototype.unSelectCity = function () {
+        this.selectedCity = null;
+        this.selectedCityName = null;
+        this.cities.forEach(function (element) {
+            //console.log(element);
+            element.selected = false;
+        });
+        this.updateUrl();
+    };
+    TeacherlistComponent.prototype.unSelectCycle = function () {
+        this.selectedCycle = null;
+        this.selectedCycleName = null;
+        this.cycles.forEach(function (element) {
+            element.selected = false;
+        });
+        this.updateUrl();
     };
     TeacherlistComponent.prototype.resetFilters = function () {
         this.selectedOrderName = "Cele mai populare";
@@ -94,7 +134,7 @@ var TeacherlistComponent = /** @class */ (function () {
         this.updateUrl();
     };
     TeacherlistComponent.prototype.updateUrl = function () {
-        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
+        this.router.navigate([], { queryParams: { cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
     };
     TeacherlistComponent.prototype.selectMainCategory = function (id) {
         var _this = this;
@@ -110,7 +150,17 @@ var TeacherlistComponent = /** @class */ (function () {
         //this.ddService.
         this.selectedCategory = id;
         this.selectedCategoryName = categorytName;
-        this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') + 3, categorytName.length);
+        /*if (categorytName.indexOf(' - ')>-1)
+        {
+            this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') +3, categorytName.length);
+        }
+        else
+        {
+            this.selectedCategoryNameWithoutMain = categorytName;
+        }
+        console.log(categorytName);
+        console.log(this.selectedCategoryNameWithoutMain);
+        */
         this.currentpage = 1;
         this.updateUrl();
     };
@@ -126,9 +176,10 @@ var TeacherlistComponent = /** @class */ (function () {
         this.currentpage = 1;
         this.updateUrl();
     };
-    TeacherlistComponent.prototype.selectCity = function (id, cityName) {
-        this.selectedCity = id;
-        this.selectedCityName = cityName;
+    TeacherlistComponent.prototype.selectCity = function (city) {
+        this.selectedCity = city.Id;
+        this.selectedCityName = city.Name;
+        city.selected = !city.selected;
         this.currentpage = 1;
         this.updateUrl();
     };
@@ -142,13 +193,24 @@ var TeacherlistComponent = /** @class */ (function () {
             return;
         }
         this.currentpage = page;
-        this.userService.getUsers(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe(function (usersResult) {
+        this.userService.getAds(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe(function (usersResult) {
             console.log(usersResult);
             // get pager object from service
             _this.pager = _this.pagerService.getPager(usersResult.TotalRows, page);
-            _this.teachers = usersResult.Entities;
+            _this.ads = usersResult.Entities;
             _this.nrOfTeachers = usersResult.TotalRows;
         });
+        /*
+        this.userService.getUsers(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe((usersResult:any) => {
+            console.log(usersResult);
+
+            // get pager object from service
+            this.pager = this.pagerService.getPager(usersResult.TotalRows, page);
+
+            this.teachers = usersResult.Entities;
+
+            this.nrOfTeachers = usersResult.TotalRows;
+        });*/
     };
     TeacherlistComponent.prototype.selectUser = function (userId) {
         this.selectedUserId = userId;
@@ -194,7 +256,8 @@ var TeacherlistComponent = /** @class */ (function () {
             pager_service_1.PagerService,
             messages_service_1.MessagesService,
             ng_bootstrap_1.NgbModal,
-            profile_service_1.ProfileService])
+            profile_service_1.ProfileService,
+            core_1.ElementRef])
     ], TeacherlistComponent);
     return TeacherlistComponent;
 }());

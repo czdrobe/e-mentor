@@ -7,7 +7,7 @@
 		<div class="left-navigation mentorlist">
 
 			<ul *ngFor="let mentor of mentors" class="list-group">
-				<li class="list-group-item" (click)="LoadMessages(mentor)"><a (click)="LoadMessages(mentor)">{{mentor.Name}}</a></li>
+				<li class="list-group-item" (click)="LoadMessages(mentor)"><a (click)="LoadMessages(mentor)">{{mentor.Name !="" && mentor.Name !=" " ? mentor.Name : "Utilizator fara nume"}}</a></li>
 			</ul>
 		</div>
 	</aside>

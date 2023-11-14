@@ -43,8 +43,8 @@ var ProfileService = /** @class */ (function () {
     ProfileService.prototype.saveCycles = function (lstCycles) {
         return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
     };
-    ProfileService.prototype.saveCityForCurrentProfie = function (city1, city2, city3, isOnline) {
-        return this.http.post('/api/users/savecityforcurrentprofie', { cityid1: city1, cityid2: city2, cityid3: city3, isOnline: isOnline }, httpOptions);
+    ProfileService.prototype.saveCityForCurrentProfie = function (city1, atTeacher, atStudent, isOnline) {
+        return this.http.post('/api/users/savecityforcurrentprofie', { cityid1: city1, atTeacher: atTeacher, atStudent: atStudent, isOnline: isOnline }, httpOptions);
     };
     ProfileService.prototype.saveProfileImage = function (image) {
         var formData = new FormData();
@@ -53,6 +53,23 @@ var ProfileService = /** @class */ (function () {
     };
     ProfileService.prototype.getCities = function () {
         return this.http.get('/api/users/GetCities').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getExperience = function () {
+        console.log('start inExperience');
+        return this.http.get('/api/users/GetExperience').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getOccupation = function () {
+        console.log('start inOccupation');
+        return this.http.get('/api/users/GetOccupation').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getAdsForCurrentUser = function () {
+        return this.http.get('/api/users/getadsforcurrentuser').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.saveAd = function (adrequest) {
+        return this.http.post('/api/users/savead', adrequest, httpOptions);
+    };
+    ProfileService.prototype.deleteAd = function (adrequest) {
+        return this.http.post('/api/users/deletead', adrequest, httpOptions);
     };
     ProfileService.prototype.handleError = function (error) {
         if (error.error instanceof ErrorEvent) {

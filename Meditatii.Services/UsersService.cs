@@ -22,6 +22,15 @@ namespace Meditatii.Services
             return userData.GetUsers(categoryId, cycleId, cityId, order, skip, take);
         }
 
+        public  SearchResult<User> GetTeachersForNewsletter(int lastTeacherId)
+        {
+            return userData.GetTeachersForNewsletter(lastTeacherId);
+        }
+        public SearchResult<User> GetStudentsForNewsletter(int? studentId)
+        {
+            return userData.GetStudentsForNewsletter(studentId);
+        }
+
         public UserSats GetUserStats()
         {
             return userData.GetUserStats();
@@ -32,9 +41,9 @@ namespace Meditatii.Services
             return userData.GetUser(userId);
         }
 
-        public SearchResult<User> GetSuggestedUsers(string currentUser, int? categoryId, int? cityId)
+        public SearchResult<User> GetSuggestedUsers(int userId, int? categoryId, int? cityId)
         {
-            return userData.GetSuggestedUsers(currentUser, categoryId, cityId);
+            return userData.GetSuggestedUsers(userId, categoryId, cityId);
         }
 
         public SearchResult<Request> GetRequests(string city, string subject, int skip, int take)
@@ -72,25 +81,37 @@ namespace Meditatii.Services
             userData.IncrementVisitorsNumber(userId);
         }
 
+        public void LogLogin(int userId, int success)
+        {
+            userData.LogLogin(userId, success);
+        }
+
         public void IncrementPhoneViews(int userId)
         {
             userData.IncrementPhoneViews(userId);
         }
 
-        public void SaveCityForUser(string username, int city1, int city2, int city3, bool isOnline)
+        public void SaveCityForUser(string username, int city1, bool isOnline, bool atTeacher, bool atStudent)
         {
-            userData.SaveCityForUser(username, city1, city2, city3, isOnline);
+            userData.SaveCityForUser(username, city1, isOnline, atTeacher, atStudent);
         }
 
-        public User UpdateSubscriptionPeriod(string useremail, int period)
+        public User UpdateSubscriptionPeriod(int userId, int period)
         {
-            return userData.UpdateSubscriptionPeriod(useremail, period);
+            return userData.UpdateSubscriptionPeriod(userId, period);
         }
 
         public List<City> GetCities()
         {
             return userData.GetCities();
         }
-
+        public List<Experience> GetExperience()
+        {
+            return userData.GetExperiences();
+        }
+        public List<Occupation> GetOccupation()
+        {
+            return userData.GetOccupations();
+        }
     }
 }

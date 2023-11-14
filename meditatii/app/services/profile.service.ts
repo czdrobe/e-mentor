@@ -52,9 +52,9 @@ export class ProfileService
         return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
     }
 
-    saveCityForCurrentProfie(city1:number, city2:number, city3:number, isOnline:boolean)
+    saveCityForCurrentProfie(city1:number, atTeacher:boolean, atStudent:boolean, isOnline:boolean)
     {
-        return this.http.post('/api/users/savecityforcurrentprofie', {cityid1: city1, cityid2: city2, cityid3: city3, isOnline: isOnline}, httpOptions);
+        return this.http.post('/api/users/savecityforcurrentprofie', {cityid1: city1, atTeacher: atTeacher, atStudent: atStudent, isOnline: isOnline}, httpOptions);
     }
 
     saveProfileImage(image:any)
@@ -71,6 +71,39 @@ export class ProfileService
         ))
     }
 
+    getExperience()
+    {
+        console.log('start inExperience');
+        return this.http.get('/api/users/GetExperience').pipe(map(
+            (res:any) => res
+        ));
+    }
+    
+    getOccupation()
+    {
+        console.log('start inOccupation');
+        return this.http.get('/api/users/GetOccupation').pipe(map(
+            (res:any) => res
+        ));
+    }
+
+    getAdsForCurrentUser()
+    {
+        return this.http.get('/api/users/getadsforcurrentuser').pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    saveAd(adrequest:any)
+    {
+        return this.http.post('/api/users/savead', adrequest, httpOptions);
+    }
+
+    deleteAd(adrequest:any)
+    {
+        return this.http.post('/api/users/deletead', adrequest, httpOptions);
+    }
+    
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
           // A client-side or network error occurred. Handle it accordingly.

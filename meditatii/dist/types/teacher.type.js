@@ -1,0 +1,1 @@
+//# sourceMappingURL=teacher.type.js.map

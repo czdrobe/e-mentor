@@ -15,11 +15,16 @@ import { AppoitmentReportComponent } from './components/backend/appoitmentreport
 import { RoomComponent } from './components/room.component';
 import { SubscriptionsComponent } from './components/backend/subscriptions.component';
 import { MysubscriptionComponent } from './components/backend/mysubscription.component';
+import { UserHomeComponent } from './components/backend/home.component';
 
 const appRoutes: Routes = [
 	{
 		path: '',
-		component: AppComponent
+		component: TeacherlistComponent
+	},
+	{
+		path: ':category',
+		component: TeacherlistComponent,
 	},
 	{
 		path: 'Contact',
@@ -61,6 +66,11 @@ const appRoutes: Routes = [
 		path: 'u',
 		component: BackendComponent
 	},
+	{
+		path: 'u/home',
+		component: BackendComponent,
+		children: [{ path: '', outlet: 'maincontent', component: UserHomeComponent }]
+	},	
 	{
 		path: 'u/messages',
 		component: BackendComponent,

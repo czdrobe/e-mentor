@@ -90,6 +90,70 @@ namespace Meditatii.Data.Repositories
             }
         }
 
+        public SearchResult<User> GetTeachersForNewsletter(int lastTeacherId)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    int totalRows = 0;
+
+                    var users = context.Set<Models.User>().Where(x => x.ProfileImageUrl != "/profileimages/nouser.png" &&
+                                                                      x.Id > lastTeacherId &&
+                                                                      x.Roles.Where(y => y.Name == UserType.Teacher.ToString()).FirstOrDefault() != null &&
+                                                                      x.Active
+                                                                      ).AsNoTracking().AsQueryable();
+                    //filter out current user
+                    totalRows = users.Count();
+
+                    return new SearchResult<User>
+                    {
+                        TotalRows = totalRows,
+                        Entities = MappingHelper.Map<List<User>>(users.OrderBy(x => x.Added).Take(6).ToList())
+                    };
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public SearchResult<User> GetStudentsForNewsletter(int? studentId)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    int totalRows = 0;
+
+                    var users = context.Set<Models.User>().Where(x => x.Roles.Where(y => y.Name == UserType.Student.ToString()).FirstOrDefault() != null 
+                                                                        && x.Active
+                                                                        && x.SendNewsletter
+                                                                      ).AsNoTracking().AsQueryable();
+
+                    if (studentId != null && studentId > 0)
+                    {
+                        users = users.Where(x => x.Id == studentId);
+                    }
+                    //filter out current user
+                    totalRows = users.Count();
+
+                    return new SearchResult<User>
+                    {
+                        TotalRows = totalRows,
+                        Entities = MappingHelper.Map<List<User>>(users.OrderBy(x => x.Added).ToList())
+                    };
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public SearchResult<Request> GetRequests(string city, string subject, int skip, int take)
         {
             using (var context = new MeditatiiDbContext())
@@ -132,7 +196,7 @@ namespace Meditatii.Data.Repositories
             }
         }
 
-        public SearchResult<User> GetSuggestedUsers(string currentUser, int? categoryId, int? cityId)
+        public SearchResult<User> GetSuggestedUsers(int userId, int? categoryId, int? cityId)
         {
             if ((categoryId != null && categoryId > 0) ||
                 (cityId != null && cityId > 0))
@@ -150,11 +214,18 @@ namespace Meditatii.Data.Repositories
                                                                           x.Price != null &&
                                                                           x.Price > 0
                                                                           ).AsNoTracking().AsQueryable();
-
-                        if (categoryId != null && categoryId > 0)
+                        //filter out current user
+                        if (userId > 0)
                         {
-                            users = users.Where(x => x.Categories.Count(y => y.Id == categoryId) > 0);
+                            users = users.Where(x => x.Id != userId);
                         }
+
+                        IQueryable<Models.User> usersWithinCategory = null;
+                        /*if (categoryId != null && categoryId > 0)
+                        {
+                            usersWithinCategory = users.Where(x => x.Categories.Count(y => y.Id == categoryId) > 0);
+                            users = usersWithinCategory;
+                        }*/
 
 
                         if (cityId != null && cityId > 0)
@@ -162,12 +233,11 @@ namespace Meditatii.Data.Repositories
                             users = users.Where(x => x.Cities.Count(z => z.Id == cityId) > 0);
                         }
 
-                        //filter out current user
-                        if (currentUser != string.Empty)
-                        {
-                            users = users.Where(x => x.Email != currentUser);
-                        }
 
+                        if (users.Count() == 0)
+                        {
+                            users = usersWithinCategory;
+                        }
                         totalRows = users.Count();
 
                         return new SearchResult<User>
@@ -210,16 +280,10 @@ namespace Meditatii.Data.Repositories
                                                                           x.Price > 0
                                                                           ).AsNoTracking().AsQueryable();
 
-                        if (categoryId != null && categoryId > 0)
+                        /*if (categoryId != null && categoryId > 0)
                         {
                             users = users.Where(x => x.Categories.Count(y => y.Id == categoryId) > 0);
-                        }
-
-
-                        if (cycleId != null && cycleId > 0)
-                        {
-                            users = users.Where(x => x.Cycles.Count(z => z.Id == cycleId) > 0);
-                        }
+                        }*/
 
                         if (cityId != null && cityId > 0)
                         {
@@ -242,7 +306,7 @@ namespace Meditatii.Data.Repositories
                             return new SearchResult<User>
                             {
                                 TotalRows = totalRows,
-                                Entities = MappingHelper.Map<List<User>>(users.OrderByDescending(x => x.NrOfVisitors).Skip(skip).Take(take).ToList())
+                                Entities = MappingHelper.Map<List<User>>(users.OrderByDescending(x => x.SubscriptionStartDate).Skip(skip).Take(take).ToList())
                             };
                         }
                         else if (order.Value == 2)
@@ -438,7 +502,23 @@ namespace Meditatii.Data.Repositories
             }
         }
 
-        public User UpdateSubscriptionPeriod(string useremail, int period)
+        public void LogLogin(int userId, int success)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    context.Database.ExecuteSqlCommand("insert into LogLogin (UserId, Success) values (" + userId + ", " + success + ") ");
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public User UpdateSubscriptionPeriod(int userId, int period)
         {
             DateTime startDate = DateTime.Now;
             DateTime endDate = DateTime.Now.AddDays(period);
@@ -448,8 +528,9 @@ namespace Meditatii.Data.Repositories
                 {
                     var users = context.Set<Models.User>()
                         .AsNoTracking().AsQueryable();
-                    var user = MappingHelper.Map<User>(users.Where(x => x.Email == useremail).FirstOrDefault());
+                    var user = MappingHelper.Map<User>(users.Where(x => x.Id == userId).FirstOrDefault());
 
+                    context.Database.ExecuteSqlCommand("update [user] set SubscriptionStartDate = '" + startDate.ToString("yyyy-MM-dd") + "', SubscriptionEndDate='" + endDate.ToString("yyyy-MM-dd")+ "'  where Id = " + userId);
                     user.SubscriptionStartDate = startDate;
                     user.SubscriptionEndDate = endDate;
 
@@ -470,7 +551,7 @@ namespace Meditatii.Data.Repositories
             {
                 try
                 {
-                    return MappingHelper.Map<List<City>>(context.Set<Models.City>().OrderByDescending(x => x.Population).AsNoTracking().AsQueryable());
+                    return MappingHelper.Map<List<City>>(context.Set<Models.City>().Where(x => x.Population > 20000).OrderBy(x => x.FullName).AsNoTracking().AsQueryable());
                 }
                 catch (Exception ex)
                 {
@@ -479,9 +560,40 @@ namespace Meditatii.Data.Repositories
             }
         }
 
-        public void SaveCityForUser(string username, int city1, int city2, int city3, bool isOnline)
+
+        public List<Experience> GetExperiences()
         {
-            if (city1 <= 0 && city2 <= 0 && city3 <= 0 && !isOnline)
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    return MappingHelper.Map<List<Experience>>(context.Set<Models.Experience>().AsNoTracking().AsQueryable());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public List<Occupation> GetOccupations()
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    return MappingHelper.Map<List<Occupation>>(context.Set<Models.Occupation>().AsNoTracking().AsQueryable());
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void SaveCityForUser(string username, int city1, bool isOnline, bool atTeacher, bool atStudent)
+        {
+            if (city1 <= 0 && !isOnline)
                 return; //do nothing if there is no cityid
 
             using (var context = new MeditatiiDbContext())
@@ -503,20 +615,10 @@ namespace Meditatii.Data.Repositories
                             context.Database.ExecuteSqlCommand("INSERT INTO [dbo].[CityUser] ([CityId],[UserId]) VALUES (" + city1+ "," + user.Id + ")");
                             context.SaveChanges();
                         }
-                        if (city2 > 0)
-                        {
-                            context.Database.ExecuteSqlCommand("INSERT INTO [dbo].[CityUser] ([CityId],[UserId]) VALUES (" + city2 + "," + user.Id + ")");
-                            context.SaveChanges();
-                        }
-                        if (city3 > 0)
-                        {
-                            context.Database.ExecuteSqlCommand("INSERT INTO [dbo].[CityUser] ([CityId],[UserId]) VALUES (" + city3 + "," + user.Id + ")");
-                            context.SaveChanges();
-                        }
-                        context.Database.ExecuteSqlCommand("update [User] set [AlsoOnline] = " + (isOnline ? "1" : "0") + " where id = " + user.Id);
+                        context.Database.ExecuteSqlCommand("update [User] set [AlsoOnline] = " + (isOnline ? "1" : "0") 
+                            + ", [AtTeacher] = " + (atTeacher ? "1" : "0") + ", [AtStudent] = " + (atStudent ? "1" : "0") + " where id = " + user.Id);
                         context.SaveChanges();
                     }
-
 
                 }
                 catch (Exception ex)

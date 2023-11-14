@@ -1,155 +1,134 @@
-﻿<!--<div class="row teachersfilter paddingtop20">
-    <div>
-        <ul class="list">
-            <li *ngFor="let category of categories; let i = index">
-                <a (click)="selectMainCategory(category.Id)">{{category.Name}}</a> 
-                <ul *ngIf="category.Id == selectedMainCategory" class="list">
-                    <li *ngFor="let subCategory of subCategories; let i = index">
-                        <a (click)="selectCategory(subCategory.Id)">{{subCategory.Name}}</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+﻿<div class="row" *ngIf="selectedUrlCategory != ''">
+    <div class="col-sm-12 col-md-12 p-rel">
+        <div class="mb-3">
+            <div class="text-center" style="padding: 10px;">
+                <h1 class="h4">Meditatii {{selectedUrlCategoryName}}</h1>
+                    <p>Anunturi de meditatii {{selectedUrlCategoryName}} pentru scoala generala, liceu, admitere, lectii, cursuri, pregatire profesionala sau vocationala, la domiciliul elevului, meditatorului sau online.</p>
+            </div>
+        </div>
     </div>
-</div>-->
+</div>
 
 <div class="row teachers paddingtop20">
-    
-    <div class="col-md-12 col-sm-10 main-content">
+    <aside class="col-md-3 col-sm-5" style="height:100%;">
         <div class="row">
-            <div class="col-md-7">
-                <div class="d-inline-block" ngbDropdown autoClose="outside" #myDrop="ngbDropdown">
-                    <button class="btn btn-secondary mr-2" id="dropdown_materia"  ngbDropdownAnchor (click)="myDrop.toggle()">
-                        {{selectedCategoryName}}
-                    </button>                    
-                    <div ngbDropdownMenu aria-labelledby="dropdown_materia">
-                        <div class="px-4 py-2">
-                            <input type="search" class="form-control"  [(ngModel)]="searchMaterii" name="searchMaterii" placeholder="Cauta materia">
-                        </div>
-                        <ng-container *ngIf="categories | filterByMateria:searchMaterii as result ">
-                            <div id="menuItems">
-                                <button class="dropdown-item" type="button"  *ngFor="let subCategory of result; let i = index" (click)="selectCategory(subCategory.Id, subCategory.Name); myDrop.close();">{{subCategory.Name}}</button>
-                            </div>
-                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-                        </ng-container>
-                    </div>
-                </div>
+            <ng-container *ngIf="selectedUrlCategory == ''">
+                <div class="clearfix sidebar-field  mb-4"  *ngFor="let group of lstCategoryGroupped" >
+                    <h4 class="subj-heading" data-toggle="collapse" (click)="group.collapse=!group.collapse" [attr.data-target]="'#collapse-domain' + group.Id">
+                        {{group.Name}} <i class="fa" [ngClass]="{'fa-chevron-up': group.collapse, 'fa-chevron-down': !group.collapse}"  style="float: right;"></i>
+                    </h4>
+                    <div class="checkbox-fields collapse show" id="collapse-domain{{group.Id}}">  
+                        <label class="siderbar-list-label" *ngFor="let item of group.Categories">
+                            <a class="text-dark" href="/{{item.Name}}" title="{{item.Name}}" style="display: inline-block;width: 100%;">{{item.Name}}</a>
+                        </label>
+                    </div>            
+                </div>    
+            </ng-container>
 
-                <div class="d-inline-block" ngbDropdown autoClose="outside" #myCity="ngbDropdown">
-                    <button class="btn btn-secondary mr-2" id="dropdown_city"  ngbDropdownAnchor (click)="myCity.toggle()">
-                        {{selectedCityName}}
-                    </button>                    
-                    <div ngbDropdownMenu aria-labelledby="dropdown_city">
-                        <div class="px-4 py-2">
-                            <input type="search" class="form-control"  [(ngModel)]="searchCity" name="searchCity" placeholder="Cauta">
-                        </div>
-                        <ng-container *ngIf="cities | filterByMateria:searchCity as result ">
-                            <div id="citiesMenuItems">
-                                <button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity(subCities.Id, subCities.Name); myCity.close();">{{subCities.Name}}</button>
-                            </div>
-                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-                        </ng-container>
-                    </div>
-                </div>
-                <!--
-                <div class="d-inline-block" ngbDropdown autoClose="outside" #myCycle="ngbDropdown">
-                    <button class="btn btn-secondary mr-2" id="dropdown_cycle"  ngbDropdownAnchor (click)="myCycle.toggle()">
-                        {{selectedCycleName}}
-                    </button>                    
-                    <div ngbDropdownMenu aria-labelledby="dropdown_cycle">
-                        <div class="px-4 py-2">
-                            <input type="search" class="form-control"  [(ngModel)]="searchCycle" name="searchCycle" placeholder="Cauta">
-                        </div>
-                        <ng-container *ngIf="cycles | filterByMateria:searchMaterii as result ">
-                            <div id="cyckesMenuItems">
-                                <button class="dropdown-item" type="button"  *ngFor="let subCycles of result; let i = index" (click)="selectCycle(subCycles.Id, subCycles.Name); myCycle.close();">{{subCycles.Name}}</button>
-                            </div>
-                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-                        </ng-container>
-                    </div>
-                </div>
-                -->
-                <button class="btn btn-link ml-2" (click)="resetFilters()" >Reseteaza filtrele</button>
-            </div>
-<!--
-            <div class="col-md-5">
-                <div>Ordoneaza dupa:</div>
-                <div class="d-inline-block" ngbDropdown autoClose="outside" #myOrder="ngbDropdown">
-                    <button class="btn btn-secondary mr-2" id="dropdown_order"  ngbDropdownAnchor (click)="myOrder.toggle()">
-                        {{selectedOrderName}}
-                    </button>                    
-                    <div ngbDropdownMenu aria-labelledby="dropdown_order">
-                        <ng-container *ngIf="orders | filterByMateria:searchMaterii as result ">
-                            <div id="orderMenuItems">
-                                <button class="dropdown-item" type="button"  *ngFor="let subOrder of result; let i = index" (click)="selectOrder(subOrder.Id, subOrder.Name); myOrder.close();">{{subOrder.Name}}</button>
-                            </div>
-                            <div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
--->
+
+            <div class="clearfix sidebar-field mb-4" >
+                <h4 class="subj-heading" data-toggle="collapse" (click)="citycollapse=!citycollapse" data-target="#collapse-domain-city">
+                    Oraș <i class="fa" [ngClass]="{'fa-chevron-up': citycollapse, 'fa-chevron-down': !citycollapse}"  style="float: right;"></i>
+                </h4>
+                <div class="checkbox-fields collapse {{selectedUrlCategory!='' ? 'show':''}}" id="collapse-domain-city">  
+                    <label class="siderbar-list-label {{item.selected ? 'selected-item' : ''}} {{this.selectedCity > 0 && !item.selected ? 'notselected-item' : ''}}" *ngFor="let item of cities">
+                        <a class="text-dark"  (click)="selectCity(item)" title="{{item.Name}}" style="display: inline-block;width: 100%;">{{item.Name}}</a>
+                    </label>
+                </div>            
+            </div>    
+
+            <div class="clearfix sidebar-field mb-4" >
+                <h4 class="subj-heading" data-toggle="collapse" (click)="cyclecollapse=!cyclecollapse" data-target="#collapse-domain-cycle">
+                    Nivel <i class="fa" [ngClass]="{'fa-chevron-up': cyclecollapse, 'fa-chevron-down': !cyclecollapse}"  style="float: right;"></i>
+                </h4>
+                <div class="checkbox-fields collapse" id="collapse-domain-cycle">  
+                    <label class="siderbar-list-label" *ngFor="let item of cycles">
+                        <a class="text-dark"  (click)="selectCycle(item.Id, item.Name)" title="{{item.Name}}" style="display: inline-block;width: 100%;">{{item.Name}}</a>
+                    </label>
+                </div>            
+            </div>   
+
         </div>
+        
 
-        <div class="row">
-            
-        </div>
-        <!--Main content code to be written here -->
-        <h2>Lista profesorilor {{selectedCategoryNameWithoutMain==null || selectedCategoryNameWithoutMain == '' ? '' : '(' + selectedCategoryNameWithoutMain + ')'}} ({{nrOfTeachers}} profesori) </h2>
-        <div>
-            <div *ngFor="let teacher of teachers">
-                <article class="row teacherlist-item">
-                    <div class="col-md-1"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/' + teacher.UserCode : '/Account/login'"><img src="{{teacher.ProfileImageUrl}}" class="avatar" /></a></div>
-                    <div class="col-md-9">
-                        <div id="name" class="m-0-top-bottom display-inline-block"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/'+ teacher.UserCode : '/Account/login'"> {{teacher.FirstName}}  {{isCurrentUserIsLoggedIn ? teacher.LastName : ''}} </a></div>
-                        <div class="star-rating-small">
-                            <div class="star-rating-small-cover">
-                                <div class="star-rating-small-progress" [style.width.%]="teacher.Rating"></div>
-                            </div>
-                        </div>
-                         
-                        <div id="cities" class="m-0-top-bottom">
-                            <img src="/img/point.png" style="float:left;margin-right: 5px;;">
-                            <div *ngFor="let city of teacher.Cities;let last = last" class="category-item">{{city.Name}}{{last? "" : ","}}</div>  
-                            <div id="online" class="category-item" *ngIf="teacher.AlsoOnline"> - <img src="/img/online.png">Meditatii oferite si online</div> 
-                        </div>
-                       
-                        <div id="title" class="m-0-top-bottom"><div *ngFor="let category of teacher.Categories;let last = last" class="category-item"> {{category.Name}}{{last? "" : ","}}</div> </div>
-                        <div id="cycles" class="m-0-top-bottom"><div *ngFor="let cycle of teacher.Cycles;let last = last" class="category-item">{{cycle.Name}}{{last? "" : ","}}</div> </div>
-                        <div class="price">Pret: {{teacher.Price != null && teacher.Price != "" ? teacher.Price + " lei / ora" : "-"}}</div>
-                        <div class="description">{{ (teacher.Description != null && teacher.Description.length>100)? (teacher.Description | slice:0:100)+'..':(teacher.Description) }}</div> 
-                    </div>
-                    <div class="col-md-2">
-                        <div class="row">
-                            <div class="col-md-12">
+	</aside>
 
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
+    <div class="col-md-9 col-sm-7 teacherlistpanel" >
 
-            <!-- pager -->
-            <ul *ngIf="pager.pages && pager.pages.length > 1" class="pagination">
-                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a class="page-link" (click)="setCurrentPage(1)">Prima Pagina</a>
-                </li>-->
-                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a class="page-link" (click)="setCurrentPage(pager.currentPage - 1)">Pagina anterioara</a>
+
+        <div class="row list-filters mt-4 mb-4" >
+            <ul>
+                <li *ngIf="selectedCity" (click)="unSelectCity()">
+                    <label style="cursor: pointer;margin-bottom: .01rem;">
+                        Oras: {{selectedCityName}} <i class="fa fa-times"></i>
+                    </label>                        
                 </li>
-                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a class="page-link" (click)="setCurrentPage(page)">{{page}}</a>
-                </li>
-                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a class="page-link" (click)="setCurrentPage(pager.currentPage + 1)">Pagina urmatoare</a>
-                </li>
-                <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a class="page-link" (click)="setCurrentPage(pager.totalPages)">Ultima pagina</a>
-                </li>-->
+                <li *ngIf="selectedCycle" (click)="unSelectCycle()">
+                    <label style="cursor: pointer;margin-bottom: .01rem;">
+                        Nivel: {{selectedCycleName}} <i class="fa fa-times"></i>
+                    </label>                        
+                </li>                
             </ul>
-
         </div>
-    </div>
+        <div class="row" *ngIf="selectedUrlCategory == ''">
+            <div class="col-sm-12 post-r-content bg-light">
+                <div class="post-details text-danger text-center">
+                    <h4 class="mt-4 mb-4 text-muted">Ultimele anunturi</h4>
+                </div>
+            </div>
+        </div>
+        <!--<h2>Lista profesorilor {{selectedCategoryNameWithoutMain==null || selectedCategoryNameWithoutMain == '' ? '' : ''}} ({{nrOfTeachers}} profesori) </h2>-->
+        <div class="row">
+            <div class="col-12">
+                <div *ngFor="let ad of ads; let i = index">
+                    <article  [attr.class]="i == 0 ? 'row teacherlist-item teacherlist-item-first' : 'row teacherlist-item'">
+                        <div class="col-lg-2 col-md-3 text-center"><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/' + ad.Code : '/Account/login'"><img src="{{ad.Teacher.ProfileImageUrl}}" class="avatar" /></a></div>
+                        <div class="col-lg-10 col-md-9">
+                            <div id="name" class="m-0-top-bottom display-inline-block"><h5><a [attr.href]="isCurrentUserIsLoggedIn ? '/teacherprofile/'+ ad.Code : '/Account/login'"> {{ad.Teacher.FirstName}} {{isCurrentUserIsLoggedIn && ad.Teacher.LastName.length !=null  ? ad.Teacher.LastName : ad.Teacher.LastName.substring(0,1) + "."}} {{" - " + ad.Teacher.Occupation.Name}} </a></h5></div>
+                            <div id="title" class="m-0-top-bottom">  <span class="glyphicon glyphicon-book" style="float:left;margin-right: 20px;"><img src="/img/book.png"></span> <div class="category-item">Meditatii la <a href="/{{ad.Category.Name}}" title="{{ad.Category.Name}}" target="_blank">{{ad.Category.Name}}</a></div> </div>                        
+                            <div class="experience"> {{ad.Teacher.Experience.Name}} experienta</div>
+                            <div class="price">Pret: {{ad.Price != null && ad.Price != "" ? ad.Price + " / " + ad.DurationName : "-"}}</div>
+                            <div class="description" style="white-space: pre-line;">{{ (ad.Description != null && ad.Description.length>200)? (ad.Description | slice:0:200)+'..':(ad.Description) }}</div> 
+                        </div>
+    
+                    </article>
+                </div>
+    
+                <!-- pager -->
+                <ul *ngIf="pager.pages && pager.pages.length > 1" class="pagination">
+                    <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setCurrentPage(1)">Prima Pagina</a>
+                    </li>-->
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a class="page-link" (click)="setCurrentPage(pager.currentPage - 1)">Pagina anterioara</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a class="page-link" (click)="setCurrentPage(page)">{{page}}</a>
+                    </li>
+                    <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setCurrentPage(pager.currentPage + 1)">Pagina urmatoare</a>
+                    </li>
+                    <!--<li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a class="page-link" (click)="setCurrentPage(pager.totalPages)">Ultima pagina</a>
+                    </li>-->
+                </ul>
+                <div class="row" *ngIf="ads==null || ads.length <= 0">
+                    <div class="col-sm-12 post-r-content bg-light">
+                        <div class="post-details text-danger text-center">
+                            <h3 class="mt-4 mb-4 text-muted">Nu există rezultate care să corespundă căutării dvs</h3>
+                            <p class="lead-intro mt-4 mb-4 text-muted">
+                                Vă rugăm să încercați să modificați căutarea pentru a obține mai multe rezultate.
+                              </p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+    
+            </div>
+    
+            </div>
+        </div>
 </div>
 
 

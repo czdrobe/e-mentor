@@ -12,6 +12,8 @@ import { Cycle } from '../../types/cycle.type';
 import { Category } from '../../types/categories.type';
 import { elementAt } from 'rxjs/operators';
 import { City } from '../../types/city.type';
+import { Experience } from '../../types/experience.type';
+import { Occupation } from '../../types/occupation.type';
 
 @Component({
 	moduleId: module.id,
@@ -29,6 +31,7 @@ export class ProfileComponent {
 	editmodeaddress: boolean;
 	editmodedescription: boolean;
 	editmodeprice: boolean;
+	editmodeStudii: boolean;
 	editmodeavaiability: boolean;
 	model:           any;
 	copymodel:       any;
@@ -40,23 +43,32 @@ export class ProfileComponent {
 	selectedCityName1: string;
 	selectedCity1: number;
 
-	selectedCityName2: string;
-	selectedCity2: number;
+	selectedExperienceName: string;
+	selectedExperience: number;
 
-	selectedCityName3: string;
-	selectedCity3: number;
+	selectedOccupationName: string;
+	selectedOccupation: number;
 
 	bIsOnline: boolean;
+	bIsOnStudent:boolean;
+	bIsOnTeacher:boolean;
+
+	lstExperience:Experience[];
+	lstOccupation:Occupation[];
 
 	lstCity:City[];
-	lstCity2:City[];
-	lstCity3:City[];
-	searchCity: string;
-	searchCity2: string;
-	searchCity3: string;
+	lstFilteredCity:City[];
 
+	searchCity: string;
+
+	lstCounty:string[];
+	selectedCountyName:string;
+	
 	errorCity: string;
-    
+	errorStudies:string;
+	errorExperience: string;
+	errorOccupation: string;
+    	
 	constructor(
 		private calendar: NgbCalendar,
 		private profileService: ProfileService,
@@ -79,6 +91,7 @@ export class ProfileComponent {
 		this.data = {};
 		this.editmodeprofile = false;
 		this.editmodecity = false;
+		this.editmodeStudii = false;
 	}
 	
 	changed()
@@ -91,15 +104,27 @@ export class ProfileComponent {
 		this.ismeridian = true;
 
 		this.selectedCityName1 = "Alege o localitate";
-		this.selectedCityName2 = "Alege o localitate";
-		this.selectedCityName3 = "Alege o localitate";
+
+		this.selectedExperienceName = "Alege experienta";
+		this.selectedOccupationName = "Alege ocupatia";
+
+		this.activateRoute.queryParams.subscribe(params => {
+			if (params.hasOwnProperty("message"))
+			{
+
+			}
+		});
 
 		this.profileService.getCurrentProfile().subscribe((results:any) => {
 			this.model = results;
 			this.searchCity = "";
 
 			this.bIsOnline = this.model.AlsoOnline;
+			this.bIsOnTeacher = this.model.AtTeacher;
+			this.bIsOnStudent = this.model.AtStudent;
+
 			this.resetEditCity();
+			this.updateFromModel();
 
 			if (this.model.Dob != null)
 			{
@@ -130,115 +155,75 @@ export class ProfileComponent {
 			this.profileService.getCities().subscribe((results:any) => {
 				console.log(results);
 				this.lstCity = results;
-				this.lstCity2 = results;
-				this.lstCity3 = results;
-
-			})
-		});
-
-		this.profileService.getAvailability().subscribe( (results:any) => {
-			this.availability =[];
-			var tempAvailability: any[] = [];
-			var startTime: number = 0;
-			var endTime: number = 0;
-			var day:number = 0;
-			var totalElements: number = results.Entities.length;
-			var i:number = 0;
-			results.Entities.forEach((element:any) => {
-				i++;
-				if (day == 0)
-				{
-					day = element.Day;
-					startTime = element.Time;
-				}
-				if (day != element.Day || i == totalElements) //create also for last element
-				{
-					if (i == totalElements)
+				var temp: string[] = [];
+				this.lstCity.forEach(function(item){
+					if (!temp.some(x => x == item.County))
 					{
-						endTime = element.Time;
+						temp.push(item.County);
 					}
+				});
+				this.lstCounty = temp;
+			})
 
-					//we have one day starttime and endtime so create the object
-					tempAvailability.push({
-						day: day,
-						startTime: startTime,
-						endTime: endTime + 1
-					}); 
-
-					day = element.Day;
-					startTime = element.Time;
-				}
-				endTime = element.Time;
-			});
-
-			for (var j:number=1;j<=7; j++)
-			{
-				var availability = tempAvailability.filter(i=>i.day == j)[0];
-				var dayName = "Luni";
-				switch(j)
-				{
-					case 1:
-						dayName ="Luni";break;
-					case 2:
-						dayName = "Marti";break;
-						case 3:
-						dayName = "Miercuri";break;
-						case 4:
-						dayName = "Joi";break;
-						case 5:
-						dayName = "Vineri";break;
-						case 6:
-						dayName = "Sambata";break;
-						case 7:
-						dayName = "Duminica";break;
-				}
-				this.availability.push({
-					day:j,
-					dayName: dayName,
-					startTime:(availability!=null ? availability.startTime : 0),
-					endTime:(availability!=null ? availability.endTime : 0),
-					available: (availability!=null && availability.startTime > 0 && availability.endTime) ? 1 : 0
-				})
-			}
+			// load experience
+			this.profileService.getExperience().subscribe((results:any) => {
+				console.log(results);
+				this.lstExperience = results;
+			})
+			
+			// load occupation
+			this.profileService.getOccupation().subscribe((results:any) => {
+				console.log(results);
+				this.lstOccupation = results;
+			})			
 		});
 
-
+		
 	}
+
+	selectExperience(id: number, cityName: string)
+    {
+        this.selectedExperience = id;
+        this.selectedExperienceName = cityName;
+		
+		if (this.model.Experience == null)
+		{
+			this.model.Experience = new Object();
+		}
+		this.model.Experience.Id = id;
+    }
+	
+	selectOccupation(id: number, cityName: string)
+    {
+        this.selectedOccupation = id;
+        this.selectedOccupationName = cityName;
+		if (this.model.Occupation == null)
+		{
+			this.model.Occupation = new Object();
+		}
+		this.model.Occupation.Id = id;
+    }
 
 	selectCity1(id: number, cityName: string)
     {
         this.selectedCity1 = id;
         this.selectedCityName1 = cityName;
     }
-
-	selectCity2(id: number, cityName: string)
+	selectCounty(county: string)
     {
-        this.selectedCity2 = id;
-        this.selectedCityName2 = cityName;
-    }
+        this.selectedCountyName = county;
 
-	selectCity3(id: number, cityName: string)
-    {
-        this.selectedCity3 = id;
-        this.selectedCityName3 = cityName;
-    }
+		this.lstFilteredCity = this.lstCity.filter( (item) => 
+		{
+			return item.County  == county;
+		})
+
+    }	
 	
 	resetCity1()
 	{
         this.selectedCity1 = 0;
         this.selectedCityName1 = "Alege o localitate";
-	}
-
-	resetCity2()
-	{
-        this.selectedCity2 = 0;
-        this.selectedCityName2 = "Alege o localitate";
-	}
-
-	resetCity3()
-	{
-        this.selectedCity3 = 0;
-        this.selectedCityName3 = "Alege o localitate";
 	}
 
 	saveCity()
@@ -250,7 +235,7 @@ export class ProfileComponent {
 		else
 		{
 			this.errorCity = "";
-			this.profileService.saveCityForCurrentProfie(this.selectedCity1, this.selectedCity2, this.selectedCity3, this.bIsOnline).subscribe(result => 
+			this.profileService.saveCityForCurrentProfie(this.selectedCity1, this.bIsOnTeacher, this.bIsOnStudent, this.bIsOnline).subscribe(result => 
 				{
 					console.log("Saved");
 					
@@ -285,7 +270,20 @@ export class ProfileComponent {
 		this.saveProfileToDB(false);
 		this.editPrice();
 	}
+	saveStudii()
+	{
+		this.errorStudies = "";
 
+		if (this.model.Studies == null || this.model.Studies == "")
+		{
+			this.errorStudies = "Acest camp este obligatoriu!";
+		}
+		else
+		{
+			this.saveProfileToDB(false);
+			this.editStudii();
+		}
+	}
 	saveAva()
 	{
 		this.saveAvailabilityToDB();
@@ -315,6 +313,8 @@ export class ProfileComponent {
 	saveProfileToDB(reload:boolean)
 	{
 		
+		this.errorExperience = "";
+		this.errorOccupation = "";
 		if (this.model.Dob != null)
 		{
 			if (typeof this.model.Dob == "string")
@@ -325,14 +325,26 @@ export class ProfileComponent {
 			var dob = new Date(Date.UTC(this.model.Dob.getFullYear(), this.model.Dob.getMonth(), this.model.Dob.getDate()));
 			this.model.Dob =  dob;
 		}
-		this.profileService.saveCurrentProfie(this.model).subscribe(result => 
-			{
-				console.log("Saved");
-				if (reload)
+
+		if (this.selectedExperience <= 0)
+		{
+			this.errorExperience = "Alegeti o experienta";
+		}
+		else if (this.selectedOccupation <= 0)
+		{
+			this.errorOccupation = "Alegeti o ocpatie";
+		}
+		else
+		{
+			this.profileService.saveCurrentProfie(this.model).subscribe(result => 
 				{
-					window.location.href = window.location.href + "?refreshuser=1";
-				}
-			});
+					console.log("Saved");
+					if (reload)
+					{
+						window.location.href = window.location.href + "?refreshuser=1";
+					}
+				});
+		}
 	}
 
 	editCity()
@@ -345,7 +357,6 @@ export class ProfileComponent {
 			
 		}
 	}
-
 
 	editProfile()
 	{
@@ -374,6 +385,15 @@ export class ProfileComponent {
 		}
 	}
 
+	editStudii()
+	{
+		this.editmodeStudii = !this.editmodeStudii;
+		if (this.editmodeStudii)
+		{
+			this.copymodel = JSON.parse(JSON.stringify(this.model));
+		}
+	}
+
 	editPrice()
 	{
 		this.editmodeprice = !this.editmodeprice;
@@ -392,9 +412,25 @@ export class ProfileComponent {
 		}
 	}
 
+	updateFromModel()
+	{
+		if (this.model.Experience != null)
+		{
+			this.selectedExperience = this.model.Experience.Id;
+			this.selectedExperienceName = this.model.Experience.Name;	
+		}
+
+		if (this.model.Occupation != null)
+		{
+			this.selectedOccupation = this.model.Occupation.Id;
+			this.selectedOccupationName = this.model.Occupation.Name;	
+		}
+	}
+
 	cancelEditProfile()
 	{
 		this.model = JSON.parse(JSON.stringify(this.copymodel));
+		this.updateFromModel();
 		this.editProfile();	
 	}
 	
@@ -409,24 +445,13 @@ export class ProfileComponent {
 
 	resetEditCity()
 	{
-
 		if (this.model.Cities.length > 0)
 		{
+			this.selectedCountyName = this.model.Cities[0].County;
 			this.selectedCity1 = this.model.Cities[0].Id;
 			this.selectedCityName1 = this.model.Cities[0].Name;
 		}
 
-		if (this.model.Cities.length > 1)
-		{
-			this.selectedCity2 = this.model.Cities[1].Id;
-			this.selectedCityName2 = this.model.Cities[1].Name;
-		}
-
-		if (this.model.Cities.length > 2)
-		{
-			this.selectedCity3 = this.model.Cities[2].Id;
-			this.selectedCityName3 = this.model.Cities[2].Name;
-		}
 	}
 
 	cancelEditAddress()
@@ -439,6 +464,12 @@ export class ProfileComponent {
 	{
 		this.model = JSON.parse(JSON.stringify(this.copymodel));
 		this.editDescription();
+	}
+
+	cancelEditStudii()
+	{
+		this.model = JSON.parse(JSON.stringify(this.copymodel));
+		this.editStudii();
 	}
 
 	cancelEditPrice()

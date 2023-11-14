@@ -33,11 +33,13 @@ export class RequestnewComponent {
     selectedCityName: string;
     selectedCategoryName: string;
     selectedCategory: number;
+
     
     newMessage:string;
     isOnline: boolean;
     duration:number;
 
+    
     errorMessage: string;
     currentUser: any;
   
@@ -58,7 +60,8 @@ export class RequestnewComponent {
 
     ngOnInit() {
       
-      this.isOnline = false;
+      this.isOnline = false; 
+
       this.selectedCategoryName = "Alege o materie";
       this.selectedCycleName = "Alege ciclul scolar";
       this.selectedCityName = "Alege o localitate";

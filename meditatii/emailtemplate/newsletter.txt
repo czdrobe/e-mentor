@@ -1,0 +1,104 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<style type="text/css">
+        table {
+            font-family: sans-serif;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .teacher-image {
+		width: 85px;
+		height: 85px;
+		object-fit: cover;
+		border-radius:50%        }
+	</style>
+</head>
+
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #fcfcfc;">
+	<tr>
+		<td align="center" bgcolor="#fcfcfc">
+			<table style="margin:0 10px;" width="480" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td width="480" colspan="3" height="5" bgcolor="#008329"></td>
+				</tr>
+				<tr>
+                    <td width="20" bgcolor="#ffffff"></td>
+					<td width="440" bgcolor="#ffffff">
+                        <br>
+						<a href="https://www.emeditatii.ro/?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers" title="emeditatii.ro" style="border: none;" border="0">
+							<img src="https://www.emeditatii.ro/img/logo.png" style="border: none;" border="0" alt="Logo eMeditatii.ro">
+						</a>
+					</td>
+                    <td width="20" bgcolor="#ffffff"></td>
+				</tr>
+                <tr>
+                    <td width="20" bgcolor="#ffffff"></td>
+                    <td width="440" style="text-align: center; line-height: 1.5em;" bgcolor="#ffffff">
+                        <br>
+                        <strong style="color: #699b29; font-size: 1.1em;">
+							Am găsit noi meditatori în regiunea ta.
+						</strong><br>
+						Îi poți contacta direct!<br>
+						<br>
+                    </td>
+                    <td width="20" bgcolor="#ffffff"></td>
+                </tr>
+				<tr>
+					<td width="480" colspan="3">
+						<table width="480" cellpadding="0" cellspacing="0" border="0" style="background-color: #f5f5f5;">
+                            <tr>
+                                <td width="480" colspan="5" height="30"></td>
+                            </tr>
+									<tr>
+										{teacherslist}
+									</tr>
+                            <tr>
+                                <td width="480" colspan="5" height="30"></td>
+                            </tr>
+						</table>
+					</td>
+				</tr>
+                <tr>
+                    <td width="480" colspan="3" bgcolor="">
+                        <table width="480" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td width="480" colspan="3" height="30"></td>
+                            </tr>
+                            <tr>
+                                <td width="90"></td>
+                                <td width="300" height="40" bgcolor="#008329" style="text-align: center;">
+									<a href="https://www.emeditatii.ro/teacher?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers" style="color: white;">
+										Afișează mai mulți meditatori în regiunea ta
+									</a>
+                                </td>
+                                <td width="90"></td>
+                            </tr>
+                            <tr>
+                                <td width="480" colspan="3" height="30"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+				<tr>
+					<td width="480" colspan="3" style="font-size: 0.8em;">
+                        <br>
+                        Ai primit acest email pentru că ai introdus datele tale în formularul de pe eMeditatii.ro.
+                        Daca nu vrei sa mai primesti email-uri de genul acesta, click aici:
+						<a href="https://www.emeditatii.ro/unsubscribe-newsletter/325184/jr481r?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers" style="color: #058789;">
+							https://www.emeditatii.ro/unsubscribe-newsletter/325184/jr481r
+						</a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -239,7 +239,38 @@
     <Compile Include="Migrations\202111021537525_addproducttopaymen.Designer.cs">
       <DependentUpon>202111021537525_addproducttopaymen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112090905319_AddSendNewsletterFlagToUser.cs" />
+    <Compile Include="Migrations\202112090905319_AddSendNewsletterFlagToUser.Designer.cs">
+      <DependentUpon>202112090905319_AddSendNewsletterFlagToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307201541038_UpdateUser.cs" />
+    <Compile Include="Migrations\202307201541038_UpdateUser.Designer.cs">
+      <DependentUpon>202307201541038_UpdateUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308110746181_Add-Ad.cs" />
+    <Compile Include="Migrations\202308110746181_Add-Ad.Designer.cs">
+      <DependentUpon>202308110746181_Add-Ad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308130552438_RemvUserCycle.cs" />
+    <Compile Include="Migrations\202308130552438_RemvUserCycle.Designer.cs">
+      <DependentUpon>202308130552438_RemvUserCycle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309041414081_removecatfromuser.cs" />
+    <Compile Include="Migrations\202309041414081_removecatfromuser.Designer.cs">
+      <DependentUpon>202309041414081_removecatfromuser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309141035323_addAddedColumn.cs" />
+    <Compile Include="Migrations\202309141035323_addAddedColumn.Designer.cs">
+      <DependentUpon>202309141035323_addAddedColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309301635468_makenullable.cs" />
+    <Compile Include="Migrations\202309301635468_makenullable.Designer.cs">
+      <DependentUpon>202309301635468_makenullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Ad.cs" />
+    <Compile Include="Models\Occupation.cs" />
+    <Compile Include="Models\Experience.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\CityUser.cs" />
     <Compile Include="Models\City.cs" />
@@ -255,6 +286,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AdRepository.cs" />
     <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\TeacherRatingRepository.cs" />
     <Compile Include="Repositories\TeacherAvailabilityRepository.cs" />
@@ -420,6 +452,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202111021537525_addproducttopaymen.resx">
       <DependentUpon>202111021537525_addproducttopaymen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112090905319_AddSendNewsletterFlagToUser.resx">
+      <DependentUpon>202112090905319_AddSendNewsletterFlagToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307201541038_UpdateUser.resx">
+      <DependentUpon>202307201541038_UpdateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308110746181_Add-Ad.resx">
+      <DependentUpon>202308110746181_Add-Ad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308130552438_RemvUserCycle.resx">
+      <DependentUpon>202308130552438_RemvUserCycle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309041414081_removecatfromuser.resx">
+      <DependentUpon>202309041414081_removecatfromuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309141035323_addAddedColumn.resx">
+      <DependentUpon>202309141035323_addAddedColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309301635468_makenullable.resx">
+      <DependentUpon>202309301635468_makenullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

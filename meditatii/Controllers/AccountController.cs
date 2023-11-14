@@ -71,6 +71,7 @@ namespace meditatii.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            int success = 0;
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -79,6 +80,8 @@ namespace meditatii.Controllers
             
             if (user != null && !user.EmailConfirmed)
             {
+                success = 5;
+                usersService.LogLogin(user.Id, success);
                 //so email was not cofirmed
                 ModelState.AddModelError("", "Trebuie sa confimati emailul!");
                 return View(model);
@@ -87,16 +90,36 @@ namespace meditatii.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    //check if the profile is complete
+                    success = 1;
+                    
+                    var userModel = usersService.GetUser(model.Email);
+                    usersService.LogLogin(userModel.Id, success);
+                    return RedirectToLocal("/u/profile");
+                    /*if (userModel != null && (String.IsNullOrEmpty(userModel.FirstName) || String.IsNullOrEmpty(userModel.LastName)))
+                    {
+                        return RedirectToLocal("/u/profile");
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }*/
                 case SignInStatus.LockedOut:
+                    success = 2;
+                    usersService.LogLogin(user != null ? user.Id : 0, success);
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
+                    success = 3;
+                    usersService.LogLogin(user != null ? user.Id : 0, success);
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
+                    success = 4;
+                    usersService.LogLogin(user != null ? user.Id : 0, success);
                     ModelState.AddModelError("", "Email sau parola sunt gresite.");
                     return View(model);
             }

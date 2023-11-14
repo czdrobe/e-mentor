@@ -1,0 +1,26 @@
+									<td width="15"></td>
+									<td width="220" bgcolor="#ffffff">
+											<table width="220" cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td width="90">
+														<a href="{teacherlink}?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers">
+															<img src="{teacherprofileimage}?1638560716  alt="{teachername}" class="teacher-image" width="80" height="80">
+														</a>
+													</td>
+													<td width="130" valign="top" style="vertical-align: top; padding-top: 5px;">
+														<a href="{teacherlink}?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers" style="color: #d54b1a; font-size: 1.1em; line-height: 1.5em;">
+															{teachername}
+														</a><br>
+                                                <span style="font-size: 0.8em; line-height: 1.0em;">
+													{teacherteaching}<br>
+													<br>
+                                                </span>
+														<div style="text-align: right; font-size: 0.9em; line-height: 1.5em;">
+															<a href="{teacherlink}?utm_source=newsletter_with_new_teachers&amp;utm_medium=email&amp;utm_campaign=newsletter_with_new_teachers" style="color: #dea32e;">
+																Mesaj
+															</a> &nbsp;
+														</div>
+													</td>
+												</tr>
+											</table>
+										</td>

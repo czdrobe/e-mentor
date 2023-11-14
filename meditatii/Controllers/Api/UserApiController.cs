@@ -20,6 +20,7 @@ namespace meditatii.Controllers.Api
 {
     public class UserApiController : ApiController
     {
+        private IAdService adService;
         private IAppoitmentService appoitmentService;
         private IUsersService usersService;
         private ITeacherAvailabilityService teacherAvailabilityService;
@@ -27,13 +28,14 @@ namespace meditatii.Controllers.Api
         private ICycleService cycleService;
         private ApplicationUserManager _userManager;
 
-        public UserApiController(IUsersService usersService, ITeacherAvailabilityService teacherAvailabilityService, ICategoryService categoryService, ICycleService cycleService, IAppoitmentService appoitmentService)
+        public UserApiController(IUsersService usersService, ITeacherAvailabilityService teacherAvailabilityService, ICategoryService categoryService, ICycleService cycleService, IAppoitmentService appoitmentService, IAdService adService)
         {
             this.usersService = usersService;
             this.teacherAvailabilityService = teacherAvailabilityService;
             this.categoryService = categoryService;
             this.cycleService = cycleService;
             this.appoitmentService = appoitmentService;
+            this.adService= adService;
         }
 
         public ApplicationUserManager UserManager
@@ -57,10 +59,20 @@ namespace meditatii.Controllers.Api
         }
 
         [HttpGet]
-        [Route("api/users/GetSuggestedUsers")]
-        public SearchResult<UserModel> GetSuggestedUsers(int? categoryid, int? cityId)
+        [Route("api/users/getusersdescription")]
+        public SearchResult<AdModel> GetUsersDescription(int? categoryid, int? cycleid, int? cityId, int? order, int page)
         {
-            return MappingHelper.Map<SearchResult<UserModel>>(this.usersService.GetSuggestedUsers(HttpContext.Current.User.Identity.Name, categoryid, cityId));
+            int itemsPerPage = 10;
+            int skip = (page - 1) * itemsPerPage;
+            int take = itemsPerPage;
+            return MappingHelper.Map<SearchResult<AdModel>>(this.adService.GetAds(categoryid, cycleid, cityId, order, skip, take));
+        }
+
+        [HttpGet]
+        [Route("api/users/GetSuggestedUsers")]
+        public SearchResult<UserModel> GetSuggestedUsers(string userid, int? categoryid, int? cityId)
+        {
+            return MappingHelper.Map<SearchResult<UserModel>>(this.usersService.GetSuggestedUsers(Security.DecryptID(userid), categoryid, cityId));
         }
 
         [HttpGet]
@@ -109,6 +121,20 @@ namespace meditatii.Controllers.Api
         }
 
         [HttpGet]
+        [Route("api/users/GetExperience")]
+        public List<Models.ExperienceModel> GetExperience()
+        {
+            return MappingHelper.Map<List<ExperienceModel>>(this.usersService.GetExperience());
+        }
+
+        [HttpGet]
+        [Route("api/users/GetOccupation")]
+        public List<Models.OccupationModel> GetOccupation()
+        {
+            return MappingHelper.Map<List<OccupationModel>>(this.usersService.GetOccupation());
+        }
+  
+        [HttpGet]
         [Route("api/users/getuser")]    
         public UserModel GetUser(int userid)
         {
@@ -120,6 +146,13 @@ namespace meditatii.Controllers.Api
         public UserModel GetUserByCode(string userid)
         {
             return MappingHelper.Map<UserModel>(this.usersService.GetUser(Security.DecryptID(userid)));
+        }
+
+        [HttpGet]
+        [Route("api/users/getadbycode")]
+        public AdModel GetAdByCode(string adid)
+        {
+            return MappingHelper.Map<AdModel>(this.adService.GetAd(Security.DecryptID(adid)));
         }
 
         [HttpGet]
@@ -143,6 +176,115 @@ namespace meditatii.Controllers.Api
                 currentprofile.IsTeacher = HttpContext.Current.User.IsInRole(UserType.Teacher.ToString());
 
             return currentprofile;
+        }
+
+        [HttpGet]
+        [Route("api/users/getadsforcurrentuser")]
+        public List<AdModel> GetAdsForCurrentUser()
+        {
+            List<AdModel> ads = new List<AdModel>();
+            if (HttpContext.Current.User.Identity.Name == "")
+                return null;
+
+            var user = this.usersService.GetUser(HttpContext.Current.User.Identity.Name);
+            var currentprofile = MappingHelper.Map<UserModel>(user);
+
+            if (currentprofile != null)
+                currentprofile.IsTeacher = HttpContext.Current.User.IsInRole(UserType.Teacher.ToString());
+
+            if (currentprofile != null && currentprofile.IsTeacher)
+            {
+                ads = MappingHelper.Map<List<AdModel>>(this.adService.GetAdsForUser(user.Id));
+            }
+            return ads;
+        }
+
+        [HttpGet]
+        [Route("api/users/AdView")]
+        public void AdView(string adCode)
+        {
+            int adId = Security.DecryptID(adCode);
+            this.adService.AdView(adId);
+
+            //update in memory
+            object lstNrOfViewsObj;
+            MvcApplication.CacheItems.TryGetValue("nrOfViews", out lstNrOfViewsObj);
+            if (lstNrOfViewsObj != null)
+            {
+                Dictionary<int, int> lstNrOfViews = lstNrOfViewsObj as Dictionary<int, int>;
+
+                if (lstNrOfViews.ContainsKey(adId))
+                {
+                    int result = 0;
+                    lstNrOfViews.TryGetValue(adId, out result);
+                    result = result+ 1;
+                    lstNrOfViews[adId] = result;
+                }
+                
+            }
+        }
+
+        [HttpGet]
+        [Route("api/users/GetNrOfViewsForAd")]
+        public int GetNrOfViewsForAd(string adCode)
+        {
+            int result = 0;
+            int adId = Security.DecryptID(adCode);
+
+            object lstNrOfViewsObj;
+            MvcApplication.CacheItems.TryGetValue("nrOfViews", out lstNrOfViewsObj);
+            if (lstNrOfViewsObj != null)
+            {
+                Dictionary<int, int> lstNrOfViews = lstNrOfViewsObj as Dictionary<int, int>;
+
+                if (lstNrOfViews.ContainsKey(adId))
+                {
+                    lstNrOfViews.TryGetValue(adId, out result);
+                }
+                else
+                {
+                    result = adService.GetNrOfViewsForAd(adId);
+                    lstNrOfViews.Add(adId, result);
+                }
+            }
+            else
+            {
+                Dictionary<int, int> lstNrOfViews = new Dictionary<int, int>();
+                result = adService.GetNrOfViewsForAd(adId);
+                lstNrOfViews.Add(adId, result);
+                MvcApplication.CacheItems.Add("nrOfViews", lstNrOfViews);
+            }
+
+            return result;
+        }
+        
+        [HttpPost]
+        [Route("api/users/savead")]
+        public void SaveAd(AdModel ad)
+        {
+            var currentprofile = this.usersService.GetUser(HttpContext.Current.User.Identity.Name);
+
+            var request = MappingHelper.Map<Ad>(ad);
+            request.TeacherId = currentprofile.Id;
+
+            if (request.Id == 0)
+            {
+                request.Added = DateTime.Now;
+            }
+
+            this.adService.SaveAdForUser(request);
+        }
+
+        [HttpPost]
+        [Route("api/users/deletead")]
+        public void DeleteAd(AdModel ad)
+        {
+            var currentprofile = this.usersService.GetUser(HttpContext.Current.User.Identity.Name);
+
+            var request = MappingHelper.Map<Ad>(ad);
+            request.TeacherId = currentprofile.Id;
+
+            this.adService.DeleteAdForUser(request);
         }
 
         [HttpPost]
@@ -203,7 +345,7 @@ namespace meditatii.Controllers.Api
         [Route("api/users/savecityforcurrentprofie")]
         public void SaveCityForCurrentProfie([FromBody] SaveCityRequest cities)
         {
-            this.usersService.SaveCityForUser(HttpContext.Current.User.Identity.Name, cities.cityid1, cities.cityid2, cities.cityid3, cities.isOnline);
+            this.usersService.SaveCityForUser(HttpContext.Current.User.Identity.Name, cities.cityid1, cities.isOnline, cities.atTeacher, cities.atStudent);
         }
 
 
@@ -261,6 +403,7 @@ namespace meditatii.Controllers.Api
                     Body = emailbody,
                     IsBodyHtml = true
                 };
+                email.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
 
                 var client = new SmtpClient();
                 client.SendCompleted += (s, e) =>
@@ -285,8 +428,8 @@ namespace meditatii.Controllers.Api
     public class SaveCityRequest
     {
         public int cityid1 { get; set; }
-        public int cityid2 { get; set; }
-        public int cityid3 { get; set; }
+        public bool atTeacher { get; set; }
+        public bool atStudent { get; set; }
         public bool isOnline { get; set; }
     }
 }

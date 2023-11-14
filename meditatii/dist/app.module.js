@@ -13,6 +13,9 @@ var http_2 = require("@angular/common/http");
 var forms_1 = require("@angular/forms");
 var app_component_1 = require("./app.component");
 var teacherlist_component_1 = require("./components/teacherlist.component");
+var requestlist_component_1 = require("./components/requestlist.component");
+var requestview_component_1 = require("./components/requestview.component");
+var requestnew_component_1 = require("./components/requestnew.component");
 var teacherprofile_component_1 = require("./components/teacherprofile.component");
 var room_component_1 = require("./components/room.component");
 var backend_component_1 = require("./components/backend/backend.component");
@@ -20,20 +23,24 @@ var menu_component_1 = require("./components/backend/menu.component");
 var messages_component_1 = require("./components/backend/messages.component");
 var profile_component_1 = require("./components/backend/profile.component");
 var appoitments_component_1 = require("./components/backend/appoitments.component");
+var appoitmentreport_component_1 = require("./components/backend/appoitmentreport.component");
+var subscriptions_component_1 = require("./components/backend/subscriptions.component");
+var mysubscription_component_1 = require("./components/backend/mysubscription.component");
 var calendar_component_1 = require("./components/calendar.component");
 var ng2_img_cropper_1 = require("ng2-img-cropper");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var loader_component_1 = require("./components/loader.component");
 var loader_interceptor_service_1 = require("./components/loader-interceptor.service");
 var listfilter_pip_1 = require("./components/listfilter.pip");
+var niceDateFormat_pip_1 = require("./components/niceDateFormat.pip");
 var app_routing_1 = require("./app.routing");
-var AppModule = (function () {
+var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
             imports: [ng_bootstrap_1.NgbModule.forRoot(), platform_browser_1.BrowserModule, http_2.HttpClientModule, http_1.HttpModule, app_routing_1.routing, forms_1.FormsModule],
-            declarations: [listfilter_pip_1.FilterByMateriaPipe, app_component_1.AppComponent, loader_component_1.LoaderComponent, teacherlist_component_1.TeacherlistComponent, teacherprofile_component_1.TeacherProfileComponent, room_component_1.RoomComponent, backend_component_1.BackendComponent, menu_component_1.BackEndMenuComponent, messages_component_1.MessagesComponent, profile_component_1.ProfileComponent, appoitments_component_1.AppoitmentsComponent, calendar_component_1.CustomCalendarComponent, ng2_img_cropper_1.ImageCropperComponent],
+            declarations: [mysubscription_component_1.MysubscriptionComponent, subscriptions_component_1.SubscriptionsComponent, niceDateFormat_pip_1.NiceDateFormatPipe, listfilter_pip_1.FilterByMateriaPipe, app_component_1.AppComponent, loader_component_1.LoaderComponent, teacherlist_component_1.TeacherlistComponent, requestlist_component_1.RequestlistComponent, requestview_component_1.RequestviewComponent, requestnew_component_1.RequestnewComponent, teacherprofile_component_1.TeacherProfileComponent, room_component_1.RoomComponent, backend_component_1.BackendComponent, menu_component_1.BackEndMenuComponent, messages_component_1.MessagesComponent, profile_component_1.ProfileComponent, appoitments_component_1.AppoitmentsComponent, appoitmentreport_component_1.AppoitmentReportComponent, calendar_component_1.CustomCalendarComponent, ng2_img_cropper_1.ImageCropperComponent],
             providers: [
                 {
                     provide: http_2.HTTP_INTERCEPTORS,
@@ -47,3 +54,4 @@ var AppModule = (function () {
     return AppModule;
 }());
 exports.AppModule = AppModule;
+//# sourceMappingURL=app.module.js.map

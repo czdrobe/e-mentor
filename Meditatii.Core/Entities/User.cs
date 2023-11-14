@@ -80,9 +80,15 @@ namespace Meditatii.Core.Entities
 
         public bool AlsoOnline { get; set; }
 
+        public bool AtTeacher { get; set; }
+
+        public bool AtStudent { get; set; }
+
         public DateTime? SubscriptionStartDate { get; set; }
 
         public DateTime? SubscriptionEndDate { get; set; }
+
+        public bool SendNewsletter { get; set; }
 
         public ICollection<Category> Categories { get; set; }
 
@@ -90,5 +96,12 @@ namespace Meditatii.Core.Entities
 
         public ICollection<City> Cities { get; set; }
 
+        public Experience Experience { get; set; }
+
+        public Occupation Occupation { get; set; }
+
+        public string Studies { get; set; }
+
+        public string YouYubeURL { get; set; }
     }
 }

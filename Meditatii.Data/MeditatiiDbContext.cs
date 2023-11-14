@@ -21,6 +21,8 @@ namespace Meditatii.Data
         {
         }
 
+        public virtual DbSet<Ad> Ad { get; set; }
+
         public virtual DbSet<User> User { get; set; }
 
         public virtual DbSet<Category> Category { get; set; }
@@ -46,6 +48,18 @@ namespace Meditatii.Data
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
+            //modelBuilder.Entity<Ad>().Ignore(c => c.Added);
+
+            modelBuilder.Entity<Ad>()
+               .HasMany<Cycle>(s => s.Cycles)
+               .WithMany(c => c.Ads)
+               .Map(cs =>
+               {
+                   cs.MapLeftKey("AdId");
+                   cs.MapRightKey("CycleId");
+                   cs.ToTable("AdCycle");
+               });
+
             modelBuilder.Entity<User>()
                .HasMany<Roles>(s => s.Roles)
                .WithMany(c => c.Users)
@@ -54,26 +68,6 @@ namespace Meditatii.Data
                    cs.MapLeftKey("UserId");
                    cs.MapRightKey("RoleId");
                    cs.ToTable("UserRoles");
-               });
-
-            modelBuilder.Entity<User>()
-               .HasMany<Category>(s => s.Categories)
-               .WithMany(c => c.Users)
-               .Map(cs =>
-               {
-                   cs.MapLeftKey("UserId");
-                   cs.MapRightKey("CategoryId");
-                   cs.ToTable("UserCategory");
-               });
-
-            modelBuilder.Entity<User>()
-               .HasMany<Cycle>(s => s.Cycles)
-               .WithMany(c => c.Users)
-               .Map(cs =>
-               {
-                   cs.MapLeftKey("UserId");
-                   cs.MapRightKey("CycleId");
-                   cs.ToTable("UserCycle");
                });
 
             modelBuilder.Entity<User>()

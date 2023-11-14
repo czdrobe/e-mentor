@@ -90,7 +90,7 @@ namespace meditatii.Controllers.Api
                         Body = emailbody,
                         IsBodyHtml = true
                     };
-
+                    email.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
                     var client = new SmtpClient();
                     client.SendCompleted += (s, e) =>
                     {
@@ -143,7 +143,7 @@ namespace meditatii.Controllers.Api
                         Body = emailbody,
                         IsBodyHtml = true
                     };
-
+                    email.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
                     var client = new SmtpClient();
                     client.SendCompleted += (s, e) =>
                     {

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var operators_1 = require("rxjs/operators");
 var http_1 = require("@angular/common/http");
-var CycleService = (function () {
+var CycleService = /** @class */ (function () {
     function CycleService(http) {
         this.http = http;
         console.log('CycleService initialized...');
@@ -27,3 +27,4 @@ var CycleService = (function () {
     return CycleService;
 }());
 exports.CycleService = CycleService;
+//# sourceMappingURL=cycle.service.js.map

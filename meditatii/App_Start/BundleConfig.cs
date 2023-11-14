@@ -35,6 +35,7 @@ namespace meditatii
             bundles.Add(new StyleBundle("~/css/css").Include(
           "~/css/fullcalendar.css",
           "~/css/bootstrap.css",
+          "~/css/fontawesome.min.css",
           "~/css/styles.css"
           ));
 

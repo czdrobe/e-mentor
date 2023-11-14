@@ -29,6 +29,59 @@ namespace Meditatii.Data.Repositories
                 }
             }
         }
+
+        public Category GetCategoryByName(string name)
+        {
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    Category category = MappingHelper.Map<Category>(context.Set<Models.Category>()
+                        .AsNoTracking()
+                        .Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefault());
+                        
+                    return category;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+        }
+
+        public IEnumerable<CategoryGroup> GetAllGroupped()
+        {
+            List<CategoryGroup> categoryGroups = new List<CategoryGroup>();
+            using (var context = new MeditatiiDbContext())
+            {
+                try
+                {
+                    var mainCategories = context.Set<Models.Category>()
+                        .AsNoTracking()
+                        .Where(x => x.ParentId == 0)
+                        .ToList();
+
+
+                    foreach (var mainCategory in mainCategories)
+                    {
+                        categoryGroups.Add(new CategoryGroup() {
+                            Id = mainCategory.Id,
+                            Name = mainCategory.Name,
+                            Categories = MappingHelper.Map<List<Category>>(GetSubcategories(mainCategory.Id))
+                        });
+                    }
+
+                    return categoryGroups;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+        }
+
         public IEnumerable<Category> GetMains()
         {
             using (var context = new MeditatiiDbContext())

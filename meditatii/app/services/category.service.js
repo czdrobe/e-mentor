@@ -20,6 +20,9 @@ var CategoryService = /** @class */ (function () {
     CategoryService.prototype.getCategories = function () {
         return this.http.get('/api/categories/getall').pipe(operators_1.map(function (res) { return res; }));
     };
+    CategoryService.prototype.getCategoriesGroupped = function () {
+        return this.http.get('/api/categories/getallgroupped').pipe(operators_1.map(function (res) { return res; }));
+    };
     CategoryService.prototype.getMainCategories = function () {
         return this.http.get('/api/categories/getmains').pipe(operators_1.map(function (res) { return res; }));
     };

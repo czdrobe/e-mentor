@@ -132,6 +132,8 @@ namespace meditatii.Controllers.Api
                 IsBodyHtml = true
             };
 
+            email.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
+
             var client = new SmtpClient();
             client.SendCompleted += (s, e) =>
             {

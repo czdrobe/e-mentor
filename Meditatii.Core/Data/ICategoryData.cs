@@ -11,7 +11,11 @@ namespace Meditatii.Core.Data
     {
         IEnumerable<Category> GetAll();
 
+        IEnumerable<CategoryGroup> GetAllGroupped();
+
         IEnumerable<Category> GetMains();
+
+        Category GetCategoryByName(string name);
 
         IEnumerable<Category> GetSubcategories(int id);
 

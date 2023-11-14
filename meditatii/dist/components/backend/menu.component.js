@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var BackEndMenuComponent = (function () {
+var BackEndMenuComponent = /** @class */ (function () {
     function BackEndMenuComponent(router, activateRoute) {
         this.router = router;
         this.activateRoute = activateRoute;
@@ -31,3 +31,4 @@ var BackEndMenuComponent = (function () {
     return BackEndMenuComponent;
 }());
 exports.BackEndMenuComponent = BackEndMenuComponent;
+//# sourceMappingURL=menu.component.js.map

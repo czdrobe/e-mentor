@@ -19,7 +19,7 @@ var httpOptions = {
 var httpOptionsMulti = {
     headers: new http_1.HttpHeaders({ 'Content-Type': 'multipart/form-data' })
 };
-var ProfileService = (function () {
+var ProfileService = /** @class */ (function () {
     function ProfileService(http) {
         this.http = http;
         console.log('ProfileService initialized...');
@@ -31,6 +31,7 @@ var ProfileService = (function () {
         return this.http.get('/api/users/getavailability').pipe(operators_1.map(function (res) { return res; }));
     };
     ProfileService.prototype.saveCurrentProfie = function (profile) {
+        //return this.http.post('api/users/SaveCurrentProfile', profile, httpOptions);
         return this.http.post('api/users/SaveCurrentProfile', profile, httpOptions);
     };
     ProfileService.prototype.saveAvaiability = function (lstAvaibility) {
@@ -42,19 +43,37 @@ var ProfileService = (function () {
     ProfileService.prototype.saveCycles = function (lstCycles) {
         return this.http.post('/api/users/savecycles', lstCycles, httpOptions);
     };
+    ProfileService.prototype.saveCityForCurrentProfie = function (city1, city2, city3, isOnline) {
+        return this.http.post('/api/users/savecityforcurrentprofie', { cityid1: city1, cityid2: city2, cityid3: city3, isOnline: isOnline }, httpOptions);
+    };
     ProfileService.prototype.saveProfileImage = function (image) {
         var formData = new FormData();
         formData.append('profileimage', image.image);
         return this.http.post('/api/users/saveprofileimage', formData);
     };
+    ProfileService.prototype.getCities = function () {
+        return this.http.get('/api/users/GetCities').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getExperience = function () {
+        console.log('start inExperience');
+        return this.http.get('/api/users/GetExperience').pipe(operators_1.map(function (res) { return res; }));
+    };
+    ProfileService.prototype.getOccupation = function () {
+        console.log('start inOccupation');
+        return this.http.get('/api/users/GetOccupation').pipe(operators_1.map(function (res) { return res; }));
+    };
     ProfileService.prototype.handleError = function (error) {
         if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
             console.error('An error occurred:', error.error.message);
         }
         else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
             console.error("Backend returned code " + error.status + ", " +
                 ("body was: " + error.error));
         }
+        // return an observable with a user-facing error message
         return rxjs_1.throwError('Something bad happened; please try again later.');
     };
     ;
@@ -65,3 +84,4 @@ var ProfileService = (function () {
     return ProfileService;
 }());
 exports.ProfileService = ProfileService;
+//# sourceMappingURL=profile.service.js.map

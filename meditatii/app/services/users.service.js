@@ -23,11 +23,23 @@ var UsersService = /** @class */ (function () {
         this.http = http;
         console.log('UserService initialized...');
     }
+    UsersService.prototype.getAds = function (categoryid, cycleid, cityid, order, page) {
+        return this.http.get('/api/users/getusersdescription?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&cityid=' + (cityid == null ? '0' : cityid) + '&order=' + (order == null ? '0' : order) + '&page=' + page).pipe(operators_1.map(function (res) { return res; }));
+    };
     UsersService.prototype.getUsers = function (categoryid, cycleid, cityid, order, page) {
         return this.http.get('/api/users/GetUsers?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&cityid=' + (cityid == null ? '0' : cityid) + '&order=' + (order == null ? '0' : order) + '&page=' + page).pipe(operators_1.map(function (res) { return res; }));
     };
     UsersService.prototype.getUser = function (userid) {
         return this.http.get('/api/users/GetUser?userid=' + (userid == null ? '0' : userid)).pipe(operators_1.map(function (res) { return res; }));
+    };
+    UsersService.prototype.adView = function (adid) {
+        return this.http.get('/api/users/AdView?adCode=' + (adid == null ? '0' : adid)).pipe(operators_1.map(function (res) { return res; }));
+    };
+    UsersService.prototype.getNrOfViewsForAd = function (adid) {
+        return this.http.get('/api/users/getNrOfViewsForAd?adCode=' + (adid == null ? '0' : adid)).pipe(operators_1.map(function (res) { return res; }));
+    };
+    UsersService.prototype.getAdByCode = function (adid) {
+        return this.http.get('/api/users/getadbycode?adid=' + (adid == null ? '0' : adid)).pipe(operators_1.map(function (res) { return res; }));
     };
     UsersService.prototype.getUserByCode = function (userid) {
         return this.http.get('/api/users/getuserbycode?userid=' + (userid == null ? '0' : userid)).pipe(operators_1.map(function (res) { return res; }));
@@ -41,8 +53,8 @@ var UsersService = /** @class */ (function () {
     UsersService.prototype.getRatingsForTeacher = function (userid) {
         return this.http.get('/api/teacherrating/getallratingforteacher?teacherid=' + (userid == null ? '0' : userid)).pipe(operators_1.map(function (res) { return res; }));
     };
-    UsersService.prototype.getRecomandations = function (categoryid, cityid) {
-        return this.http.get('/api/users/GetSuggestedUsers?categoryid=' + categoryid + '&cityid=' + cityid).pipe(operators_1.map(function (res) { return res; }));
+    UsersService.prototype.getRecomandations = function (userid, categoryid, cityid) {
+        return this.http.get('/api/users/GetSuggestedUsers?userid=' + userid + 'categoryid=' + categoryid + '&cityid=' + cityid).pipe(operators_1.map(function (res) { return res; }));
     };
     UsersService.prototype.saveAppoitment = function (teacherid, selecteddate, time) {
         return this.http.post('/api/users/saveappoitment?teacherId=' + (teacherid == null ? '0' : teacherid + '&selectedDate=' + selecteddate + '&startTime=' + time), null);

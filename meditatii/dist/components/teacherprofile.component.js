@@ -15,8 +15,9 @@ var users_service_1 = require("../services/users.service");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var profile_service_1 = require("../services/profile.service");
 var messages_service_1 = require("../services/messages.service");
-var TeacherProfileComponent = (function () {
-    function TeacherProfileComponent(userService, router, activateRoute, changeDetectorRef, modalService, profileService, messagesService) {
+var appoitments_service_1 = require("../services/appoitments.service");
+var TeacherProfileComponent = /** @class */ (function () {
+    function TeacherProfileComponent(userService, router, activateRoute, changeDetectorRef, modalService, profileService, messagesService, appoitmentsService) {
         this.userService = userService;
         this.router = router;
         this.activateRoute = activateRoute;
@@ -24,31 +25,47 @@ var TeacherProfileComponent = (function () {
         this.modalService = modalService;
         this.profileService = profileService;
         this.messagesService = messagesService;
+        this.appoitmentsService = appoitmentsService;
     }
     TeacherProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.canAddReview = true;
+        this.nrOfReviews = 0;
+        this.selectedRate = -1;
+        this.ratingText = "";
+        this.phoneNumber = "Telefon";
         this.agreeCheckBox = false;
         this.selectedDate = null;
         this.availableTime = [14, 15, 18, 19];
         this.profileService.getCurrentProfile().subscribe(function (profile) {
             _this.isCurrentUserIsLoggedIn = profile != null;
+            _this.currentUserProfile = profile;
         });
         this.activateRoute.params.subscribe(function (p) {
             if (p.hasOwnProperty("id")) {
                 _this.profileid = p.id;
-                _this.userService.getUser(_this.profileid).subscribe(function (usersResult) {
+                _this.userService.getUserByCode(_this.profileid).subscribe(function (usersResult) {
                     console.log(usersResult);
                     _this.teacher = usersResult;
-                    _this.getAvailableTime(_this.profileid, '');
+                    _this.getRatings(_this.profileid);
+                    //this.getAvailableTime(this.profileid, '');
+                    _this.getRecomandations();
                 });
             }
             console.log(p);
+        });
+    };
+    TeacherProfileComponent.prototype.getPhoneNumber = function () {
+        var _this = this;
+        this.userService.getUserPhoneNumber(this.profileid).subscribe(function (phoneResult) {
+            _this.phoneNumber = phoneResult;
         });
     };
     TeacherProfileComponent.prototype.setTime = function (starttime) {
         this.selectedTime = starttime;
     };
     TeacherProfileComponent.prototype.onSelectDate = function ($event) {
+        //alert($event);
         if (this.selectedDate != null) {
             this.selectedDate.selected = false;
         }
@@ -72,16 +89,42 @@ var TeacherProfileComponent = (function () {
             else {
                 var today = new Date();
                 var dd = today.getDate();
-                var mm = today.getMonth() + 1;
+                var mm = today.getMonth() + 1; //January is 0!
                 var yyyy = today.getFullYear();
                 dateToCheck = yyyy + "-" + mm + "-" + dd;
             }
         }
         this.userService.getUserAvaiabilityForDay(id, dateToCheck).subscribe(function (avaiability) {
             _this.selectedDateToDisplay = dateToCheck;
-            _this.availableTime = avaiability.Entities;
+            if (avaiability != null) {
+                _this.availableTime = avaiability.Entities;
+            }
             console.log(_this.availableTime);
         });
+    };
+    TeacherProfileComponent.prototype.getRatings = function (id) {
+        var _this = this;
+        this.userService.getRatingsForTeacher(id).subscribe(function (ratings) {
+            _this.lstRatings = ratings;
+            _this.nrOfReviews = _this.lstRatings.length;
+            _this.canAddReview = _this.lstRatings.find(function (x) { return x.Student.Email == _this.currentUserProfile.Email; }) == null;
+        });
+    };
+    TeacherProfileComponent.prototype.getRecomandations = function () {
+        var _this = this;
+        var cityid = 0;
+        var categoryid = 0;
+        if (this.teacher.Categories.length > 0) {
+            categoryid = this.teacher.Categories[0].Id;
+        }
+        if (this.teacher.Cities.length > 0) {
+            cityid = this.teacher.Cities[0].Id;
+        }
+        if (cityid > 0 && categoryid > 0) {
+            this.userService.getRecomandations(this.profileid, categoryid, cityid).subscribe(function (usersResult) {
+                _this.lstRecomandations = usersResult.Entities;
+            });
+        }
     };
     TeacherProfileComponent.prototype.getCurrentDate = function () {
         if (this.selectedDate != null) {
@@ -114,6 +157,21 @@ var TeacherProfileComponent = (function () {
         });
         console.log('newmessage value:' + this.newMessage);
     };
+    TeacherProfileComponent.prototype.selectRate = function (rate) {
+        this.selectedRate = rate;
+    };
+    TeacherProfileComponent.prototype.saveRate = function () {
+        var _this = this;
+        if (this.selectedRate > -1) {
+            var localModalRef_2 = this.modalRef;
+            this.appoitmentsService.saveTeacherRating(this.profileid, this.selectedRate, this.ratingText).subscribe(function (result) {
+                localModalRef_2.close();
+                _this.selectedRate = -1;
+                _this.ratingText = "";
+                _this.getRatings(_this.profileid);
+            });
+        }
+    };
     TeacherProfileComponent.prototype.open = function (content, options) {
         var _this = this;
         this.modalRef = this.modalService.open(content);
@@ -139,7 +197,7 @@ var TeacherProfileComponent = (function () {
             moduleId: module.id,
             selector: 'teacherprofile',
             templateUrl: 'html/teacherprofile.component.html',
-            providers: [users_service_1.UsersService, profile_service_1.ProfileService, messages_service_1.MessagesService]
+            providers: [appoitments_service_1.AppoitmentsService, users_service_1.UsersService, profile_service_1.ProfileService, messages_service_1.MessagesService]
         }),
         __metadata("design:paramtypes", [users_service_1.UsersService,
             router_1.Router,
@@ -147,8 +205,10 @@ var TeacherProfileComponent = (function () {
             core_1.ChangeDetectorRef,
             ng_bootstrap_1.NgbModal,
             profile_service_1.ProfileService,
-            messages_service_1.MessagesService])
+            messages_service_1.MessagesService,
+            appoitments_service_1.AppoitmentsService])
     ], TeacherProfileComponent);
     return TeacherProfileComponent;
 }());
 exports.TeacherProfileComponent = TeacherProfileComponent;
+//# sourceMappingURL=teacherprofile.component.js.map

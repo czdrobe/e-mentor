@@ -1,5 +1,6 @@
-﻿@if (Request.Url.PathAndQuery == "/")
+﻿@if (Request.Url.AbsolutePath == "/")
 {
+    <!--
     <div class="sectionimg">
         <div class="container">
             <h1>Platforma online de meditații</h1>
@@ -12,6 +13,12 @@
             </div>
         </div>
     </div>
+        -->
+    <!--<div class="container mt-3">
+        <div class="col-md-12 adpanel">
+            
+        </div>
+    </div>-->
 }
 else if (Request.Url.PathAndQuery.Contains("CumFunctioneaza"))
 {

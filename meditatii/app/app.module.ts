@@ -22,6 +22,8 @@ import { ProfileComponent } from './components/backend/profile.component';
 import { AppoitmentsComponent } from './components/backend/appoitments.component';
 import { AppoitmentReportComponent } from './components/backend/appoitmentreport.component';
 
+import { UserHomeComponent } from './components/backend/home.component';
+
 import { SubscriptionsComponent } from './components/backend/subscriptions.component';
 import { MysubscriptionComponent } from './components/backend/mysubscription.component';
 
@@ -42,7 +44,7 @@ import { Http,RequestOptions } from '@angular/http';
 
 @NgModule({
 	imports: [NgbModule.forRoot(), BrowserModule, HttpClientModule, HttpModule, routing, FormsModule],
-	declarations: [MysubscriptionComponent, SubscriptionsComponent, NiceDateFormatPipe, FilterByMateriaPipe, AppComponent, LoaderComponent, TeacherlistComponent, RequestlistComponent, RequestviewComponent, RequestnewComponent, TeacherProfileComponent, RoomComponent, BackendComponent, BackEndMenuComponent, MessagesComponent, ProfileComponent,AppoitmentsComponent, AppoitmentReportComponent, CustomCalendarComponent, ImageCropperComponent],
+	declarations: [MysubscriptionComponent, SubscriptionsComponent, NiceDateFormatPipe, FilterByMateriaPipe, AppComponent, LoaderComponent, TeacherlistComponent, RequestlistComponent, RequestviewComponent, RequestnewComponent, TeacherProfileComponent, RoomComponent, BackendComponent, BackEndMenuComponent, MessagesComponent, ProfileComponent,AppoitmentsComponent,  AppoitmentReportComponent, UserHomeComponent, CustomCalendarComponent, ImageCropperComponent],
 	providers: [
 		{
 		  provide: HTTP_INTERCEPTORS,

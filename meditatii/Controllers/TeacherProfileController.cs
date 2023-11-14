@@ -16,6 +16,7 @@ namespace meditatii.Controllers
             this.usersService = usersService;
         }
 
+        [Authorize]
         public ActionResult Index(string id)
         {
             this.usersService.IncrementVisitorsNumber(Security.DecryptID(id));

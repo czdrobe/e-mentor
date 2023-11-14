@@ -34,7 +34,7 @@ namespace meditatii.web.ScheduledTasks
             //get all appoitment which start in the half an hour
             //if the time is 17 pm start date > current date and <
             // 
-
+            return;
             var path = HostingEnvironment.MapPath("~") + "notification.log";
 
             this.appoitmentService = DependencyResolver.Current.GetService<IAppoitmentService>();
@@ -68,7 +68,7 @@ namespace meditatii.web.ScheduledTasks
                                 Body = student_emailbody,
                                 IsBodyHtml = true
                             };
-
+                            emailStudent.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
                             await client.SendMailAsync(emailStudent);
 
                             //teacher
@@ -86,7 +86,7 @@ namespace meditatii.web.ScheduledTasks
                                 client.Dispose();
                                 this.appoitmentService.SetAppoitmentNotification(appoitment.Id, Meditatii.CoreNew.Enums.AppoitmentNotification.NotificationRemainder, true);
                             };
-
+                            emailTeacher.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
                             await client.SendMailAsync(emailTeacher);
                         }
 

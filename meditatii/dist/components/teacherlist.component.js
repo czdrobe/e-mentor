@@ -18,7 +18,7 @@ var router_1 = require("@angular/router");
 var messages_service_1 = require("../services/messages.service");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var pager_service_1 = require("../services/pager.service");
-var TeacherlistComponent = (function () {
+var TeacherlistComponent = /** @class */ (function () {
     function TeacherlistComponent(userService, categoryService, cycleService, router, activateRoute, pagerService, messagesService, modalService, profileService) {
         this.userService = userService;
         this.categoryService = categoryService;
@@ -29,18 +29,25 @@ var TeacherlistComponent = (function () {
         this.messagesService = messagesService;
         this.modalService = modalService;
         this.profileService = profileService;
+        // pager object
         this.pager = {};
+        this.orders = [{ Id: 1, Name: 'Cele mai populare' }, { Id: 2, Name: 'Review-uri' }, { Id: 3, Name: 'Cele mai noi' }];
     }
     TeacherlistComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.selectedCategoryName = "Alege o materie";
         this.selectedCycleName = "Alege ciclul scolar";
+        this.selectedOrderName = "Cele mai populare";
+        this.selectedCityName = "Alege o localitate";
+        this.selectedOrder = 1;
+        // load main categories
         this.profileService.getCurrentProfile().subscribe(function (profile) {
             _this.isCurrentUserIsLoggedIn = profile != null;
             _this.categoryService.getallwithsubcategories().subscribe(function (cats) {
                 console.log(cats);
                 _this.categories = cats;
-                _this.searchMaterii = "";
+                _this.searchMaterii = ""; //in fact we reset the search
+                _this.searchCity = "";
                 _this.activateRoute.queryParams.subscribe(function (params) {
                     if (params.hasOwnProperty("maincategory")) {
                         _this.selectedMainCategory = params.maincategory;
@@ -52,18 +59,42 @@ var TeacherlistComponent = (function () {
                     if (params.hasOwnProperty("cycle")) {
                         _this.selectedCycle = params.cycle;
                     }
+                    if (params.hasOwnProperty("city")) {
+                        _this.selectedCity = params.city;
+                    }
+                    if (params.hasOwnProperty("order")) {
+                        _this.selectedOrder = params.order;
+                    }
                     _this.currentpage = (params.hasOwnProperty("page") ? parseInt(params.page) : 1);
                     _this.setPage(_this.currentpage);
                 });
             });
         });
+        // load cycles
         this.cycleService.getCycles().subscribe(function (cycles) {
             console.log(cycles);
             _this.cycles = cycles;
         });
+        // load cities
+        this.profileService.getCities().subscribe(function (cities) {
+            console.log(cities);
+            _this.cities = cities;
+        });
+    };
+    TeacherlistComponent.prototype.resetFilters = function () {
+        this.selectedOrderName = "Cele mai populare";
+        this.selectedCategoryName = "Alege o materie";
+        this.selectedCycleName = "Alege ciclul scolar";
+        this.selectedCityName = "Alege o localitate";
+        this.selectedMainCategory = null;
+        this.selectedCategory = null;
+        this.selectedCycle = null;
+        this.selectedCity = null;
+        this.currentpage = 1;
+        this.updateUrl();
     };
     TeacherlistComponent.prototype.updateUrl = function () {
-        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, page: this.currentpage } });
+        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
     };
     TeacherlistComponent.prototype.selectMainCategory = function (id) {
         var _this = this;
@@ -75,14 +106,39 @@ var TeacherlistComponent = (function () {
         });
     };
     TeacherlistComponent.prototype.selectCategory = function (id, categorytName) {
+        //console.log('categories');
+        //this.ddService.
         this.selectedCategory = id;
         this.selectedCategoryName = categorytName;
+        /*if (categorytName.indexOf(' - ')>-1)
+        {
+            this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') +3, categorytName.length);
+        }
+        else
+        {
+            this.selectedCategoryNameWithoutMain = categorytName;
+        }
+        console.log(categorytName);
+        console.log(this.selectedCategoryNameWithoutMain);
+        */
+        this.currentpage = 1;
+        this.updateUrl();
+    };
+    TeacherlistComponent.prototype.selectOrder = function (id, orderName) {
+        this.selectedOrder = id;
+        this.selectedOrderName = orderName;
         this.currentpage = 1;
         this.updateUrl();
     };
     TeacherlistComponent.prototype.selectCycle = function (id, cycleName) {
         this.selectedCycle = id;
         this.selectedCycleName = cycleName;
+        this.currentpage = 1;
+        this.updateUrl();
+    };
+    TeacherlistComponent.prototype.selectCity = function (id, cityName) {
+        this.selectedCity = id;
+        this.selectedCityName = cityName;
         this.currentpage = 1;
         this.updateUrl();
     };
@@ -96,10 +152,12 @@ var TeacherlistComponent = (function () {
             return;
         }
         this.currentpage = page;
-        this.userService.getUsers(this.selectedCategory, this.selectedCycle, page).subscribe(function (usersResult) {
+        this.userService.getUsers(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe(function (usersResult) {
             console.log(usersResult);
+            // get pager object from service
             _this.pager = _this.pagerService.getPager(usersResult.TotalRows, page);
             _this.teachers = usersResult.Entities;
+            _this.nrOfTeachers = usersResult.TotalRows;
         });
     };
     TeacherlistComponent.prototype.selectUser = function (userId) {
@@ -151,3 +209,4 @@ var TeacherlistComponent = (function () {
     return TeacherlistComponent;
 }());
 exports.TeacherlistComponent = TeacherlistComponent;
+//# sourceMappingURL=teacherlist.component.js.map

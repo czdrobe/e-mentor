@@ -33,10 +33,11 @@ var TeacherProfileComponent = /** @class */ (function () {
         this.nrOfReviews = 0;
         this.selectedRate = -1;
         this.ratingText = "";
-        this.phoneNumber = "Telefon";
+        this.phoneNumber = "Vezi numarul de telefon";
         this.agreeCheckBox = false;
         this.selectedDate = null;
         this.availableTime = [14, 15, 18, 19];
+        this.phoneclicked = false;
         this.profileService.getCurrentProfile().subscribe(function (profile) {
             _this.isCurrentUserIsLoggedIn = profile != null;
             _this.currentUserProfile = profile;
@@ -44,12 +45,19 @@ var TeacherProfileComponent = /** @class */ (function () {
         this.activateRoute.params.subscribe(function (p) {
             if (p.hasOwnProperty("id")) {
                 _this.profileid = p.id;
-                _this.userService.getUserByCode(_this.profileid).subscribe(function (usersResult) {
-                    console.log(usersResult);
-                    _this.teacher = usersResult;
-                    _this.getRatings(_this.profileid);
+                _this.userService.getAdByCode(_this.profileid).subscribe(function (adResult) {
+                    console.log(adResult);
+                    _this.ad = adResult;
+                    //this.getRatings(this.profileid);
                     //this.getAvailableTime(this.profileid, '');
-                    _this.getRecomandations();
+                    //this.getRecomandations();
+                    _this.userService.adView(_this.profileid).subscribe(function (result) {
+                        console.log(result);
+                    });
+                    _this.userService.getNrOfViewsForAd(_this.profileid).subscribe(function (result) {
+                        console.log(result);
+                        _this.nrOfViews = result;
+                    });
                 });
             }
             console.log(p);
@@ -57,8 +65,9 @@ var TeacherProfileComponent = /** @class */ (function () {
     };
     TeacherProfileComponent.prototype.getPhoneNumber = function () {
         var _this = this;
-        this.userService.getUserPhoneNumber(this.profileid).subscribe(function (phoneResult) {
+        this.userService.getUserPhoneNumber(this.ad.Teacher.UserCode).subscribe(function (phoneResult) {
             _this.phoneNumber = phoneResult;
+            _this.phoneclicked = true;
         });
     };
     TeacherProfileComponent.prototype.setTime = function (starttime) {
@@ -111,20 +120,26 @@ var TeacherProfileComponent = /** @class */ (function () {
         });
     };
     TeacherProfileComponent.prototype.getRecomandations = function () {
-        var _this = this;
-        var cityid = 0;
+        /*var cityid = 0;
         var categoryid = 0;
-        if (this.teacher.Categories.length > 0) {
+
+        if (this.teacher.Categories.length > 0)
+        {
             categoryid = this.teacher.Categories[0].Id;
         }
-        if (this.teacher.Cities.length > 0) {
+
+        if (this.teacher.Cities.length > 0)
+        {
             cityid = this.teacher.Cities[0].Id;
         }
-        if (cityid > 0 && categoryid > 0) {
-            this.userService.getRecomandations(categoryid, cityid).subscribe(function (usersResult) {
-                _this.lstRecomandations = usersResult.Entities;
+
+        if (cityid > 0 && categoryid > 0)
+        {
+            this.userService.getRecomandations(this.profileid, categoryid, cityid).subscribe( usersResult => {
+                this.lstRecomandations = usersResult.Entities;
             });
         }
+        */
     };
     TeacherProfileComponent.prototype.getCurrentDate = function () {
         if (this.selectedDate != null) {

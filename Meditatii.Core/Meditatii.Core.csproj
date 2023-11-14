@@ -67,9 +67,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\IAdData.cs" />
     <Compile Include="Data\IReportData.cs" />
+    <Compile Include="Entities\Ad.cs" />
+    <Compile Include="Entities\CategoryGroup.cs" />
     <Compile Include="Entities\CityUser.cs" />
     <Compile Include="Entities\City.cs" />
+    <Compile Include="Entities\Occupation.cs" />
+    <Compile Include="Entities\Experience.cs" />
     <Compile Include="Entities\ReportTeacherAppoitment.cs" />
     <Compile Include="Entities\PaymentOut.cs" />
     <Compile Include="Entities\Payment.cs" />
@@ -77,6 +82,7 @@
     <Compile Include="Entities\UserSats.cs" />
     <Compile Include="Enums\AppoitmentNotification.cs" />
     <Compile Include="IAdminService.cs" />
+    <Compile Include="IAdService.cs" />
     <Compile Include="IReportService.cs" />
     <Compile Include="ITeacherRatingService.cs" />
     <Compile Include="CategoryService.cs" />

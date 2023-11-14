@@ -12,7 +12,7 @@ namespace Meditatii.Data.Models
     {
         public User()
         {
-            Categories = new HashSet<Category>();
+
         }
 
         [Key]
@@ -89,12 +89,29 @@ namespace Meditatii.Data.Models
 
         public DateTime? SubscriptionEndDate { get; set; }
 
-        public virtual ICollection<Category> Categories { get; set; }
+        public bool SendNewsletter { get; set; }
 
-        public virtual ICollection<Cycle> Cycles { get; set; }
+        public bool AtTeacher { get; set; }
+
+        public bool AtStudent { get; set; }
+
+        public string YouYubeURL { get; set; }
+
+        public int? OccupationId { get; set; }
+
+        public int? ExperienceId { get; set; }
+
+        public string Studies { get; set; }
+
 
         public virtual ICollection<Roles> Roles { get; set; }
 
         public virtual ICollection<City> Cities { get; set; }
+
+        [ForeignKey("ExperienceId")]
+        public virtual Experience Experience { get; set; }
+
+        [ForeignKey("OccupationId")]
+        public virtual Occupation Occupation { get; set; }
     }
 }

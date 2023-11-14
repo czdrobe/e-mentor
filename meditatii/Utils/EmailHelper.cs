@@ -28,12 +28,45 @@ namespace meditatii.web.Utils
 
         public static int DecryptID(string code)
         {
+            if (code == "")
+            {
+                return 0;
+            }
             var base64EncodedBytes = System.Convert.FromBase64String(HttpUtility.UrlDecode(code));
             var codetext = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
             codetext = codetext.Substring(before.Length);
             codetext = codetext.Substring(0, codetext.Length - after.Length);
 
             return Convert.ToInt32(codetext);
+        }
+
+        public static string GetDurationName(int duration)
+        {
+
+            string result = "";
+
+            if (duration == 60)
+            {
+                result = "o ora";
+            }
+            else if (duration == 90)
+            {
+                result = "o ora si 30 de minute";
+            }
+            else if (duration == 120)
+            {
+                result = "doua ore";
+            }
+            else if (duration == 150)
+            {
+                result = "doua ore si 30 de minute";
+            }
+            else if (duration == 180)
+            {
+                result = "trei ore";
+            }
+
+            return result;
         }
     }
 }

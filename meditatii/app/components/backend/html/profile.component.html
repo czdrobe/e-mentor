@@ -7,8 +7,9 @@
 					</div>
 					<br>
 			<ul class="list-group" *ngIf="model && model.IsTeacher">
-				<li class="list-group-item" data-toggle="modal" data-target="#myModal" (click)="open(disciplines, { windowClass: 'disciplinesmodal' })"><a>Materii</a></li>
+				<!--<li class="list-group-item" data-toggle="modal" data-target="#myModal" (click)="open(disciplines, { windowClass: 'disciplinesmodal' })"><a>Materii</a></li>
 				<li class="list-group-item" data-toggle="modal" data-target="#myModal" (click)="open(grades)"><a>Ciclu școlar</a></li>
+				//-->
 			</ul>
 		</div>
 	</aside>
@@ -16,7 +17,7 @@
 	<div class="col-md-10 col-sm-8 conversation-section" *ngIf="model">
 		<!--Main content code to be written here -->
 		<h1>Profilul meu</h1>
-		
+		<h5 style="color: red;">{{(model.FirstName == null ||model.FirstName == "" || model.LastName == null || model.LastName == ""  || model.Experience == null || model.Occupation == null ) ? "Profilul este incomplet" : ""}}</h5>
 			<div class="card">
 				<div class="card-header"><b>Date generale</b>
 						<div class="btn-group float-right" style="margin-top:-7px;">
@@ -28,33 +29,91 @@
 				<div class="card-body">
 					<form>
 						<div class="form-group row">
-							<label class="col-md-2 col-form-label">Nume:</label>
-								<div class="col-md-6">
+							<label class="col-md-3 col-form-label">Nume:</label>
+								<div class="col-md-8">
 									<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticFirstName" [(ngModel)]="model.FirstName" name="FirstName" >
 									<input type="text" *ngIf="editmodeprofile" class="form-control" id="FirstName" [(ngModel)]="model.FirstName" name="FirstName" >
 								</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-md-2 col-form-label">Prenume:</label>
-								<div class="col-md-6">
+							<label class="col-md-3 col-form-label">Prenume:</label>
+								<div class="col-md-8">
 										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticLastName"  [(ngModel)]="model.LastName" name="LastName">
 										<input type="text" *ngIf="editmodeprofile" class="form-control" id="LastName" [(ngModel)]="model.LastName" name="LastName" >
 								</div>
 						</div>
 						<div class="form-group row">
-								<label class="col-md-2 col-form-label">Email:</label>
-								<div class="col-md-6">
+								<label class="col-md-3 col-form-label">Email:</label>
+								<div class="col-md-8">
 										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticEmail" [(ngModel)]="model.Email" name="Email">
-										<input type="text" *ngIf="editmodeprofile" class="form-control" id="LastName" [(ngModel)]="model.Email" name="Email" >
+										<input type="text" *ngIf="editmodeprofile" disabled class="form-control" id="email" [(ngModel)]="model.Email" name="Email" >
 								</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-md-2 col-form-label">Telefon:</label>
-							<div class="col-md-6">
+							<label class="col-md-3 col-form-label">Telefon:</label>
+							<div class="col-md-8">
 									<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticPhoneNumber" [(ngModel)]="model.PhoneNumber" name="PhoneNumber">
 									<input type="text" *ngIf="editmodeprofile" class="form-control" id="PhoneNumber" [(ngModel)]="model.PhoneNumber" name="PhoneNumber" >
 							</div>
-						</div>						
+						</div>
+						<div class="form-group row" *ngIf="model && model.IsTeacher">
+							<label class="col-md-3 col-form-label">Experiența ta:</label>
+							<div class="col-md-8">
+								<span *ngIf="!editmodeprofile" class="form-control-plaintext" id="staticExperience" >{{selectedExperienceName}}</span>
+								<div *ngIf="editmodeprofile">
+									<div class="d-inline-block mb-1"  ngbDropdown autoClose="outside" #myExperience="ngbDropdown">
+										<button class="btn  mr-2" id="dropdown_experience"  ngbDropdownAnchor (click)="myExperience.toggle()">
+											{{selectedExperienceName}}
+										</button>                    
+										<div ngbDropdownMenu aria-labelledby="dropdown_experience">
+											<ng-container *ngIf="lstExperience">
+												<div id="experienceMenuItems">
+													<button class="dropdown-item" type="button" *ngFor="let subExperience of lstExperience; let i = index" (click)="selectExperience(subExperience.Id, subExperience.Name); myExperience.close();">{{subExperience.Name}}</button>
+												</div>
+											</ng-container>
+										</div>
+									</div>
+
+									<div class="alert alert-danger" role="alert" *ngIf="errorExperience && errorExperience.length>0">
+										{{errorExperience}}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group row" *ngIf="model && model.IsTeacher">
+							<label class="col-md-3 col-form-label">Ocupație:</label>
+							<div class="col-md-8">
+								<span *ngIf="!editmodeprofile" class="form-control-plaintext" id="staticOccupation" >{{selectedOccupationName}}</span>
+								<div *ngIf="editmodeprofile">
+									<div class="d-inline-block mb-1"  ngbDropdown autoClose="outside" #myOccupation="ngbDropdown">
+										<button class="btn  mr-2" id="dropdown_occupation"  ngbDropdownAnchor (click)="myOccupation.toggle()">
+											{{selectedOccupationName}}
+										</button>                    
+										<div ngbDropdownMenu aria-labelledby="dropdown_occupation">
+											<ng-container *ngIf="lstOccupation">
+												<div id="occupationMenuItems">
+													<button class="dropdown-item" type="button"  *ngFor="let subOccupation of lstOccupation; let i = index" (click)="selectOccupation(subOccupation.Id, subOccupation.Name); myOccupation.close();">{{subOccupation.Name}}</button>
+												</div>
+											</ng-container>
+										</div>
+									</div>
+								</div>
+								
+								<div class="alert alert-danger" role="alert" *ngIf="errorOccupation && errorOccupation.length>0">
+									{{errorOccupation}}
+								</div>
+							</div>
+						</div>		
+						
+						<div class="form-group row" *ngIf="model && model.IsTeacher">
+							<label class="col-md-3 col-form-label">URL video YouTube:</label>
+								<div class="col-md-8">
+										<input type="text" *ngIf="!editmodeprofile" readonly class="form-control-plaintext" id="staticYouYubeURL"  [(ngModel)]="model.YouYubeURL" name="YouYubeURL">
+										<input type="text" *ngIf="editmodeprofile" class="form-control" id="YouYubeURL" [(ngModel)]="model.YouYubeURL" name="YouYubeURL" >
+								</div>
+						</div>
+																	
 					</form>
 
 				    <div class="form-group" style="display: none;">
@@ -65,7 +124,7 @@
 			  </div>
 				<br/>
 				<div class="card" *ngIf="model && model.IsTeacher">
-					<div class="card-header"><b>Oras</b> 
+					<div class="card-header"><b>Locatie</b> 
 							<div class="btn-group float-right" style="margin-top:-7px;">
 								<a href="javascript:void(0);" *ngIf="!editmodecity" (click)="editCity()" class="btn btn-primary">Modifică</a>
 								<a href="javascript:void(0);" *ngIf="editmodecity" (click)="saveCity()" class="btn btn-primary">Salvează</a>
@@ -74,77 +133,57 @@
 					</div>
 					<div class="card-body">
 						<div class="form-group row">
-							<label class="col-md-2 col-form-label">Oras:</label>
+							<label class="col-md-2 col-form-label">Locatie:</label>
 								<div class="col-md-6">
 									<span *ngIf="!editmodecity" class="form-control-plaintext" id="staticCity1" >{{selectedCityName1}}</span>
+									<span *ngIf="editmodecity">Judetul:</span>
+									<div *ngIf="editmodecity">
+										<div class="d-inline-block mb-1"  ngbDropdown autoClose="outside" #myCounty="ngbDropdown">
+											<button class="btn  mr-2" id="dropdown_county"  ngbDropdownAnchor (click)="myCounty.toggle()">
+												{{selectedCountyName}}
+											</button>                    
+											<div ngbDropdownMenu aria-labelledby="dropdown_county">
+												<ng-container *ngIf="lstCounty">
+													<div id="countyMenuItems">
+														<button class="dropdown-item" type="button"  *ngFor="let subCounty of lstCounty; let i = index" (click)="selectCounty(subCounty); myCounty.close();">{{subCounty}}</button>
+													</div>
+												</ng-container>
+											</div>
+										</div>
+									</div>
+									
+									<span *ngIf="editmodecity">Orasul:</span>
 									<div *ngIf="editmodecity">
 										<div class="d-inline-block mb-1"  ngbDropdown autoClose="outside" #myCity="ngbDropdown">
 											<button class="btn  mr-2" id="dropdown_city"  ngbDropdownAnchor (click)="myCity.toggle()">
 												{{selectedCityName1}}
 											</button>                    
 											<div ngbDropdownMenu aria-labelledby="dropdown_city">
-												<div class="px-4 py-2">
-													<input type="search" class="form-control"  [(ngModel)]="searchCity" name="searchCity" placeholder="Cauta">
-												</div>
-												<ng-container *ngIf="lstCity | filterByMateria:searchCity as result ">
+												<ng-container *ngIf="lstFilteredCity">
 													<div id="citiesMenuItems">
-														<button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity1(subCities.Id, subCities.Name); myCity.close();">{{subCities.Name}}</button>
+														<button class="dropdown-item" type="button"  *ngFor="let subCities of lstFilteredCity; let i = index" (click)="selectCity1(subCities.Id, subCities.Name); myCity.close();">{{subCities.Name}}</button>
 													</div>
-													<div id="empty" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
 												</ng-container>
 											</div>
-										</div>
-										<a href="javascript:void(0);" (click)="resetCity1()" class="btn btn-primary">Reset</a>
-									</div>
-
-									<span *ngIf="!editmodecity" class="form-control-plaintext" id="staticCity2" >{{selectedCityName2}}</span>
-									<div *ngIf="editmodecity">
-										<div class="d-inline-block mb-1" *ngIf="editmodecity"  ngbDropdown autoClose="outside" #myCity2="ngbDropdown">
-											<button class="btn  mr-2" id="dropdown_city2"  ngbDropdownAnchor (click)="myCity2.toggle()">
-												{{selectedCityName2}}
-											</button>                    
-											<div ngbDropdownMenu aria-labelledby="dropdown_city2">
-												<div class="px-4 py-2">
-													<input type="search" class="form-control"  [(ngModel)]="searchCity2" name="searchCity2" placeholder="Cauta">
-												</div>
-												<ng-container *ngIf="lstCity2 | filterByMateria:searchCity2 as result ">
-													<div id="citiesMenuItems2">
-														<button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity2(subCities.Id, subCities.Name); myCity2.close();">{{subCities.Name}}</button>
-													</div>
-													<div id="empty2" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-												</ng-container>
-											</div>
-										</div>
-										<a href="javascript:void(0);" (click)="resetCity2()" class="btn btn-primary">Reset</a>
-									</div>
-
-									<span *ngIf="!editmodecity" class="form-control-plaintext" id="staticCity3" >{{selectedCityName3}}</span>
-									<div *ngIf="editmodecity">
-										<div class="d-inline-block mb-1" *ngIf="editmodecity"  ngbDropdown autoClose="outside" #myCity3="ngbDropdown">
-											<button class="btn  mr-2" id="dropdown_city3"  ngbDropdownAnchor (click)="myCity3.toggle()">
-												{{selectedCityName3}}
-											</button>                    
-											<div ngbDropdownMenu aria-labelledby="dropdown_city2">
-												<div class="px-4 py-2">
-													<input type="search" class="form-control"  [(ngModel)]="searchCity3" name="searchCity3" placeholder="Cauta">
-												</div>
-												<ng-container *ngIf="lstCity3 | filterByMateria:searchCity3 as result ">
-													<div id="citiesMenuItems3">
-														<button class="dropdown-item" type="button"  *ngFor="let subCities of result; let i = index" (click)="selectCity3(subCities.Id, subCities.Name); myCity3.close();">{{subCities.Name}}</button>
-													</div>
-													<div id="empty3" class="dropdown-header" *ngIf="result?.length < 1">Nici un rezultat</div>
-												</ng-container>
-											</div>
-										</div>
-										<a href="javascript:void(0);" (click)="resetCity3()" class="btn btn-primary">Reset</a>
+										</div>										
 									</div>
 								</div>
 						</div>
 						<div class="form-group row">
 							<label class="col-md-2 col-form-label"></label>
+							<br/>
 								<div class="col-md-6">
+									<div>Locația în care oferi meditații</div>
+									<input type="checkbox" *ngIf="!editmodecity" disabled="disabled" [(ngModel)]="bIsOnStudent"> 
+									<input type="checkbox" *ngIf="editmodecity" [(ngModel)]="bIsOnStudent">  Domiciliul elevului  :
+									<br/>
+
+									<input type="checkbox" *ngIf="!editmodecity" disabled="disabled" [(ngModel)]="bIsOnTeacher"> 
+									<input type="checkbox" *ngIf="editmodecity" [(ngModel)]="bIsOnTeacher">  Domiciliul meditatorului:
+									<br/>
+
 									<input type="checkbox" *ngIf="!editmodecity" disabled="disabled" [(ngModel)]="bIsOnline"> 
-									<input type="checkbox" *ngIf="editmodecity" [(ngModel)]="bIsOnline">  Meditații online?:
+									<input type="checkbox" *ngIf="editmodecity" [(ngModel)]="bIsOnline">  Meditații online:
 									<div class="alert alert-danger" role="alert" *ngIf="errorCity && errorCity.length>0">
 										{{errorCity}}
 									</div>
@@ -152,53 +191,31 @@
 						</div>						
 					</div>
 				  </div>
-					<br/>				
+				  <br/>		
 				  <div class="card " *ngIf="model && model.IsTeacher">
-						<div class="card-header"><b>Descriere</b>
-								<div class="btn-group float-right" style="margin-top:-7px;">
-										<a href="javascript:void(0);" *ngIf="!editmodedescription" (click)="editDescription()" class="btn btn-primary">Modifică</a>
-										<a href="javascript:void(0);" *ngIf="editmodedescription" (click)="saveDescription()" class="btn btn-primary">Salvează</a>
-										<a href="javascript:void(0);" *ngIf="editmodedescription" (click)="cancelEditDescription()" class="btn btn-outline-secondary">Anulează</a>
-								</div>
-						</div>
-						<div class="card-body">
-							<form>
-								<div class="row">
-										<div class="col-md-12" style="white-space: pre-line;">
-											<span *ngIf="!editmodedescription" class="form-control-plaintext" id="staticCounty" >{{model.Description}}</span>
-											<textarea *ngIf="editmodedescription" rows="10"  cols="100" class="form-control" id="Description" [(ngModel)]="model.Description" name="Description" style="max-width: 100% !important;"></textarea>
+					<div class="card-header"><b>Studii</b>
+							<div class="btn-group float-right" style="margin-top:-7px;">
+									<a href="javascript:void(0);" *ngIf="!editmodeStudii" (click)="editStudii()" class="btn btn-primary">Modifică</a>
+									<a href="javascript:void(0);" *ngIf="editmodeStudii" (click)="saveStudii()" class="btn btn-primary">Salvează</a>
+									<a href="javascript:void(0);" *ngIf="editmodeStudii" (click)="cancelEditStudii()" class="btn btn-outline-secondary">Anulează</a>
+							</div>
+					</div>
+					<div class="card-body">
+						<form>
+							<div class="row">
+									<div class="col-md-12">
+										<span *ngIf="!editmodeStudii" class="form-control-plaintext" id="staticStudii" >{{model.Studies}}</span>
+										<textarea *ngIf="editmodeStudii" rows="10"  cols="100" class="form-control" id="Studies" [(ngModel)]="model.Studies" name="Studies" style="max-width: 100% !important;"></textarea>
+										<div class="alert alert-danger" role="alert" *ngIf="errorStudies && errorStudies.length>0">
+											{{errorStudies}}
 										</div>
-								</div>							
-							</form>
-		
-						</div>
-						</div>	
-						<br/>
-
-						<div class="card " *ngIf="model && model.IsTeacher">
-							<div class="card-header"><b>Pret</b><br/>
-								Indicati pretul in lei pe ora.
-									<div class="btn-group float-right" style="margin-top:-7px;">
-											<a href="javascript:void(0);" *ngIf="!editmodeprice" (click)="editPrice()" class="btn btn-primary">Modifică</a>
-											<a href="javascript:void(0);" *ngIf="editmodeprice" (click)="savePrice()" class="btn btn-primary">Salvează</a>
-											<a href="javascript:void(0);" *ngIf="editmodeprice" (click)="cancelEditPrice()" class="btn btn-outline-secondary">Anulează</a>
 									</div>
-							</div>
-							<div class="card-body">
-								<form>
-									<div class="row">
-											<div class="col-md-12">
-												<input type="text" *ngIf="!editmodeprice" readonly class="form-control-plaintext" id="staticPrice" [(ngModel)]="model.Price" name="Price">
-												<input type="text" *ngIf="editmodeprice" class="form-control" id="Price" [(ngModel)]="model.Price" name="Price" class="form-control" type="number"  >
-											</div>
-									</div>							
-								</form>
-			
-							</div>
-							</div>	
-							
-						
-						<br/>
+							</div>							
+						</form>
+	
+					</div>
+					</div>	
+
 	</div>
 </div>
 <!-- Modal -->

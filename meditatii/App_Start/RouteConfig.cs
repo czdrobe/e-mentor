@@ -11,6 +11,7 @@ namespace meditatii
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapMvcAttributeRoutes();
@@ -32,6 +33,13 @@ namespace meditatii
                 url: "teacher",
                 defaults: new { controller = "Teacher", action = "Index" }
             );
+
+            routes.MapRoute(
+                "Category",
+                "{category}",
+                new { controller = "Home", action = "Category" }
+            );
+
             routes.MapRoute(
                 name: "TeacherProfile",
                 url: "teacherprofile/{id}",
@@ -81,9 +89,9 @@ namespace meditatii
             );
 
             routes.MapRoute(
-                "OnlyAction",
-                "{action}",
-                new { controller = "Home", action = "Index" }
+                name: "webhook",
+                url: "webhook",
+                defaults: new { controller = "Webhook", action = "Index" }
             );
 
             routes.MapRoute(

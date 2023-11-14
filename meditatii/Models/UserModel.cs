@@ -88,5 +88,17 @@ namespace meditatii.Models
         public ICollection<CityModel> Cities { get; set; }
 
         public bool IsTeacher {get;set;}
+
+        public bool AtTeacher { get; set; }
+
+        public bool AtStudent { get; set; }
+
+        public string YouYubeURL { get; set; }
+
+        public string Studies { get; set; }
+
+        public ExperienceModel Experience { get; set; }
+        
+        public OccupationModel Occupation { get; set; }
     }
 }

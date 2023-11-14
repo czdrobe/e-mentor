@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var moment = require("moment");
 var _ = require("underscore");
-var CustomCalendarComponent = (function () {
+var CustomCalendarComponent = /** @class */ (function () {
     function CustomCalendarComponent() {
         this.currentDate = moment();
         this.dayNames = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
@@ -30,10 +30,12 @@ var CustomCalendarComponent = (function () {
         if (changes.selectedDates &&
             changes.selectedDates.currentValue &&
             changes.selectedDates.currentValue.length > 1) {
+            // sort on date changes for better performance when range checking
             this.sortedDates = _.sortBy(changes.selectedDates.currentValue, function (m) { return m.mDate.valueOf(); });
             this.generateCalendar();
         }
     };
+    // date checkers
     CustomCalendarComponent.prototype.isToday = function (date) {
         return moment().isSame(moment(date), 'day');
     };
@@ -48,6 +50,7 @@ var CustomCalendarComponent = (function () {
     CustomCalendarComponent.prototype.selectDate = function (date) {
         this.onSelectDate.emit(date);
     };
+    // actions from calendar
     CustomCalendarComponent.prototype.prevMonth = function () {
         this.currentDate = moment(this.currentDate).subtract(1, 'months');
         this.generateCalendar();
@@ -72,6 +75,7 @@ var CustomCalendarComponent = (function () {
         this.currentDate = moment(this.currentDate).add(1, 'year');
         this.generateCalendar();
     };
+    // generate the calendar grid
     CustomCalendarComponent.prototype.generateCalendar = function () {
         var dates = this.fillDates(this.currentDate);
         var weeks = [];
@@ -115,3 +119,4 @@ var CustomCalendarComponent = (function () {
     return CustomCalendarComponent;
 }());
 exports.CustomCalendarComponent = CustomCalendarComponent;
+//# sourceMappingURL=calendar.component.js.map

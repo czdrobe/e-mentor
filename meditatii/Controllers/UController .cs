@@ -17,8 +17,15 @@ namespace meditatii.Controllers
         }
 
         [AllowedIP]
+        [Authorize]
         public ActionResult Index()
         {
+            
+            if (CurrentUser.IsTeacher && !CurrentUser.IsSubscriptionOk)
+            {
+                return Redirect("https://buy.stripe.com/00g16O0UwdMFckU144?prefilled_email=" + CurrentUser.Email);
+            }
+
             ViewBag.user = CurrentUser;
             ViewBag.CssExtra = "weapper-helper";
             return View( new HomeViewModel() { CssExtra  = "weapper-helper" });

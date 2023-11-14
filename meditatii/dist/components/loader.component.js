@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var loader_service_1 = require("../services/loader.service");
-var LoaderComponent = (function () {
+var LoaderComponent = /** @class */ (function () {
     function LoaderComponent(loaderService) {
         this.loaderService = loaderService;
         this.show = false;
@@ -36,3 +36,4 @@ var LoaderComponent = (function () {
     return LoaderComponent;
 }());
 exports.LoaderComponent = LoaderComponent;
+//# sourceMappingURL=loader.component.js.map

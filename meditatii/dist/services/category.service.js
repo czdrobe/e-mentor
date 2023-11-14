@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var operators_1 = require("rxjs/operators");
 var http_1 = require("@angular/common/http");
-var CategoryService = (function () {
+var CategoryService = /** @class */ (function () {
     function CategoryService(http) {
         this.http = http;
         console.log('CategoryService initialized...');
@@ -36,3 +36,4 @@ var CategoryService = (function () {
     return CategoryService;
 }());
 exports.CategoryService = CategoryService;
+//# sourceMappingURL=category.service.js.map

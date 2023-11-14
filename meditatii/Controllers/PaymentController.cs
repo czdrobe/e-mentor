@@ -197,7 +197,7 @@ namespace meditatii.Controllers
                                     //TODO finishing the sending email
                                     //var lstAppoitments = appoitmentService.GetAppoitmentsForPaymentId(ipaymentId);
                                     var payment = appoitmentService.GetPayment(ipaymentId);
-                                    var user = usersService.UpdateSubscriptionPeriod(System.Web.HttpContext.Current.User.Identity.Name, payment.Product);
+                                    var user = usersService.UpdateSubscriptionPeriod(payment.LearnerId, payment.Product);
 
                                     //TODO:need to send confirmation email - the subscription
                                     try
@@ -215,7 +215,7 @@ namespace meditatii.Controllers
                                             Body = newBody,
                                             IsBodyHtml = true
                                         };
-
+                                        email.Bcc.Add(new MailAddress("sentemails@emeditatii.ro"));
                                         var client = new SmtpClient();
                                         client.SendCompleted += (s, e) =>
                                         {

@@ -1,6 +1,9 @@
-Ai primit un mesaj nou de la: <from-firstname> <from-lastname>.
-
-Vezi si raspunde mesajului <a href="<readmessageurl>">aici</a>
+Ai primit un mesaj nou de la: <from-firstname> <from-lastname>.<br/>
+<br/>
+Vezi si raspunde mesajului <a href="<readmessageurl>">aici</a><br/>
+<br/>
+Îți dorim o zi excelentă,<br/>
+Echipa eMeditatii.ro
 
 
 

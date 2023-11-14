@@ -7,6 +7,7 @@ import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ProfileService } from '../services/profile.service';
 import { MessagesService } from '../services/messages.service';
 import { AppoitmentsService } from '../services/appoitments.service';
+import { Ad } from '../types/ad.type';
 
 declare var $: any;
 declare var jquery: any;
@@ -20,7 +21,7 @@ declare var jquery: any;
 export class TeacherProfileComponent {
 
     profileid :number;
-	teacher: Teacher;
+	ad: Ad;
     availableTime: number[];
     selectedDate:any;
     selectedDateToDisplay: string;
@@ -38,6 +39,8 @@ export class TeacherProfileComponent {
     nrOfReviews:number;
     canAddReview: boolean;
     currentUserProfile: any;
+    nrOfViews:number;
+    phoneclicked:boolean;
 
     constructor(
         private userService: UsersService,
@@ -58,26 +61,38 @@ export class TeacherProfileComponent {
         this.nrOfReviews = 0;
         this.selectedRate = -1;
         this.ratingText = "";
-        this.phoneNumber = "Telefon";
+        this.phoneNumber = "Vezi numarul de telefon";
         this.agreeCheckBox = false;
         this.selectedDate = null;
         this.availableTime =  [14, 15, 18, 19];
+        this.phoneclicked = false;
 
         this.profileService.getCurrentProfile().subscribe((profile:any) => {
             this.isCurrentUserIsLoggedIn = profile != null;
             this.currentUserProfile = profile;
         });
 
+        
+
        this.activateRoute.params.subscribe(p => {
             if (p.hasOwnProperty("id"))
             {
                 this.profileid = p.id;
-                this.userService.getUserByCode(this.profileid).subscribe((usersResult:any) => {
-                    console.log(usersResult);           
-                    this.teacher = usersResult;
-                    this.getRatings(this.profileid);
+                this.userService.getAdByCode(this.profileid).subscribe((adResult:any) => {
+                    console.log(adResult);           
+                    this.ad = adResult;
+                    //this.getRatings(this.profileid);
                     //this.getAvailableTime(this.profileid, '');
-                    this.getRecomandations();
+                    //this.getRecomandations();
+                    this.userService.adView(this.profileid).subscribe( result => {
+                        console.log(result);
+                    });
+                    this.userService.getNrOfViewsForAd(this.profileid).subscribe( result => {
+                        console.log(result);
+                        this.nrOfViews = result;
+                    });
+
+                    
                 });
             }
             console.log(p);
@@ -86,8 +101,9 @@ export class TeacherProfileComponent {
 
     getPhoneNumber()
     {
-        this.userService.getUserPhoneNumber(this.profileid).subscribe((phoneResult:any) => {
+        this.userService.getUserPhoneNumber(this.ad.Teacher.UserCode).subscribe((phoneResult:any) => {
             this.phoneNumber = phoneResult;
+            this.phoneclicked = true;
         });
     }
 
@@ -155,7 +171,7 @@ export class TeacherProfileComponent {
 
     getRecomandations()
     {
-        var cityid = 0;
+        /*var cityid = 0;
         var categoryid = 0;
 
         if (this.teacher.Categories.length > 0)
@@ -170,10 +186,11 @@ export class TeacherProfileComponent {
 
         if (cityid > 0 && categoryid > 0)
         {
-            this.userService.getRecomandations(categoryid, cityid).subscribe( usersResult => {
+            this.userService.getRecomandations(this.profileid, categoryid, cityid).subscribe( usersResult => {
                 this.lstRecomandations = usersResult.Entities;
             });
         }
+        */
     }
 
     getCurrentDate()

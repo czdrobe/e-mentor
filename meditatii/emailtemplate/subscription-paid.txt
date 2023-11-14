@@ -1,18 +1,17 @@
-Bună <firstname>,
-
-pachetul tău cu plata automată a fost extins. Mulțumim!
-Vei găsi factura în meniul contului tău.
-
-Dacă ai nevoie de vreo modificare la factură, te rugăm să ne contactezi.
-Poți dezactiva plata automată și prelungirea pachetului tău în orice moment din meniul de setări de la categoria „plăți automate”.
-Următoarea extindere a pachetului tău va avea loc pe data de <nextdate>.
-Îți mulțumim pentru încredere și pentru colaborarea fructuoasă.
-
-
-Numai bine,
-
-Cristian Zdrobe
-CEO
-
-eMeditatii.ro
+Bună <firstname>,<br/>
+<br/>
+pachetul tău a fost extins. Mulțumim!<br/>
+Vei găsi factura în meniul contului tău.<br/>
+<br/>
+Dacă ai nevoie de vreo modificare la factură, te rugăm să ne contactezi.<br/>
+Abonamentul este valabil pana in data de <nextdate>.<br/>
+Îți mulțumim pentru încredere și pentru colaborarea fructuoasă.<br/>
+<br/>
+<br/>
+Numai bine,<br/>
+<br/>
+Cristian Zdrobe<br/>
+CEO<br/>
+<br/>
+eMeditatii.ro<br/>
 Romania

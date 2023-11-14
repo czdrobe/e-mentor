@@ -10,7 +10,11 @@ namespace Meditatii.Core
     public interface IUsersService:ILazyLoadable
     {
         SearchResult<User> GetUsers(int? categoryId, int? cycleId, int? cityId, int? order, int skip, int take);
-        SearchResult<User> GetSuggestedUsers(string currentUser, int? categoryId, int? cityId);
+        SearchResult<User> GetSuggestedUsers(int userId, int? categoryId, int? cityId);
+
+        SearchResult<User> GetTeachersForNewsletter(int lastTeacherId);
+        SearchResult<User> GetStudentsForNewsletter(int? studentId);
+
         SearchResult<Request> GetRequests(string city, string subject, int skip, int take);
 
         Request GetRequest(int requestId);
@@ -24,14 +28,17 @@ namespace Meditatii.Core
         void SaveUser(User user);
 
         void ActivateUser(int userId);
+        void LogLogin(int userId, int success);
 
         void IncrementVisitorsNumber(int userId);
         void IncrementPhoneViews(int userId);
 
-        User UpdateSubscriptionPeriod(string useremail, int period);
+        User UpdateSubscriptionPeriod(int userId, int period);
 
-        void SaveCityForUser(string username, int city1, int city2, int city3, bool isOnline);
+        void SaveCityForUser(string username, int city1, bool isOnline, bool atTeacher,  bool atStudent);
 
         List<City> GetCities();
+        List<Experience> GetExperience();
+        List<Occupation> GetOccupation();
     }
 }

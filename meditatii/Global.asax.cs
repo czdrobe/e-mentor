@@ -15,6 +15,7 @@ using Quartz.Impl;
 using Quartz;
 using System.Threading.Tasks;
 using meditatii.web.ScheduledTasks;
+using System.Text.RegularExpressions;
 
 namespace meditatii
 {
@@ -57,6 +58,33 @@ namespace meditatii
 
         }
 
+        private static Dictionary<string, object> cacheItems = new Dictionary<string, object>();
+        private static object locker = new object();
+
+        public static Dictionary<string, object> CacheItems
+        {
+            get
+            {
+                lock (locker)
+                {
+                    return cacheItems;
+                }
+            }
+
+            set
+            {
+                lock (locker)
+                {
+                    cacheItems = value;
+                }
+            }
+        }
+
+        public static void RemoveCacheItem(string key)
+        {
+            cacheItems.Remove(key);
+        }
+
         protected void Application_End()
         {
             JobScheduler.PingServer();
@@ -64,6 +92,8 @@ namespace meditatii
 
         private void RegisterType(IMapperConfigurationExpression mapper)
         {
+            var phonePattern = @"^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\-)?([0-9]{3}(\s|\.|\-|)){2}$";
+
             mapper.CreateMap<TeacherAvailabilityModel, TeacherAvailability>();
             mapper.CreateMap<TeacherAvailability, TeacherAvailabilityModel>();
             mapper.CreateMap<Meditatii.Data.Models.TeacherAvailability, TeacherAvailability>();
@@ -91,6 +121,7 @@ namespace meditatii
 
             mapper.CreateMap<Message, MessageModel>()
                 .ForMember(x => x.FromUserId, y => y.MapFrom(z => Security.EncryptID(z.FromUserId)))
+                .ForMember(x => x.Body, y => y.MapFrom(z => Regex.Replace(z.Body,phonePattern,"")))
                 .ForMember(x => x.ToUserId, y => y.MapFrom(z => Security.EncryptID(z.ToUserId)));
 
             mapper.CreateMap<MessageModel, Message>()
@@ -110,7 +141,7 @@ namespace meditatii
             mapper.CreateMap<User, UserModel>()
                 .ForMember(x => x.UserCode, y => y.MapFrom(z => Security.EncryptID(z.Id)))
                 .ForMember(x => x.Rating, y => y.MapFrom(z => z.Rating == null ? 0 : z.Rating))
-                .ForMember(x => x.IsSubscriptionOk, y => y.MapFrom(z => z.SubscriptionStartDate <= DateTime.Now && z.SubscriptionEndDate >= DateTime.Now  ? true : false));
+                .ForMember(x => x.IsSubscriptionOk, y => y.MapFrom(z => z.SubscriptionStartDate <= DateTime.Now  ? true : false));
             mapper.CreateMap<UserModel, User>().ForMember(x => x.Id, y => y.MapFrom(z => Security.DecryptID(z.UserCode))); 
             mapper.CreateMap <Meditatii.Data.Models.User, User>();
             mapper.CreateMap<User,Meditatii.Data.Models.User>();
@@ -130,6 +161,13 @@ namespace meditatii
             mapper.CreateMap<Meditatii.Data.Models.Category, Category>();
             mapper.CreateMap<Category, Meditatii.Data.Models.Category>();
 
+            mapper.CreateMap<Ad, AdModel>()
+                .ForMember(x => x.DurationName, y => y.MapFrom(z => Security.GetDurationName(z.Duration)))
+                .ForMember(x => x.Code, y => y.MapFrom(z => Security.EncryptID(z.Id)));
+            mapper.CreateMap<AdModel, Ad>().ForMember(x => x.Id, y => y.MapFrom(z => Security.DecryptID(z.Code)));
+            mapper.CreateMap<Ad, Meditatii.Data.Models.Ad>();
+            mapper.CreateMap<Meditatii.Data.Models.Ad, Ad>();
+
             mapper.CreateMap<Cycle, CycleModel>();
             mapper.CreateMap<CycleModel, Cycle>();
             mapper.CreateMap<Meditatii.Data.Models.Cycle, Cycle>();
@@ -139,6 +177,16 @@ namespace meditatii
             mapper.CreateMap<CityModel, City>();
             mapper.CreateMap<City, Meditatii.Data.Models.City>();
             mapper.CreateMap<Meditatii.Data.Models.City, City>();
+
+            mapper.CreateMap<Experience, ExperienceModel>();
+            mapper.CreateMap<ExperienceModel, Experience>();
+            mapper.CreateMap<Experience, Meditatii.Data.Models.Experience>();
+            mapper.CreateMap<Meditatii.Data.Models.Experience, Experience>();
+
+            mapper.CreateMap<Occupation, OccupationModel>();
+            mapper.CreateMap<OccupationModel, Occupation>();
+            mapper.CreateMap<Occupation, Meditatii.Data.Models.Occupation>();
+            mapper.CreateMap<Meditatii.Data.Models.Occupation, Occupation>();
 
             mapper.CreateMap<SearchResult<User>, SearchResult<UserModel>>();
             mapper.CreateMap<SearchResult<Message>, SearchResult<MessageModel>>();

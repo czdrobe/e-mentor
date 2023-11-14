@@ -16,6 +16,13 @@ export class UsersService
         console.log('UserService initialized...');
     }
 
+    getAds(categoryid: number, cycleid: number, cityid: number, order:number, page: number) {
+        return this.http.get('/api/users/getusersdescription?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&cityid=' + (cityid == null ? '0' : cityid) + '&order=' + (order == null ? '0' : order)+ '&page=' + page).pipe(map(
+            (res:any) => res
+        ))
+    }
+
+
     getUsers(categoryid: number, cycleid: number, cityid: number, order:number, page: number) {
         return this.http.get('/api/users/GetUsers?categoryid=' + (categoryid == null ? '0' : categoryid) + '&cycleid=' + (cycleid == null ? '0' : cycleid) + '&cityid=' + (cityid == null ? '0' : cityid) + '&order=' + (order == null ? '0' : order)+ '&page=' + page).pipe(map(
             (res:any) => res
@@ -24,6 +31,26 @@ export class UsersService
 
     getUser(userid: number) {
         return this.http.get('/api/users/GetUser?userid=' + (userid == null ? '0' : userid)).pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    adView(adid:any)
+    {
+        return this.http.get('/api/users/AdView?adCode=' + (adid == null ? '0' : adid)).pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    getNrOfViewsForAd(adid:any)
+    {
+        return this.http.get('/api/users/getNrOfViewsForAd?adCode=' + (adid == null ? '0' : adid)).pipe(map(
+            (res:any) => res
+        ))
+    }
+
+    getAdByCode(adid: any) {
+        return this.http.get('/api/users/getadbycode?adid=' + (adid == null ? '0' : adid)).pipe(map(
             (res:any) => res
         ))
     }
@@ -52,8 +79,8 @@ export class UsersService
         ))
     }
 
-    getRecomandations(categoryid: any, cityid: any) {
-        return this.http.get('/api/users/GetSuggestedUsers?categoryid=' + categoryid  + '&cityid=' + cityid).pipe(map(
+    getRecomandations(userid: any, categoryid: any, cityid: any) {
+        return this.http.get('/api/users/GetSuggestedUsers?userid=' + userid + 'categoryid=' + categoryid  + '&cityid=' + cityid).pipe(map(
             (res:any) => res
         ))
     }

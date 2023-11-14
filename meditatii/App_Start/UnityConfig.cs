@@ -62,6 +62,9 @@ namespace meditatii.web
             container.RegisterType<ITeacherAvailabilityData, TeacherAvailabilityRepository>();
             container.RegisterType<ITeacherAvailabilityService, TeacherAvailabilityService>();
 
+            container.RegisterType<IAdData, AdRepository>();
+            container.RegisterType<IAdService, AdService>();
+
             container.RegisterType<IAppoitmentData, AppoitmentRepository>();
             container.RegisterType<IAppoitmentService, AppoitmentService>();
 

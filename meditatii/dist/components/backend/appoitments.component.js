@@ -15,7 +15,7 @@ var appoitments_service_1 = require("../../services/appoitments.service");
 var profile_service_1 = require("../../services/profile.service");
 var messages_service_1 = require("../../services/messages.service");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
-var AppoitmentsComponent = (function () {
+var AppoitmentsComponent = /** @class */ (function () {
     function AppoitmentsComponent(router, activateRoute, appoitmentsService, profileService, messagesService, modalService) {
         this.router = router;
         this.activateRoute = activateRoute;
@@ -85,25 +85,37 @@ var AppoitmentsComponent = (function () {
     AppoitmentsComponent.prototype.selectUser = function (userId) {
         this.selectedUserId = userId;
     };
+    AppoitmentsComponent.prototype.acceptAppoitment = function (appoitmentId) {
+        var _this = this;
+        if (confirm("Esit sigur că accepți această programare ?")) {
+            this.appoitmentsService.acceptByTeacher(appoitmentId).subscribe(function (results) {
+                _this.loadAppoitments();
+            });
+        }
+    };
     AppoitmentsComponent.prototype.selectPayment = function (appoitmentId, price, button) {
         if (button.tagName != "BUTTON") {
             button = button.parentElement;
         }
         var item = this.selectedPayment.find(function (x) { return x.AppoitmentId == appoitmentId; });
         if (item == null) {
+            //ADD
             item = new Payment();
             item.AppoitmentId = appoitmentId;
             item.Price = price;
             this.selectedPayment.push(item);
+            //updte button
             button.className = button.className.replace('btn-danger', 'btn-ligth');
             button.innerHTML = "X   Renunta";
             button.style = "color:red";
         }
         else {
+            //REMOVE
             var index = this.selectedPayment.indexOf(item);
             if (index !== -1) {
                 this.selectedPayment.splice(index, 1);
             }
+            //updte button
             button.className = button.className.replace('btn-ligth', 'btn-danger');
             button.innerHTML = "Achita";
             button.style = "color:white";
@@ -111,25 +123,28 @@ var AppoitmentsComponent = (function () {
         this.calculateTotalToPay();
     };
     AppoitmentsComponent.prototype.pay = function () {
-        var _this = this;
-        if (this.isDebug) {
-            var lstOfAppoitments = this.selectedPayment.map(function (el) { return el.AppoitmentId; });
-            this.appoitmentsService.payment(lstOfAppoitments).subscribe(function (result) {
-                _this.loadAppoitments();
-                _this.selectedPayment = [];
+        var lstOfAppoitments = this.selectedPayment.map(function (el) { return el.AppoitmentId; });
+        /*if (this.isDebug)
+        {
+          this.appoitmentsService.payment(lstOfAppoitments).subscribe(result =>
+            {
+              this.loadAppoitments();
+              this.selectedPayment = [];
             });
         }
-        else {
-        }
+        else
+        {*/
+        //TODO: need to implement real payment
+        window.location.href = "/payment/" + lstOfAppoitments.join(',');
+        //}
     };
-    AppoitmentsComponent.prototype.chekcIfNeedToPay = function (appoitment) {
-        var item = appoitment.Payments.find(function (x) { return x.Status == 1; });
-        if (item) {
+    AppoitmentsComponent.prototype.needToPay = function (appoitment) {
+        if (!appoitment.AcceptedByTeacher) {
+            //do not show payment button if teacher not accepted the appoitment 
             return false;
         }
-        else {
-            return true;
-        }
+        var isPaid = appoitment.Payment != null && appoitment.Payment.Status == 1;
+        return !isPaid;
     };
     AppoitmentsComponent.prototype.calculateTotalToPay = function () {
         var total = 0;
@@ -166,15 +181,15 @@ var AppoitmentsComponent = (function () {
         this.selectedRate = rate;
     };
     AppoitmentsComponent.prototype.saveRate = function () {
-        var _this = this;
         var localModalRef = this.modalRef;
         if (this.selectedRate > -1 && this.selectedAppoitment > -1) {
-            this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(function (result) {
-                _this.loadOldAppoitments();
-                _this.selectedRate = -1;
-                _this.selectedAppoitment = -1;
+            /*this.appoitmentsService.saveTeacherRating(this.selectedAppoitment, this.selectedRate).subscribe(result =>
+              {
+                this.loadOldAppoitments();
+                this.selectedRate = -1;
+                this.selectedAppoitment =-1;
                 localModalRef.close();
-            });
+              });*/
         }
     };
     AppoitmentsComponent.prototype.selectAppoitment = function (appoitmentId) {
@@ -196,9 +211,10 @@ var AppoitmentsComponent = (function () {
     return AppoitmentsComponent;
 }());
 exports.AppoitmentsComponent = AppoitmentsComponent;
-var Payment = (function () {
+var Payment = /** @class */ (function () {
     function Payment() {
     }
     return Payment;
 }());
 exports.Payment = Payment;
+//# sourceMappingURL=appoitments.component.js.map

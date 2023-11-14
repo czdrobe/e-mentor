@@ -13,7 +13,7 @@ var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
 var operators_1 = require("rxjs/operators");
 var loader_service_1 = require("../services/loader.service");
-var LoaderInterceptorService = (function () {
+var LoaderInterceptorService = /** @class */ (function () {
     function LoaderInterceptorService(loaderService) {
         this.loaderService = loaderService;
     }
@@ -47,3 +47,4 @@ var LoaderInterceptorService = (function () {
     return LoaderInterceptorService;
 }());
 exports.LoaderInterceptorService = LoaderInterceptorService;
+//# sourceMappingURL=loader-interceptor.service.js.map

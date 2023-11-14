@@ -11,7 +11,10 @@ namespace Meditatii.Core.Data
     {
         SearchResult<User> GetAll(int skip, int take, int? order);
 
-        SearchResult<User> GetSuggestedUsers(string currentUser, int? categoryId, int? cityId);
+        SearchResult<User> GetSuggestedUsers(int userId, int? categoryId, int? cityId);
+
+        SearchResult<User> GetTeachersForNewsletter(int lastTeacherId);
+        SearchResult<User> GetStudentsForNewsletter(int? studentId);
 
         SearchResult<Request> GetRequests(string city, string subject, int skip, int take);
 
@@ -35,10 +38,16 @@ namespace Meditatii.Core.Data
 
         void IncrementPhoneViews(int userId);
 
-        User UpdateSubscriptionPeriod(string useremail, int period);
+        void LogLogin(int userId, int success);
+
+        User UpdateSubscriptionPeriod(int userId, int period);
 
         List<City> GetCities();
 
-        void SaveCityForUser(string username, int city1, int city2, int city3, bool isOnline);
+        List<Experience> GetExperiences();
+
+        List<Occupation> GetOccupations();
+
+        void SaveCityForUser(string username, int city1, bool isOnline, bool atTeacher, bool atStudent);
     }
 }

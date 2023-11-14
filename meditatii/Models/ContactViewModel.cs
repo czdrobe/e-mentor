@@ -21,5 +21,8 @@ namespace meditatii.Models
         [Required(ErrorMessage = "Mesajul este obligatoriu.")]
         public string Message { get; set; }
 
+        [Required(ErrorMessage = "Rezultatul este obligatoriu.")]
+        public string Operation { get; set; }
+
     }
 }

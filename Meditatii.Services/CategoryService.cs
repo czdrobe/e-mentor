@@ -16,7 +16,16 @@ namespace Meditatii.Services
         {
             this.categoryData = categoryData;
         }
-        
+
+        public Category GetCategoryByName(string name)
+        {
+            return categoryData.GetCategoryByName(name);
+        }
+        public IEnumerable<CategoryGroup> GetAllGroupped()
+        {
+            return categoryData.GetAllGroupped();
+        }
+
         public IEnumerable<Category> GetCategories()
         {
             return categoryData.GetAll();

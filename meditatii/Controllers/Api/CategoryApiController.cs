@@ -22,6 +22,14 @@ namespace meditatii.Controllers.Api
             return MappingHelper.Map<List<CategoryModel>>(this.categoryService.GetCategories());
         }
 
+
+        [HttpGet]
+        [Route("api/categories/getallgroupped")]
+        public List<Models.CategoryGroupModel> GetAllGroupped()
+        {
+            return MappingHelper.Map<List<CategoryGroupModel>>(this.categoryService.GetAllGroupped());
+        }
+
         [HttpGet]
         [Route("api/categories/getmains")]
         public List<Models.CategoryModel> GetMains()

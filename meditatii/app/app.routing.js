@@ -15,10 +15,15 @@ var appoitmentreport_component_1 = require("./components/backend/appoitmentrepor
 var room_component_1 = require("./components/room.component");
 var subscriptions_component_1 = require("./components/backend/subscriptions.component");
 var mysubscription_component_1 = require("./components/backend/mysubscription.component");
+var home_component_1 = require("./components/backend/home.component");
 var appRoutes = [
     {
         path: '',
-        component: app_component_1.AppComponent
+        component: teacherlist_component_1.TeacherlistComponent
+    },
+    {
+        path: ':category',
+        component: teacherlist_component_1.TeacherlistComponent,
     },
     {
         path: 'Contact',
@@ -59,6 +64,11 @@ var appRoutes = [
     {
         path: 'u',
         component: backend_component_1.BackendComponent
+    },
+    {
+        path: 'u/home',
+        component: backend_component_1.BackendComponent,
+        children: [{ path: '', outlet: 'maincontent', component: home_component_1.UserHomeComponent }]
     },
     {
         path: 'u/messages',

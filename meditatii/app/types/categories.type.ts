@@ -1,5 +1,6 @@
 export interface Category {
     Name:string,
     Id:number,
-    selected:boolean
+    selected:boolean,
+    collapse:boolean
 }

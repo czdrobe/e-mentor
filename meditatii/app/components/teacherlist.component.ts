@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, ElementRef } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { ProfileService } from '../services/profile.service';
 import { CategoryService } from '../services/category.service';
@@ -8,6 +8,7 @@ import * as _ from 'underscore';
 import { Cycle } from '../types/cycle.type';
 import { City } from '../types/city.type';
 import { Category } from '../types/categories.type';
+import { Ad } from '../types/ad.type';
 import { MessagesService } from '../services/messages.service';
 import {NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,10 +25,12 @@ export class TeacherlistComponent {
     searchMaterii:string;
     searchCity: string;
     searchCycle:string;
-    teachers: Teacher[];
+    ads: Ad[];
+    collapse:boolean[];
     nrOfTeachers: number;
     categories: Category[];
     subCategories: Category[];
+    lstCategoryGroupped: Category[];
     cycles: Cycle[];
     cities:City[];
     selectedMainCategory: number;
@@ -48,6 +51,8 @@ export class TeacherlistComponent {
     selectedOrderName:string;
     selectedOrder:number;
     orders:Order[];
+    selectedUrlCategory:string;
+    selectedUrlCategoryName:string;
 
     constructor(
         private userService: UsersService,
@@ -60,12 +65,29 @@ export class TeacherlistComponent {
         private modalService: NgbModal,
         private profileService: ProfileService,
         //private ddService: NgbDropdown,
+        rootElement: ElementRef
     )
     {
+        this.selectedUrlCategory ="";
+        this.selectedUrlCategoryName ="";
+        var domElementCat = document.getElementById("catId");
+        if (domElementCat != null)
+        {
+            this.selectedUrlCategory = domElementCat.getAttribute("value");
+            this.selectedCategory = Number(this.selectedUrlCategory);
+        }
+        var domElementCatName = document.getElementById("catName");
+        if (domElementCatName != null)
+        {
+            this.selectedUrlCategoryName = domElementCatName.getAttribute("value");
+        }
+    
         this.orders = [ {Id:1, Name:'Cele mai populare'}, {Id:2, Name:'Review-uri'}, {Id:3, Name:'Cele mai noi'}];
     }
 
     ngOnInit() {
+        console.log(this.selectedUrlCategory);
+        console.log(this.selectedUrlCategoryName);
         this.selectedCategoryName = "Alege o materie";
         this.selectedCycleName = "Alege ciclul scolar";
         this.selectedOrderName = "Cele mai populare";
@@ -81,6 +103,13 @@ export class TeacherlistComponent {
                 this.categories = cats;
                 this.searchMaterii = ""; //in fact we reset the search
                 this.searchCity = "";
+                this.activateRoute.params.subscribe(params => {
+                    if (params.hasOwnProperty("maincategory"))
+                    {
+
+                    }
+                    
+                });
 
                 this.activateRoute.queryParams.subscribe(params => {
                     if (params.hasOwnProperty("maincategory"))
@@ -108,6 +137,11 @@ export class TeacherlistComponent {
             })
         });
 
+        this.categoryService.getCategoriesGroupped().subscribe((cats:any) => {
+			console.log(cats);
+			this.lstCategoryGroupped = cats;
+		})
+
         // load cycles
         this.cycleService.getCycles().subscribe((cycles:any) => {
             console.log(cycles);
@@ -120,7 +154,31 @@ export class TeacherlistComponent {
             this.cities = cities;
         })        
     }
+    unSelectCity()
+    {
+        this.selectedCity = null;
+        this.selectedCityName = null;
+        
+        this.cities.forEach(function (element:City) {
+            //console.log(element);
+            element.selected = false;
+        });
 
+        this.updateUrl();
+    }
+
+    unSelectCycle()
+    {
+        this.selectedCycle = null;
+        this.selectedCycleName = null;
+
+        this.cycles.forEach(function (element) {
+            element.selected = false;
+        });
+
+        this.updateUrl();
+    }
+    
     resetFilters()
     {
         this.selectedOrderName = "Cele mai populare";
@@ -137,7 +195,7 @@ export class TeacherlistComponent {
 
     updateUrl()
     {
-        this.router.navigate(['/teacher'], { queryParams: { maincategory: this.selectedMainCategory, category: this.selectedCategory, cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
+        this.router.navigate([], { queryParams: { cycle: this.selectedCycle, city: this.selectedCity, order: this.selectedOrder, page: this.currentpage } });
     }
 
     selectMainCategory(id: number)
@@ -155,7 +213,17 @@ export class TeacherlistComponent {
         //this.ddService.
         this.selectedCategory = id;
         this.selectedCategoryName = categorytName;
-        this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') +3, categorytName.length);
+        /*if (categorytName.indexOf(' - ')>-1)
+        {
+            this.selectedCategoryNameWithoutMain = categorytName.substring(categorytName.indexOf(' - ') +3, categorytName.length);
+        }
+        else
+        {
+            this.selectedCategoryNameWithoutMain = categorytName;
+        }
+        console.log(categorytName);
+        console.log(this.selectedCategoryNameWithoutMain);
+        */
         this.currentpage = 1;
         this.updateUrl();        
     }
@@ -176,10 +244,11 @@ export class TeacherlistComponent {
         this.updateUrl();
     }
 
-    selectCity(id: number, cityName: string)
+    selectCity(city: City)
     {
-        this.selectedCity = id;
-        this.selectedCityName = cityName;
+        this.selectedCity = city.Id;
+        this.selectedCityName = city.Name;
+        city.selected = !city.selected;
         this.currentpage = 1;
         this.updateUrl();
     }
@@ -196,6 +265,20 @@ export class TeacherlistComponent {
             return;
         }
         this.currentpage = page;
+
+        
+        this.userService.getAds(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe((usersResult:any) => {
+            console.log(usersResult);
+
+            // get pager object from service
+            this.pager = this.pagerService.getPager(usersResult.TotalRows, page);
+
+            this.ads = usersResult.Entities;
+
+            this.nrOfTeachers = usersResult.TotalRows;
+        });
+
+        /*
         this.userService.getUsers(this.selectedCategory, this.selectedCycle, this.selectedCity, this.selectedOrder, page).subscribe((usersResult:any) => {
             console.log(usersResult);
 
@@ -205,7 +288,7 @@ export class TeacherlistComponent {
             this.teachers = usersResult.Entities;
 
             this.nrOfTeachers = usersResult.TotalRows;
-        });
+        });*/
     }
 
     selectUser(userId:number)

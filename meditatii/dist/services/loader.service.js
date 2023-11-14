@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
-var LoaderService = (function () {
+var LoaderService = /** @class */ (function () {
     function LoaderService() {
         this.loaderSubject = new rxjs_1.Subject();
         this.loaderState = this.loaderSubject.asObservable();
@@ -31,3 +31,4 @@ var LoaderService = (function () {
     return LoaderService;
 }());
 exports.LoaderService = LoaderService;
+//# sourceMappingURL=loader.service.js.map

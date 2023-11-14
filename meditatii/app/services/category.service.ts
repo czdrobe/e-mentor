@@ -15,6 +15,12 @@ export class CategoryService {
         ))
     }
 
+    getCategoriesGroupped() { 
+        return this.http.get('/api/categories/getallgroupped').pipe(map(
+            (res:any) => res
+        ))
+    }
+
     getMainCategories() {
         return this.http.get('/api/categories/getmains').pipe(map(
             (res:any) => res

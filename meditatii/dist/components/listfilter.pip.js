@@ -7,18 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var FilterByMateriaPipe = (function () {
+var FilterByMateriaPipe = /** @class */ (function () {
     function FilterByMateriaPipe() {
     }
     FilterByMateriaPipe.prototype.transform = function (categories, materia) {
         if (categories) {
             if (materia !== undefined && materia != "") {
                 var lowermateria = materia.toLowerCase();
-                return categories.filter(function (listing) { return listing.Name.toLowerCase().indexOf(lowermateria) > -1; });
+                var filteredItems = categories.filter(function (listing) { return listing.Name.toLowerCase().indexOf(lowermateria) > -1; }).splice(0, 10);
+                return filteredItems;
+                //return categories.filter((listing: Category) => listing.Name.toLowerCase().indexOf(lowermateria) > -1);
             }
-            else {
-                return categories;
-            }
+            /*else
+            {
+                var filteredItems = categories.splice(0,10);
+                return filteredItems;
+            }*/
         }
     };
     FilterByMateriaPipe = __decorate([
@@ -27,3 +31,4 @@ var FilterByMateriaPipe = (function () {
     return FilterByMateriaPipe;
 }());
 exports.FilterByMateriaPipe = FilterByMateriaPipe;
+//# sourceMappingURL=listfilter.pip.js.map
